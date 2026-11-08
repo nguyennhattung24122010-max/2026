@@ -3,619 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ôn tập Tin học 11 - Kết nối tri thức</title>
+    <title>Ôn tập Tin học 11 - Giao diện VIP</title>
+    <!-- Import phông chữ Quicksand từ Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
-            color: #333;
+            font-family: 'Quicksand', sans-serif;
+            /* Nền gradient pastel nhẹ nhàng */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-attachment: fixed;
+            color: #2d3436;
             margin: 0;
-            padding: 0;
+            padding: 20px;
         }
         .container {
-            max-width: 800px;
-            margin: 30px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 850px;
+            margin: 20px auto;
+            /* Hiệu ứng kính mờ (Glassmorphism) */
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
         }
         h1 {
             text-align: center;
-            color: #2c3e50;
+            /* Hiệu ứng màu chữ gradient */
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         h3.subtitle {
             text-align: center;
-            color: #7f8c8d;
-            margin-bottom: 30px;
+            color: #636e72;
+            font-weight: 600;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            background: #f1f2f6;
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 100%;
         }
         .question-card {
-            background: #fafafa;
-            border-left: 5px solid #3498db;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background: #ffffff;
+            border-left: 6px solid #a29bfe;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+        }
+        /* Hiệu ứng khi di chuột vào câu hỏi */
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-left-color: #6a11cb;
         }
         .question {
-            font-size: 1.1em;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2d3436;
         }
         .answers label {
             display: block;
-            background: #fff;
-            padding: 10px 15px;
-            margin-bottom: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background: #f8f9fa;
+            padding: 12px 20px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #4a4a4a;
         }
+        /* Hiệu ứng khi di chuột vào đáp án */
         .answers label:hover {
-            background: #e9f3f8;
+            background: #f3e9ff;
+            border: 2px solid #dcb0ff;
+            transform: scale(1.01);
+            color: #6a11cb;
         }
+        /* Đổi màu nút tick radio */
         input[type="radio"] {
-            margin-right: 10px;
+            margin-right: 12px;
+            accent-color: #6a11cb;
+            transform: scale(1.2);
         }
         #submit-btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            background-color: #2ecc71;
+            padding: 18px;
+            font-size: 1.3em;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
-            margin-top: 30px;
-            transition: background 0.3s;
+            margin-top: 40px;
+            box-shadow: 0 6px 15px rgba(37, 117, 252, 0.4);
+            transition: all 0.3s ease;
         }
+        /* Hiệu ứng khi hover nút nộp bài */
         #submit-btn:hover {
-            background-color: #27ae60;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(37, 117, 252, 0.6);
+            background: linear-gradient(45deg, #5c0fba, #1e63d8);
         }
         #result-container {
             display: none;
             text-align: center;
-            margin-top: 20px;
-            padding: 20px;
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-            border-radius: 8px;
-            font-size: 1.3em;
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+            border: none;
+            border-radius: 15px;
+            font-size: 1.5em;
             font-weight: bold;
-            color: #856404;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(253, 160, 133, 0.4);
+            animation: popUp 0.5s ease-out;
         }
+        @keyframes popUp {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        /* Style cho câu trả lời đúng/sai sau khi nộp */
         .correct {
             background-color: #d4edda !important;
-            border-color: #c3e6cb !important;
+            border-color: #28a745 !important;
             color: #155724 !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
         }
         .wrong {
             background-color: #f8d7da !important;
-            border-color: #f5c6cb !important;
+            border-color: #dc3545 !important;
             color: #721c24 !important;
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
+        }
+        /* Responsive cho điện thoại */
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Ôn Tập Tin Học Lớp 11</h1>
-        <h3 class="subtitle">Sách Kết nối tri thức - Bài 19 đến Bài 22<br>(Bao gồm cả 2 định hướng KHMT và THƯD)</h3>
+        <h1>✨ Trắc Nghiệm Tin Học 11 ✨</h1>
+        <h3 class="subtitle">📚 Bài 19 - 22 | Khởi động thuật toán & Khám phá CSDL</h3>
         
         <div id="quiz"></div>
         
-        <button id="submit-btn">Nộp bài & Xem điểm</button>
+        <button id="submit-btn">🚀 Nộp bài & Nhận kết quả</button>
         <div id="result-container"></div>
     </div>
 
     <script>
         const myQuestions = [
             // ================= KHMT (TÌM KIẾM VÀ SẮP XẾP) =================
-            {
-                question: "Câu 1 [KHMT]: Thuật toán tìm kiếm tuần tự (Linear Search) thực hiện tìm kiếm như thế nào?",
-                answers: {
-                    a: "Bắt đầu từ giữa danh sách và chia đôi liên tục.",
-                    b: "Sắp xếp danh sách trước rồi mới tìm kiếm.",
-                    c: "Duyệt lần lượt từ phần tử đầu tiên đến cuối danh sách.",
-                    d: "Tìm ngẫu nhiên một vị trí trong danh sách."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 2 [KHMT]: Điều kiện tiên quyết để sử dụng thuật toán tìm kiếm nhị phân là gì?",
-                answers: {
-                    a: "Danh sách phải có kích thước chẵn.",
-                    b: "Danh sách phải được sắp xếp từ trước.",
-                    c: "Danh sách chỉ được chứa các số nguyên.",
-                    d: "Danh sách không được có phần tử trùng lặp."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 3 [KHMT]: Trong tìm kiếm nhị phân, nếu phần tử cần tìm nhỏ hơn phần tử ở giữa, bước tiếp theo ta sẽ làm gì?",
-                answers: {
-                    a: "Tìm kiếm tiếp ở nửa đầu của danh sách.",
-                    b: "Tìm kiếm tiếp ở nửa sau của danh sách.",
-                    c: "Kết luận không tìm thấy.",
-                    d: "Dừng thuật toán."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 4 [KHMT]: Tìm kiếm tuần tự sẽ thực hiện ít bước nhất (tốt nhất) trong trường hợp nào?",
-                answers: {
-                    a: "Phần tử cần tìm nằm ở cuối danh sách.",
-                    b: "Phần tử cần tìm không có trong danh sách.",
-                    c: "Phần tử cần tìm nằm ở ngay đầu danh sách.",
-                    d: "Danh sách đã được sắp xếp."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 5 [KHMT]: Ý tưởng cốt lõi của thuật toán sắp xếp nổi bọt (Bubble Sort) là gì?",
-                answers: {
-                    a: "Chia mảng làm hai nửa để sắp xếp.",
-                    b: "Chèn phần tử vào vị trí thích hợp trong mảng đã sắp xếp.",
-                    c: "Tìm phần tử nhỏ nhất và đổi chỗ với phần tử đầu tiên.",
-                    d: "Đổi chỗ hai phần tử liền kề nếu chúng sai thứ tự."
-                },
-                correctAnswer: "d"
-            },
-            {
-                question: "Câu 6 [KHMT]: Thuật toán sắp xếp chèn (Insertion Sort) hoạt động dựa trên nguyên lí nào?",
-                answers: {
-                    a: "Phân chia danh sách thành 2 phần: phần đã sắp xếp và phần chưa sắp xếp.",
-                    b: "So sánh các cặp phần tử liền kề và đổi chỗ.",
-                    c: "Luôn tìm phần tử lớn nhất đưa về cuối.",
-                    d: "Lấy ngẫu nhiên phần tử để đổi chỗ."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 7 [KHMT]: Dữ liệu đầu vào của bài toán tìm kiếm bao gồm những gì?",
-                answers: {
-                    a: "Một danh sách cần sắp xếp.",
-                    b: "Một danh sách và giá trị cần tìm.",
-                    c: "Một dãy số chưa được sắp xếp.",
-                    d: "Hai danh sách để so sánh."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 8 [KHMT]: Thuật toán tìm kiếm tuần tự tốn nhiều thời gian nhất khi nào?",
-                answers: {
-                    a: "Phần tử cần tìm ở cuối danh sách hoặc không tồn tại trong danh sách.",
-                    b: "Phần tử cần tìm ở đầu danh sách.",
-                    c: "Danh sách đã được sắp xếp giảm dần.",
-                    d: "Danh sách có kích thước quá nhỏ."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 9 [KHMT]: Kết quả trả về của một thuật toán tìm kiếm thường là gì?",
-                answers: {
-                    a: "Một danh sách đã được sắp xếp.",
-                    b: "Giá trị lớn nhất trong danh sách.",
-                    c: "Vị trí của phần tử cần tìm hoặc thông báo không tìm thấy.",
-                    d: "Số lượng phần tử của danh sách."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 10 [KHMT]: Quá trình sắp xếp dữ liệu có nghĩa là gì?",
-                answers: {
-                    a: "Loại bỏ các dữ liệu trùng lặp.",
-                    b: "Phân bố lại các phần tử theo một thứ tự (tăng/giảm) nhất định.",
-                    c: "Lọc ra các phần tử theo điều kiện.",
-                    d: "Ghép hai danh sách lại với nhau."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 11 [KHMT]: Trong Python, toán tử 'in' áp dụng cho list sử dụng thuật toán tìm kiếm nào ngầm định bên dưới?",
-                answers: {
-                    a: "Tìm kiếm tuần tự.",
-                    b: "Tìm kiếm nhị phân.",
-                    c: "Tìm kiếm nội suy.",
-                    d: "Tìm kiếm nhảy."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 12 [KHMT]: Hàm list.sort() trong Python mặc định sắp xếp danh sách theo chiều nào?",
-                answers: {
-                    a: "Tăng dần.",
-                    b: "Giảm dần.",
-                    c: "Không thay đổi thứ tự gốc.",
-                    d: "Tùy thuộc vào dữ liệu chữ hay số."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 13 [KHMT]: Trong thuật toán sắp xếp chèn, ta bắt đầu xét việc chèn từ phần tử ở vị trí (index) số mấy?",
-                answers: {
-                    a: "Vị trí 0.",
-                    b: "Vị trí 1 (phần tử thứ hai).",
-                    c: "Vị trí cuối cùng.",
-                    d: "Vị trí giữa danh sách."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 14 [KHMT]: Khi chạy thuật toán tìm kiếm nhị phân, thao tác được thực hiện đầu tiên là gì?",
-                answers: {
-                    a: "So sánh với phần tử đầu tiên.",
-                    b: "Sắp xếp lại danh sách.",
-                    c: "Xác định vị trí phần tử nằm giữa danh sách.",
-                    d: "Chia danh sách thành 3 phần."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 15 [KHMT]: Sau một lượt duyệt (vòng lặp ngoài) của thuật toán Bubble Sort, điều gì chắc chắn xảy ra?",
-                answers: {
-                    a: "Mảng đã được sắp xếp hoàn toàn.",
-                    b: "Phần tử nhỏ nhất nổi lên đầu danh sách.",
-                    c: "Không có phần tử nào thay đổi vị trí.",
-                    d: "Phần tử lớn nhất (hoặc nhỏ nhất) được đưa về đúng vị trí ở cuối danh sách."
-                },
-                correctAnswer: "d"
-            },
-            {
-                question: "Câu 16 [KHMT]: Nếu danh sách có 50 phần tử, thuật toán tìm kiếm tuần tự cần tối đa bao nhiêu lần so sánh?",
-                answers: {
-                    a: "25 lần.",
-                    b: "5 hoặc 6 lần.",
-                    c: "50 lần.",
-                    d: "100 lần."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 17 [KHMT]: Tìm kiếm nhị phân phát huy ưu thế lớn nhất so với tìm kiếm tuần tự khi nào?",
-                answers: {
-                    a: "Danh sách chưa được sắp xếp và có kích thước nhỏ.",
-                    b: "Danh sách đã được sắp xếp và có kích thước rất lớn.",
-                    c: "Cần tìm kiếm tất cả các phần tử.",
-                    d: "Khi dữ liệu là các chuỗi kí tự."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 18 [KHMT]: Cho mảng A = [10, 20, 30, 40, 50, 60, 70]. Nếu dùng tìm kiếm nhị phân tìm số 30, phần tử giữa ở lần chia đầu tiên là?",
-                answers: {
-                    a: "30.",
-                    b: "50.",
-                    c: "40.",
-                    d: "60."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 19 [KHMT]: Để hoán đổi giá trị hai biến a và b trong Python, cú pháp nào sau đây đúng?",
-                answers: {
-                    a: "a, b = b, a",
-                    b: "a = b = a",
-                    c: "swap(a, b)",
-                    d: "a, b = a, b"
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 20 [KHMT]: Kết quả của thuật toán sắp xếp GIẢM DẦN trên mảng [5, 2, 8, 1] là?",
-                answers: {
-                    a: "[1, 2, 5, 8]",
-                    b: "[8, 1, 2, 5]",
-                    c: "[8, 5, 1, 2]",
-                    d: "[8, 5, 2, 1]"
-                },
-                correctAnswer: "d"
-            },
-            {
-                question: "Câu 21 [KHMT]: Lệnh len(A) trong Python dùng để làm gì đối với danh sách A?",
-                answers: {
-                    a: "Sắp xếp danh sách A.",
-                    b: "Trả về số lượng phần tử của danh sách A.",
-                    c: "Tìm giá trị lớn nhất trong A.",
-                    d: "Xóa phần tử cuối của A."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 22 [KHMT]: Thuật toán tìm kiếm nhị phân có tên tiếng Anh là gì?",
-                answers: {
-                    a: "Linear Search.",
-                    b: "Bubble Sort.",
-                    c: "Binary Search.",
-                    d: "Insertion Sort."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 23 [KHMT]: Ý tưởng của thuật toán sắp xếp chèn (Insertion Sort) giống với hành động nào trong thực tế?",
-                answers: {
-                    a: "Xếp các quân bài trên tay khi chơi bài.",
-                    b: "Tìm kiếm một từ trong từ điển.",
-                    c: "Xếp hàng mua vé xem phim.",
-                    d: "Lấy sách trên kệ."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 24 [KHMT]: Trong Python, để khai báo một danh sách (list) ta dùng dấu ngoặc nào?",
-                answers: {
-                    a: "{ }",
-                    b: "( )",
-                    c: "[ ]",
-                    d: "< >"
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 25 [KHMT]: Đối với danh sách có N phần tử, thuật toán Bubble Sort cần duyệt vòng lặp lớn bên ngoài nhiều nhất bao nhiêu lần?",
-                answers: {
-                    a: "N lần.",
-                    b: "N - 1 lần.",
-                    c: "N/2 lần.",
-                    d: "2 lần."
-                },
-                correctAnswer: "b"
-            },
+            { question: "Câu 1 [KHMT]: Thuật toán tìm kiếm tuần tự (Linear Search) thực hiện tìm kiếm như thế nào?", answers: { a: "Bắt đầu từ giữa danh sách và chia đôi liên tục.", b: "Sắp xếp danh sách trước rồi mới tìm kiếm.", c: "Duyệt lần lượt từ phần tử đầu tiên đến cuối danh sách.", d: "Tìm ngẫu nhiên một vị trí trong danh sách." }, correctAnswer: "c" },
+            { question: "Câu 2 [KHMT]: Điều kiện tiên quyết để sử dụng thuật toán tìm kiếm nhị phân là gì?", answers: { a: "Danh sách phải có kích thước chẵn.", b: "Danh sách phải được sắp xếp từ trước.", c: "Danh sách chỉ được chứa các số nguyên.", d: "Danh sách không được có phần tử trùng lặp." }, correctAnswer: "b" },
+            { question: "Câu 3 [KHMT]: Trong tìm kiếm nhị phân, nếu phần tử cần tìm nhỏ hơn phần tử ở giữa, bước tiếp theo ta sẽ làm gì?", answers: { a: "Tìm kiếm tiếp ở nửa đầu của danh sách.", b: "Tìm kiếm tiếp ở nửa sau của danh sách.", c: "Kết luận không tìm thấy.", d: "Dừng thuật toán." }, correctAnswer: "a" },
+            { question: "Câu 4 [KHMT]: Tìm kiếm tuần tự sẽ thực hiện ít bước nhất (tốt nhất) trong trường hợp nào?", answers: { a: "Phần tử cần tìm nằm ở cuối danh sách.", b: "Phần tử cần tìm không có trong danh sách.", c: "Phần tử cần tìm nằm ở ngay đầu danh sách.", d: "Danh sách đã được sắp xếp." }, correctAnswer: "c" },
+            { question: "Câu 5 [KHMT]: Ý tưởng cốt lõi của thuật toán sắp xếp nổi bọt (Bubble Sort) là gì?", answers: { a: "Chia mảng làm hai nửa để sắp xếp.", b: "Chèn phần tử vào vị trí thích hợp trong mảng đã sắp xếp.", c: "Tìm phần tử nhỏ nhất và đổi chỗ với phần tử đầu tiên.", d: "Đổi chỗ hai phần tử liền kề nếu chúng sai thứ tự." }, correctAnswer: "d" },
+            { question: "Câu 6 [KHMT]: Thuật toán sắp xếp chèn (Insertion Sort) hoạt động dựa trên nguyên lí nào?", answers: { a: "Phân chia danh sách thành 2 phần: phần đã sắp xếp và phần chưa sắp xếp.", b: "So sánh các cặp phần tử liền kề và đổi chỗ.", c: "Luôn tìm phần tử lớn nhất đưa về cuối.", d: "Lấy ngẫu nhiên phần tử để đổi chỗ." }, correctAnswer: "a" },
+            { question: "Câu 7 [KHMT]: Dữ liệu đầu vào của bài toán tìm kiếm bao gồm những gì?", answers: { a: "Một danh sách cần sắp xếp.", b: "Một danh sách và giá trị cần tìm.", c: "Một dãy số chưa được sắp xếp.", d: "Hai danh sách để so sánh." }, correctAnswer: "b" },
+            { question: "Câu 8 [KHMT]: Thuật toán tìm kiếm tuần tự tốn nhiều thời gian nhất khi nào?", answers: { a: "Phần tử cần tìm ở cuối danh sách hoặc không tồn tại trong danh sách.", b: "Phần tử cần tìm ở đầu danh sách.", c: "Danh sách đã được sắp xếp giảm dần.", d: "Danh sách có kích thước quá nhỏ." }, correctAnswer: "a" },
+            { question: "Câu 9 [KHMT]: Kết quả trả về của một thuật toán tìm kiếm thường là gì?", answers: { a: "Một danh sách đã được sắp xếp.", b: "Giá trị lớn nhất trong danh sách.", c: "Vị trí của phần tử cần tìm hoặc thông báo không tìm thấy.", d: "Số lượng phần tử của danh sách." }, correctAnswer: "c" },
+            { question: "Câu 10 [KHMT]: Quá trình sắp xếp dữ liệu có nghĩa là gì?", answers: { a: "Loại bỏ các dữ liệu trùng lặp.", b: "Phân bố lại các phần tử theo một thứ tự (tăng/giảm) nhất định.", c: "Lọc ra các phần tử theo điều kiện.", d: "Ghép hai danh sách lại với nhau." }, correctAnswer: "b" },
+            { question: "Câu 11 [KHMT]: Trong Python, toán tử 'in' áp dụng cho list sử dụng thuật toán tìm kiếm nào ngầm định bên dưới?", answers: { a: "Tìm kiếm tuần tự.", b: "Tìm kiếm nhị phân.", c: "Tìm kiếm nội suy.", d: "Tìm kiếm nhảy." }, correctAnswer: "a" },
+            { question: "Câu 12 [KHMT]: Hàm list.sort() trong Python mặc định sắp xếp danh sách theo chiều nào?", answers: { a: "Tăng dần.", b: "Giảm dần.", c: "Không thay đổi thứ tự gốc.", d: "Tùy thuộc vào dữ liệu chữ hay số." }, correctAnswer: "a" },
+            { question: "Câu 13 [KHMT]: Trong thuật toán sắp xếp chèn, ta bắt đầu xét việc chèn từ phần tử ở vị trí (index) số mấy?", answers: { a: "Vị trí 0.", b: "Vị trí 1 (phần tử thứ hai).", c: "Vị trí cuối cùng.", d: "Vị trí giữa danh sách." }, correctAnswer: "b" },
+            { question: "Câu 14 [KHMT]: Khi chạy thuật toán tìm kiếm nhị phân, thao tác được thực hiện đầu tiên là gì?", answers: { a: "So sánh với phần tử đầu tiên.", b: "Sắp xếp lại danh sách.", c: "Xác định vị trí phần tử nằm giữa danh sách.", d: "Chia danh sách thành 3 phần." }, correctAnswer: "c" },
+            { question: "Câu 15 [KHMT]: Sau một lượt duyệt (vòng lặp ngoài) của thuật toán Bubble Sort, điều gì chắc chắn xảy ra?", answers: { a: "Mảng đã được sắp xếp hoàn toàn.", b: "Phần tử nhỏ nhất nổi lên đầu danh sách.", c: "Không có phần tử nào thay đổi vị trí.", d: "Phần tử lớn nhất (hoặc nhỏ nhất) được đưa về đúng vị trí ở cuối danh sách." }, correctAnswer: "d" },
+            { question: "Câu 16 [KHMT]: Nếu danh sách có 50 phần tử, thuật toán tìm kiếm tuần tự cần tối đa bao nhiêu lần so sánh?", answers: { a: "25 lần.", b: "5 hoặc 6 lần.", c: "50 lần.", d: "100 lần." }, correctAnswer: "c" },
+            { question: "Câu 17 [KHMT]: Tìm kiếm nhị phân phát huy ưu thế lớn nhất so với tìm kiếm tuần tự khi nào?", answers: { a: "Danh sách chưa được sắp xếp và có kích thước nhỏ.", b: "Danh sách đã được sắp xếp và có kích thước rất lớn.", c: "Cần tìm kiếm tất cả các phần tử.", d: "Khi dữ liệu là các chuỗi kí tự." }, correctAnswer: "b" },
+            { question: "Câu 18 [KHMT]: Cho mảng A = [10, 20, 30, 40, 50, 60, 70]. Nếu dùng tìm kiếm nhị phân tìm số 30, phần tử giữa ở lần chia đầu tiên là?", answers: { a: "30.", b: "50.", c: "40.", d: "60." }, correctAnswer: "c" },
+            { question: "Câu 19 [KHMT]: Để hoán đổi giá trị hai biến a và b trong Python, cú pháp nào sau đây đúng?", answers: { a: "a, b = b, a", b: "a = b = a", c: "swap(a, b)", d: "a, b = a, b" }, correctAnswer: "a" },
+            { question: "Câu 20 [KHMT]: Kết quả của thuật toán sắp xếp GIẢM DẦN trên mảng [5, 2, 8, 1] là?", answers: { a: "[1, 2, 5, 8]", b: "[8, 1, 2, 5]", c: "[8, 5, 1, 2]", d: "[8, 5, 2, 1]" }, correctAnswer: "d" },
+            { question: "Câu 21 [KHMT]: Lệnh len(A) trong Python dùng để làm gì đối với danh sách A?", answers: { a: "Sắp xếp danh sách A.", b: "Trả về số lượng phần tử của danh sách A.", c: "Tìm giá trị lớn nhất trong A.", d: "Xóa phần tử cuối của A." }, correctAnswer: "b" },
+            { question: "Câu 22 [KHMT]: Thuật toán tìm kiếm nhị phân có tên tiếng Anh là gì?", answers: { a: "Linear Search.", b: "Bubble Sort.", c: "Binary Search.", d: "Insertion Sort." }, correctAnswer: "c" },
+            { question: "Câu 23 [KHMT]: Ý tưởng của thuật toán sắp xếp chèn (Insertion Sort) giống với hành động nào trong thực tế?", answers: { a: "Xếp các quân bài trên tay khi chơi bài.", b: "Tìm kiếm một từ trong từ điển.", c: "Xếp hàng mua vé xem phim.", d: "Lấy sách trên kệ." }, correctAnswer: "a" },
+            { question: "Câu 24 [KHMT]: Trong Python, để khai báo một danh sách (list) ta dùng dấu ngoặc nào?", answers: { a: "{ }", b: "( )", c: "[ ]", d: "< >" }, correctAnswer: "c" },
+            { question: "Câu 25 [KHMT]: Đối với danh sách có N phần tử, thuật toán Bubble Sort cần duyệt vòng lặp lớn bên ngoài nhiều nhất bao nhiêu lần?", answers: { a: "N lần.", b: "N - 1 lần.", c: "N/2 lần.", d: "2 lần." }, correctAnswer: "b" },
 
             // ================= THƯD (CƠ SỞ DỮ LIỆU & SQL) =================
-            {
-                question: "Câu 26 [THƯD]: Việc đầu tiên cần làm để làm việc với một CSDL quan hệ là gì?",
-                answers: {
-                    a: "Tạo lập cơ sở dữ liệu (Database).",
-                    b: "Xóa dữ liệu.",
-                    c: "Sửa đổi dữ liệu.",
-                    d: "Truy vấn dữ liệu."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 27 [THƯD]: Trong phần mềm HeidiSQL, thao tác nào sau đây dùng để tạo CSDL mới?",
-                answers: {
-                    a: "Nháy đúp chuột trái vào khoảng trắng.",
-                    b: "Nháy chuột phải ở vùng danh sách CSDL -> Tạo mới -> Cơ sở dữ liệu.",
-                    c: "Bấm tổ hợp phím Ctrl + C.",
-                    d: "Vào File -> Mở CSDL."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 28 [THƯD]: Kiểu dữ liệu INT trong SQL thường được dùng để lưu trữ loại dữ liệu nào?",
-                answers: {
-                    a: "Số nguyên.",
-                    b: "Ký tự văn bản.",
-                    c: "Thời gian.",
-                    d: "Số thập phân."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 29 [THƯD]: Trong HeidiSQL, để trường khóa chính (Primary Key) tự động tăng giá trị mỗi khi thêm bản ghi mới, ta chọn thuộc tính nào?",
-                answers: {
-                    a: "NOT NULL.",
-                    b: "DEFAULT.",
-                    c: "AUTO_INCREMENT.",
-                    d: "UNSIGNED."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 30 [THƯD]: Khóa chính (Primary Key) của một bảng có đặc điểm gì bắt buộc?",
-                answers: {
-                    a: "Có thể để trống.",
-                    b: "Giá trị là duy nhất và không được để trống (Not Null).",
-                    c: "Có thể chứa các giá trị trùng lặp.",
-                    d: "Chỉ được phép là kiểu chuỗi."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 31 [THƯD]: Kiểu dữ liệu VARCHAR trong SQL dùng để lưu trữ gì?",
-                answers: {
-                    a: "Ngày tháng năm.",
-                    b: "Số nguyên.",
-                    c: "Chuỗi ký tự có độ dài biến đổi.",
-                    d: "File hình ảnh."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 32 [THƯD]: Khóa ngoài (Foreign Key) được tạo ra nhằm mục đích gì?",
-                answers: {
-                    a: "Liên kết dữ liệu giữa bảng chứa khóa ngoài với bảng chứa khóa chính.",
-                    b: "Làm khóa chính cho một bảng khác.",
-                    c: "Xóa dữ liệu tự động.",
-                    d: "Mã hóa dữ liệu."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 33 [THƯD]: Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?",
-                answers: {
-                    a: "Hai bảng phải có số cột bằng nhau.",
-                    b: "Giá trị của khóa ngoài phải tồn tại ở trường khóa chính của bảng tham chiếu.",
-                    c: "Các bảng không được phép sửa đổi.",
-                    d: "Dữ liệu khóa ngoài phải là số nguyên."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 34 [THƯD]: Lệnh SQL nào dưới đây dùng để truy xuất (lấy) dữ liệu từ bảng?",
-                answers: {
-                    a: "SELECT",
-                    b: "INSERT",
-                    c: "UPDATE",
-                    d: "DELETE"
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 35 [THƯD]: Trong câu lệnh SELECT, từ khóa nào dùng để lọc và đặt điều kiện lấy dữ liệu?",
-                answers: {
-                    a: "ORDER BY",
-                    b: "FROM",
-                    c: "WHERE",
-                    d: "GROUP BY"
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 36 [THƯD]: Lệnh SQL dùng để THÊM một dòng dữ liệu mới vào bảng là gì?",
-                answers: {
-                    a: "ADD RECORD",
-                    b: "INSERT INTO",
-                    c: "UPDATE TABLE",
-                    d: "CREATE ROW"
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 37 [THƯD]: Lệnh UPDATE trong SQL được dùng để làm gì?",
-                answers: {
-                    a: "Xóa toàn bộ bảng.",
-                    b: "Tạo bảng mới.",
-                    c: "Cập nhật, sửa đổi dữ liệu đã có trong bảng.",
-                    d: "Lấy dữ liệu ra xem."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 38 [THƯD]: Để xóa các bản ghi dữ liệu trong bảng, ta dùng lệnh SQL nào?",
-                answers: {
-                    a: "DELETE FROM",
-                    b: "DROP TABLE",
-                    c: "REMOVE RECORD",
-                    d: "CLEAR DATA"
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 39 [THƯD]: Nếu cố tình XÓA một bản ghi ở bảng chính (bảng có khóa chính) trong khi bảng phụ (bảng có khóa ngoài) vẫn còn tham chiếu đến nó thì hệ thống sẽ làm gì?",
-                answers: {
-                    a: "Tự động xóa luôn ở bảng phụ.",
-                    b: "Tự động đổi khóa ngoài thành Null.",
-                    c: "Cho phép xóa bình thường.",
-                    d: "Báo lỗi vi phạm toàn vẹn tham chiếu và từ chối xóa."
-                },
-                correctAnswer: "d"
-            },
-            {
-                question: "Câu 40 [THƯD]: Câu lệnh `SELECT * FROM hocsinh;` có ý nghĩa gì?",
-                answers: {
-                    a: "Tính tổng số học sinh.",
-                    b: "Lấy tất cả các cột dữ liệu từ bảng hocsinh.",
-                    c: "Lọc những học sinh xuất sắc.",
-                    d: "Xóa bảng hocsinh."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 41 [THƯD]: Khi tạo khóa ngoài bằng HeidiSQL, mục 'Bảng tham chiếu' (Reference table) dùng để làm gì?",
-                answers: {
-                    a: "Chọn bảng chứa khóa chính mà khóa ngoài sẽ trỏ (liên kết) tới.",
-                    b: "Chọn kiểu dữ liệu cho bảng.",
-                    c: "Chọn cột để tìm kiếm.",
-                    d: "Xác định quyền truy cập bảng."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 42 [THƯD]: Để sao lưu (Backup) cơ sở dữ liệu trong HeidiSQL, ta chọn công cụ nào?",
-                answers: {
-                    a: "Xóa CSDL.",
-                    b: "Nhập tệp SQL.",
-                    c: "Xuất cơ sở dữ liệu dưới dạng SQL (Export database as SQL).",
-                    d: "In CSDL ra giấy."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 43 [THƯD]: Để truy xuất và hiển thị dữ liệu kết hợp từ nhiều bảng khác nhau, ta sử dụng mệnh đề nào trong SQL?",
-                answers: {
-                    a: "WHERE",
-                    b: "LINK",
-                    c: "CONNECT",
-                    d: "JOIN (hoặc INNER JOIN)"
-                },
-                correctAnswer: "d"
-            },
-            {
-                question: "Câu 44 [THƯD]: Trong giao diện HeidiSQL, để khai báo thêm một trường (cột) mới vào bảng, ta chọn vào thẻ nào?",
-                answers: {
-                    a: "Thẻ Cấu trúc (Table).",
-                    b: "Thẻ Dữ liệu (Data).",
-                    c: "Thẻ Truy vấn (Query).",
-                    d: "Thẻ Cài đặt."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 45 [THƯD]: Lỗi vi phạm khóa chính sẽ xảy ra khi nào?",
-                answers: {
-                    a: "Khi nhập số âm vào kiểu INT.",
-                    b: "Khi thêm một bản ghi mới có giá trị khóa chính trùng với bản ghi đã tồn tại.",
-                    c: "Khi để trống cột họ tên.",
-                    d: "Khi nhập ngày tháng sai định dạng."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 46 [THƯD]: Để xem danh sách các bản ghi (dữ liệu) của một bảng ngay trên giao diện HeidiSQL, ta chuyển sang thẻ nào?",
-                answers: {
-                    a: "Thẻ Cấu trúc (Table).",
-                    b: "Thẻ Dữ liệu (Data).",
-                    c: "Thẻ Tùy chọn.",
-                    d: "Thẻ Biểu đồ."
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 47 [THƯD]: Trong thiết kế CSDL, nếu bảng `Diem` có trường `MaHS` trỏ tới trường `MaHS` của bảng `HocSinh`, thì `MaHS` trong bảng `Diem` đóng vai trò là gì?",
-                answers: {
-                    a: "Khóa chính.",
-                    b: "Thuộc tính ảo.",
-                    c: "Khóa ngoài.",
-                    d: "Khóa phụ."
-                },
-                correctAnswer: "c"
-            },
-            {
-                question: "Câu 48 [THƯD]: Mệnh đề LIMIT trong câu lệnh SELECT của SQL có tác dụng gì?",
-                answers: {
-                    a: "Giới hạn số lượng bản ghi hiển thị trong kết quả.",
-                    b: "Kiểm tra giới hạn ký tự nhập vào.",
-                    c: "Tính toán tốc độ truy vấn.",
-                    d: "Giới hạn người dùng truy cập CSDL."
-                },
-                correctAnswer: "a"
-            },
-            {
-                question: "Câu 49 [THƯD]: Đâu là câu lệnh SQL đúng để XÓA bản ghi có `id = 1` từ bảng `hocsinh`?",
-                answers: {
-                    a: "DELETE hocsinh WHERE id = 1;",
-                    b: "DELETE FROM hocsinh WHERE id = 1;",
-                    c: "REMOVE FROM hocsinh WHERE id = 1;",
-                    d: "DROP hocsinh WHERE id = 1;"
-                },
-                correctAnswer: "b"
-            },
-            {
-                question: "Câu 50 [THƯD]: Khi tiến hành CẬP NHẬT hoặc THÊM dữ liệu vào hai bảng có quan hệ tham chiếu, ta phải thực hiện theo thứ tự nào?",
-                answers: {
-                    a: "Thêm dữ liệu bảng có khóa ngoài (bảng con) trước, bảng có khóa chính sau.",
-                    b: "Làm bảng nào trước cũng được.",
-                    c: "Thêm dữ liệu vào bảng có khóa chính (bảng cha) trước, bảng có khóa ngoài sau.",
-                    d: "Cập nhật cả 2 bảng cùng 1 lúc bằng lệnh chung."
-                },
-                correctAnswer: "c"
-            }
+            { question: "Câu 26 [THƯD]: Việc đầu tiên cần làm để làm việc với một CSDL quan hệ là gì?", answers: { a: "Tạo lập cơ sở dữ liệu (Database).", b: "Xóa dữ liệu.", c: "Sửa đổi dữ liệu.", d: "Truy vấn dữ liệu." }, correctAnswer: "a" },
+            { question: "Câu 27 [THƯD]: Trong phần mềm HeidiSQL, thao tác nào sau đây dùng để tạo CSDL mới?", answers: { a: "Nháy đúp chuột trái vào khoảng trắng.", b: "Nháy chuột phải ở vùng danh sách CSDL -> Tạo mới -> Cơ sở dữ liệu.", c: "Bấm tổ hợp phím Ctrl + C.", d: "Vào File -> Mở CSDL." }, correctAnswer: "b" },
+            { question: "Câu 28 [THƯD]: Kiểu dữ liệu INT trong SQL thường được dùng để lưu trữ loại dữ liệu nào?", answers: { a: "Số nguyên.", b: "Ký tự văn bản.", c: "Thời gian.", d: "Số thập phân." }, correctAnswer: "a" },
+            { question: "Câu 29 [THƯD]: Trong HeidiSQL, để trường khóa chính (Primary Key) tự động tăng giá trị mỗi khi thêm bản ghi mới, ta chọn thuộc tính nào?", answers: { a: "NOT NULL.", b: "DEFAULT.", c: "AUTO_INCREMENT.", d: "UNSIGNED." }, correctAnswer: "c" },
+            { question: "Câu 30 [THƯD]: Khóa chính (Primary Key) của một bảng có đặc điểm gì bắt buộc?", answers: { a: "Có thể để trống.", b: "Giá trị là duy nhất và không được để trống (Not Null).", c: "Có thể chứa các giá trị trùng lặp.", d: "Chỉ được phép là kiểu chuỗi." }, correctAnswer: "b" },
+            { question: "Câu 31 [THƯD]: Kiểu dữ liệu VARCHAR trong SQL dùng để lưu trữ gì?", answers: { a: "Ngày tháng năm.", b: "Số nguyên.", c: "Chuỗi ký tự có độ dài biến đổi.", d: "File hình ảnh." }, correctAnswer: "c" },
+            { question: "Câu 32 [THƯD]: Khóa ngoài (Foreign Key) được tạo ra nhằm mục đích gì?", answers: { a: "Liên kết dữ liệu giữa bảng chứa khóa ngoài với bảng chứa khóa chính.", b: "Làm khóa chính cho một bảng khác.", c: "Xóa dữ liệu tự động.", d: "Mã hóa dữ liệu." }, correctAnswer: "a" },
+            { question: "Câu 33 [THƯD]: Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?", answers: { a: "Hai bảng phải có số cột bằng nhau.", b: "Giá trị của khóa ngoài phải tồn tại ở trường khóa chính của bảng tham chiếu.", c: "Các bảng không được phép sửa đổi.", d: "Dữ liệu khóa ngoài phải là số nguyên." }, correctAnswer: "b" },
+            { question: "Câu 34 [THƯD]: Lệnh SQL nào dưới đây dùng để truy xuất (lấy) dữ liệu từ bảng?", answers: { a: "SELECT", b: "INSERT", c: "UPDATE", d: "DELETE" }, correctAnswer: "a" },
+            { question: "Câu 35 [THƯD]: Trong câu lệnh SELECT, từ khóa nào dùng để lọc và đặt điều kiện lấy dữ liệu?", answers: { a: "ORDER BY", b: "FROM", c: "WHERE", d: "GROUP BY" }, correctAnswer: "c" },
+            { question: "Câu 36 [THƯD]: Lệnh SQL dùng để THÊM một dòng dữ liệu mới vào bảng là gì?", answers: { a: "ADD RECORD", b: "INSERT INTO", c: "UPDATE TABLE", d: "CREATE ROW" }, correctAnswer: "b" },
+            { question: "Câu 37 [THƯD]: Lệnh UPDATE trong SQL được dùng để làm gì?", answers: { a: "Xóa toàn bộ bảng.", b: "Tạo bảng mới.", c: "Cập nhật, sửa đổi dữ liệu đã có trong bảng.", d: "Lấy dữ liệu ra xem." }, correctAnswer: "c" },
+            { question: "Câu 38 [THƯD]: Để xóa các bản ghi dữ liệu trong bảng, ta dùng lệnh SQL nào?", answers: { a: "DELETE FROM", b: "DROP TABLE", c: "REMOVE RECORD", d: "CLEAR DATA" }, correctAnswer: "a" },
+            { question: "Câu 39 [THƯD]: Nếu cố tình XÓA một bản ghi ở bảng chính (bảng có khóa chính) trong khi bảng phụ (bảng có khóa ngoài) vẫn còn tham chiếu đến nó thì hệ thống sẽ làm gì?", answers: { a: "Tự động xóa luôn ở bảng phụ.", b: "Tự động đổi khóa ngoài thành Null.", c: "Cho phép xóa bình thường.", d: "Báo lỗi vi phạm toàn vẹn tham chiếu và từ chối xóa." }, correctAnswer: "d" },
+            { question: "Câu 40 [THƯD]: Câu lệnh `SELECT * FROM hocsinh;` có ý nghĩa gì?", answers: { a: "Tính tổng số học sinh.", b: "Lấy tất cả các cột dữ liệu từ bảng hocsinh.", c: "Lọc những học sinh xuất sắc.", d: "Xóa bảng hocsinh." }, correctAnswer: "b" },
+            { question: "Câu 41 [THƯD]: Khi tạo khóa ngoài bằng HeidiSQL, mục 'Bảng tham chiếu' (Reference table) dùng để làm gì?", answers: { a: "Chọn bảng chứa khóa chính mà khóa ngoài sẽ trỏ (liên kết) tới.", b: "Chọn kiểu dữ liệu cho bảng.", c: "Chọn cột để tìm kiếm.", d: "Xác định quyền truy cập bảng." }, correctAnswer: "a" },
+            { question: "Câu 42 [THƯD]: Để sao lưu (Backup) cơ sở dữ liệu trong HeidiSQL, ta chọn công cụ nào?", answers: { a: "Xóa CSDL.", b: "Nhập tệp SQL.", c: "Xuất cơ sở dữ liệu dưới dạng SQL (Export database as SQL).", d: "In CSDL ra giấy." }, correctAnswer: "c" },
+            { question: "Câu 43 [THƯD]: Để truy xuất và hiển thị dữ liệu kết hợp từ nhiều bảng khác nhau, ta sử dụng mệnh đề nào trong SQL?", answers: { a: "WHERE", b: "LINK", c: "CONNECT", d: "JOIN (hoặc INNER JOIN)" }, correctAnswer: "d" },
+            { question: "Câu 44 [THƯD]: Trong giao diện HeidiSQL, để khai báo thêm một trường (cột) mới vào bảng, ta chọn vào thẻ nào?", answers: { a: "Thẻ Cấu trúc (Table).", b: "Thẻ Dữ liệu (Data).", c: "Thẻ Truy vấn (Query).", d: "Thẻ Cài đặt." }, correctAnswer: "a" },
+            { question: "Câu 45 [THƯD]: Lỗi vi phạm khóa chính sẽ xảy ra khi nào?", answers: { a: "Khi nhập số âm vào kiểu INT.", b: "Khi thêm một bản ghi mới có giá trị khóa chính trùng với bản ghi đã tồn tại.", c: "Khi để trống cột họ tên.", d: "Khi nhập ngày tháng sai định dạng." }, correctAnswer: "b" },
+            { question: "Câu 46 [THƯD]: Để xem danh sách các bản ghi (dữ liệu) của một bảng ngay trên giao diện HeidiSQL, ta chuyển sang thẻ nào?", answers: { a: "Thẻ Cấu trúc (Table).", b: "Thẻ Dữ liệu (Data).", c: "Thẻ Tùy chọn.", d: "Thẻ Biểu đồ." }, correctAnswer: "b" },
+            { question: "Câu 47 [THƯD]: Trong thiết kế CSDL, nếu bảng `Diem` có trường `MaHS` trỏ tới trường `MaHS` của bảng `HocSinh`, thì `MaHS` trong bảng `Diem` đóng vai trò là gì?", answers: { a: "Khóa chính.", b: "Thuộc tính ảo.", c: "Khóa ngoài.", d: "Khóa phụ." }, correctAnswer: "c" },
+            { question: "Câu 48 [THƯD]: Mệnh đề LIMIT trong câu lệnh SELECT của SQL có tác dụng gì?", answers: { a: "Giới hạn số lượng bản ghi hiển thị trong kết quả.", b: "Kiểm tra giới hạn ký tự nhập vào.", c: "Tính toán tốc độ truy vấn.", d: "Giới hạn người dùng truy cập CSDL." }, correctAnswer: "a" },
+            { question: "Câu 49 [THƯD]: Đâu là câu lệnh SQL đúng để XÓA bản ghi có `id = 1` từ bảng `hocsinh`?", answers: { a: "DELETE hocsinh WHERE id = 1;", b: "DELETE FROM hocsinh WHERE id = 1;", c: "REMOVE FROM hocsinh WHERE id = 1;", d: "DROP hocsinh WHERE id = 1;" }, correctAnswer: "b" },
+            { question: "Câu 50 [THƯD]: Khi tiến hành CẬP NHẬT hoặc THÊM dữ liệu vào hai bảng có quan hệ tham chiếu, ta phải thực hiện theo thứ tự nào?", answers: { a: "Thêm dữ liệu bảng có khóa ngoài (bảng con) trước, bảng có khóa chính sau.", b: "Làm bảng nào trước cũng được.", c: "Thêm dữ liệu vào bảng có khóa chính (bảng cha) trước, bảng có khóa ngoài sau.", d: "Cập nhật cả 2 bảng cùng 1 lúc bằng lệnh chung." }, correctAnswer: "c" }
         ];
 
         const quizContainer = document.getElementById('quiz');
@@ -673,17 +283,22 @@
             });
 
             const scorePercent = (numCorrect / myQuestions.length) * 10;
-            resultContainer.innerHTML = `Bạn đã làm đúng ${numCorrect} / ${myQuestions.length} câu. <br> Điểm của bạn: ${scorePercent.toFixed(1)} điểm.`;
+            
+            // Lời chúc vui vẻ tùy theo điểm số
+            let message = "";
+            if (scorePercent === 10) message = "🎉 Xuất sắc! Điểm tối đa!";
+            else if (scorePercent >= 8) message = "🔥 Rất giỏi! Sắp chạm đỉnh rồi!";
+            else if (scorePercent >= 5) message = "👍 Cố gắng thêm chút nữa nhé!";
+            else message = "💪 Cần ôn tập lại kỹ hơn nào!";
+
+            resultContainer.innerHTML = `Bạn đã làm đúng ${numCorrect} / ${myQuestions.length} câu.<br><br>Điểm số: ${scorePercent.toFixed(1)} / 10<br>${message}`;
             resultContainer.style.display = 'block';
             
-            // Scroll to bottom to see result
+            // Scroll to bottom
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        // Khởi tạo bài trắc nghiệm
         buildQuiz();
-
-        // Lắng nghe sự kiện nộp bài
         submitButton.addEventListener('click', showResults);
     </script>
 </body>
