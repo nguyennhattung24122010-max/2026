@@ -3,219 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trắc nghiệm Tin học 11 - Ứng dụng CSDL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Ôn tập SQL - Bản Pro Max Haha</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary: #4e54c8;
-            --secondary: #8f94fb;
-            --success: #2ecc71;
-            --danger: #e74c3c;
+            --primary: #8e44ad; --secondary: #9b59b6;
+            --success: #27ae60; --danger: #e74c3c;
+            --warning: #f39c12; --bg: #2c3e50;
             --text-main: #2c3e50;
-            --bg-color: #f4f7f6;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, var(--bg-color) 0%, #e0eafc 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-main);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh; display: flex; justify-content: center; align-items: center;
+            color: var(--text-main); overflow-x: hidden; padding: 20px;
         }
         .app-container {
-            width: 100%;
-            max-width: 800px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-            margin: 20px;
+            width: 100%; max-width: 850px; background: rgba(255, 255, 255, 0.97);
+            border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            overflow: hidden; position: relative;
         }
-        /* --- START SCREEN --- */
-        #start-screen, #result-screen {
-            padding: 60px 40px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.2rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        p.description {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
+        /* --- MÀN HÌNH BẮT ĐẦU --- */
+        #start-screen, #result-screen { padding: 50px 30px; text-align: center; }
+        h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
+        .description { font-size: 1.1rem; color: #7f8c8d; margin-bottom: 25px; font-weight: 700; }
+        
+        .leaderboard-box { background: #fdf2e9; padding: 20px; border-radius: 15px; margin: 0 auto 30px; max-width: 400px; border: 2px dashed var(--warning); }
+        .leaderboard-box h3 { color: #d35400; margin-bottom: 10px; }
+        .leaderboard-list { list-style: none; text-align: left; }
+        .leaderboard-list li { padding: 8px 0; border-bottom: 1px solid #fadbd8; font-weight: bold; display: flex; justify-content: space-between;}
+        
         .btn {
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            font-family: inherit;
+            background: linear-gradient(45deg, var(--primary), #e74c3c);
+            color: white; border: none; padding: 18px 50px; font-size: 1.4rem;
+            font-weight: 900; border-radius: 50px; cursor: pointer;
+            transition: all 0.3s; box-shadow: 0 10px 20px rgba(142, 68, 173, 0.4);
         }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(78, 84, 200, 0.3);
-        }
+        .btn:hover { transform: translateY(-5px) scale(1.05); }
         
-        /* --- QUIZ SCREEN --- */
-        #quiz-screen {
-            display: none;
-            padding: 30px;
+        /* --- MÀN HÌNH CHƠI --- */
+        #quiz-screen { display: none; padding: 30px; position: relative; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.2rem; font-weight: bold; }
+        .timer-circle {
+            background: var(--bg); color: white; width: 65px; height: 65px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 2rem; font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-weight: bold;
-            color: #7f8c8d;
+        .timer-circle.warning { background: var(--danger); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .score-box { background: #f1c40f; color: #d35400; padding: 10px 20px; border-radius: 12px; font-size: 1.4rem;}
+        
+        /* Power-ups */
+        .powerups-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+        .powerup-btn {
+            background: #ecf0f1; border: 2px solid #bdc3c7; border-radius: 50px; padding: 10px 20px;
+            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;
         }
-        .progress-bar-container {
-            width: 100%;
-            height: 10px;
-            background: #ecf0f1;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 30px;
-            line-height: 1.4;
-            color: var(--text-main);
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
+        .powerup-btn:hover:not(.used) { background: #dff9fb; border-color: #7ed6df; transform: translateY(-3px); }
+        .powerup-btn.used { background: #e0e0e0; color: #a0a0a0; text-decoration: line-through; cursor: not-allowed; border-color: #e0e0e0; opacity: 0.6; }
+        
+        .question-text { font-size: 1.5rem; font-weight: 900; margin-bottom: 30px; line-height: 1.4; text-align: center; }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .option-btn {
-            background: #f8f9fa;
-            border: 2px solid #e9ecef;
-            padding: 18px 20px;
-            font-size: 1.1rem;
-            border-radius: 12px;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            font-family: inherit;
-            color: var(--text-main);
-            font-weight: 600;
+            background: white; border: 3px solid #ecf0f1; padding: 20px;
+            font-size: 1.2rem; border-radius: 16px; cursor: pointer; text-align: left;
+            transition: all 0.2s; font-weight: 700; color: var(--text-main); position: relative;
         }
-        .option-btn:hover:not(:disabled) {
-            background: #f1f2f6;
-            border-color: var(--secondary);
-            transform: translateX(5px);
-        }
-        .option-btn:disabled {
-            cursor: not-allowed;
-        }
-        
-        /* Status Colors */
-        .option-btn.correct {
-            background: var(--success) !important;
-            border-color: var(--success) !important;
-            color: white !important;
-            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
-        }
-        .option-btn.wrong {
-            background: var(--danger) !important;
-            border-color: var(--danger) !important;
-            color: white !important;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
-        }
+        .option-btn:hover:not(:disabled) { border-color: var(--secondary); background: #f9efff; transform: translateY(-3px); }
+        .option-btn.correct { background: var(--success) !important; border-color: var(--success) !important; color: white !important; }
+        .option-btn.wrong { background: var(--danger) !important; border-color: var(--danger) !important; color: white !important; }
+        .option-btn.hidden-5050 { visibility: hidden; opacity: 0; } /* Hiệu ứng 50/50 */
 
-        /* --- RESULT SCREEN --- */
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+        .shake-screen { animation: shake 0.4s both; }
+
+        #combo-popup {
+            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0);
+            font-size: 4rem; font-weight: 900; color: #f1c40f; text-shadow: 3px 3px 0 #d35400;
+            opacity: 0; pointer-events: none; z-index: 10;
+        }
+        .show-combo { animation: popIn 1s ease-out forwards; }
+        @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+
+        /* --- MÀN HÌNH KẾT QUẢ & REVIEW --- */
         .score-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 0 auto 30px;
-            box-shadow: 0 10px 25px rgba(78, 84, 200, 0.4);
+            width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, #f1c40f, #e67e22);
+            color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 0 auto 20px;
         }
-        .feedback-text {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            color: var(--text-main);
-        }
+        .score-circle span.big { font-size: 3rem; font-weight: 900; }
+        
+        .review-section { margin-top: 30px; text-align: left; display: none; }
+        .review-btn { background: #34495e; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; margin-bottom: 15px;}
+        .mistake-card { background: #ffeded; border-left: 5px solid var(--danger); padding: 15px; margin-bottom: 15px; border-radius: 8px; }
+        .mistake-q { font-weight: 900; margin-bottom: 8px; font-size: 1.1rem; }
+        .mistake-wrong { color: var(--danger); text-decoration: line-through; margin-bottom: 5px; }
+        .mistake-correct { color: var(--success); font-weight: bold; }
 
-        @media (min-width: 600px) {
-            .options-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+        @media (min-width: 600px) { .options-grid { grid-template-columns: 1fr 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
+    <div class="app-container" id="main-container">
+        
         <!-- Màn hình bắt đầu -->
         <div id="start-screen">
-            <h1>Ôn Tập CSDL & SQL</h1>
-            <p class="description">
-                Bài 19 - 22 | Sách Kết Nối Tri Thức<br>
-                50 câu hỏi trắc nghiệm Tin học Ứng dụng.<br>
-                <em>Hệ thống sẽ tự động xáo trộn câu hỏi và đáp án mỗi lần làm bài.</em>
-            </p>
-            <button class="btn" onclick="startQuiz()">Bắt đầu làm bài 🚀</button>
+            <h1>Đấu Trường SQL</h1>
+            <p class="description">Phiên bản Tối Thượng - Có Quyền Trợ Giúp & Lưu Điểm</p>
+            
+            <div class="leaderboard-box">
+                <h3>🏆 Bảng Phong Thần (Top 5)</h3>
+                <ul class="leaderboard-list" id="leaderboard-list">
+                    <li>Chưa có dữ liệu. Hãy chơi để lập kỷ lục!</li>
+                </ul>
+            </div>
+            
+            <button class="btn" onclick="startQuiz()">🔥 VÀO THI NGAY</button>
         </div>
 
         <!-- Màn hình làm bài -->
         <div id="quiz-screen">
-            <div class="header">
+            <div class="top-bar">
                 <span id="question-counter">Câu: 1/50</span>
-                <span id="score-counter">Điểm: 0</span>
-            </div>
-            <div class="progress-bar-container">
-                <div class="progress-bar" id="progress-bar"></div>
+                <div class="timer-circle" id="timer-display">20</div>
+                <span class="score-box" id="score-counter">0 đ</span>
             </div>
             
-            <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
-            <div class="options-grid" id="options-container">
-                <!-- Các nút đáp án sẽ được chèn bằng JS -->
+            <!-- Khu vực Item Trợ giúp -->
+            <div class="powerups-container">
+                <button class="powerup-btn" id="btn-5050" onclick="use5050()">✂️ 50/50</button>
+                <button class="powerup-btn" id="btn-time" onclick="useTime()">⏳ +15s</button>
+                <button class="powerup-btn" id="btn-skip" onclick="useSkip()">⏭️ Bỏ qua</button>
             </div>
+
+            <div id="combo-popup">🔥 COMBO!</div>
+            <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
+            <div class="options-grid" id="options-container"></div>
         </div>
 
         <!-- Màn hình kết quả -->
         <div id="result-screen" style="display: none;">
-            <h1>Hoàn thành bài thi!</h1>
-            <div class="score-circle" id="final-score">0/50</div>
-            <div class="feedback-text" id="feedback-text">Tuyệt vời!</div>
-            <button class="btn" onclick="startQuiz()">🔄 Làm lại (Xáo trộn bộ đề)</button>
+            <h1 id="result-title">Kết thúc!</h1>
+            <div class="score-circle">
+                <span class="big" id="final-score">0</span>
+                <span style="font-weight: bold;">ĐIỂM TỔNG</span>
+            </div>
+            
+            <p style="font-size: 1.3rem; margin-bottom: 20px; font-weight: bold;">
+                Đúng: <span id="correct-count" style="color:var(--success)">0</span> | 
+                Sai: <span id="wrong-count" style="color:var(--danger)">0</span>
+            </p>
+
+            <button class="btn" onclick="location.reload()" style="margin-bottom: 20px;">🔄 VỀ TRANG CHỦ</button>
+            
+            <button class="review-btn" id="toggle-review-btn" onclick="toggleReview()">🔍 Xem lại các câu đã làm sai</button>
+            <div class="review-section" id="review-section">
+                <!-- Chứa các câu sai -->
+            </div>
         </div>
     </div>
 
     <script>
-        // Dữ liệu gốc (Đã xóa tiền tố "Câu X:")
+        // Dữ liệu 50 câu (Giữ nguyên)
         const rawQuestions = [
             { q: "Một trong những công việc thường gặp nhất trong xử lí thông tin của một bài toán quản lí là gì?", a: "Sắp xếp phần cứng máy tính.", b: "Lập trình web.", c: "Tạo lập, cập nhật, tìm kiếm và kết xuất thông tin.", d: "Cài đặt hệ điều hành.", ans: "c" },
             { q: "Cơ sở dữ liệu (Database) được định nghĩa cơ bản là gì?", a: "Một tập hợp các tệp văn bản lưu trên USB.", b: "Tập hợp các dữ liệu có liên quan với nhau, được lưu trữ trên máy tính.", c: "Một phần mềm dùng để soạn thảo văn bản.", d: "Máy chủ cung cấp dịch vụ mạng.", ans: "b" },
@@ -223,179 +175,309 @@
             { q: "Quá trình 'Cập nhật dữ liệu' trong bài toán quản lí bao gồm những thao tác nào?", a: "Chỉ thêm dữ liệu mới.", b: "Tìm kiếm và in báo cáo.", c: "Thêm, sửa, xóa dữ liệu.", d: "Sắp xếp dữ liệu theo vần A-Z.", ans: "c" },
             { q: "'Kết xuất thông tin' từ CSDL KHÔNG bao gồm công việc nào dưới đây?", a: "Tìm kiếm các bản ghi thỏa mãn điều kiện.", b: "Lập báo cáo, thống kê.", c: "Xóa toàn bộ CSDL.", d: "In dữ liệu ra giấy.", ans: "c" },
             { q: "Phần mềm HeidiSQL là gì?", a: "Hệ điều hành cho máy chủ.", b: "Phần mềm đồ họa mã nguồn mở dùng để quản trị CSDL MySQL, MariaDB...", c: "Ngôn ngữ lập trình CSDL.", d: "Phần mềm bảo mật dữ liệu.", ans: "b" },
-            { q: "Trong HeidiSQL, để tạo một CSDL mới ta thực hiện thao tác nào?", a: "Vào menu Edit -> New Database.", b: "Nháy đúp chuột vào màn hình chính.", c: "Nháy chuột phải ở vùng danh sách CSDL bên trái -> Tạo mới (Create new) -> Cơ sở dữ liệu (Database).", d: "Bấm tổ hợp Ctrl + N.", ans: "c" },
+            { q: "Trong HeidiSQL, để tạo một CSDL mới ta thực hiện thao tác nào?", a: "Vào menu Edit -> New Database.", b: "Nháy đúp chuột vào màn hình chính.", c: "Nháy chuột phải ở vùng danh sách CSDL bên trái -> Tạo mới -> Cơ sở dữ liệu.", d: "Bấm tổ hợp Ctrl + N.", ans: "c" },
             { q: "Kiểu dữ liệu INT trong MySQL/HeidiSQL được dùng để lưu trữ gì?", a: "Số thực.", b: "Số nguyên.", c: "Kí tự văn bản.", d: "Thời gian.", ans: "b" },
-            { q: "Để lưu trữ chuỗi kí tự có độ dài biến đổi (ví dụ: Họ và tên), ta dùng kiểu dữ liệu nào?", a: "INT", b: "DATE", c: "VARCHAR", d: "FLOAT", ans: "c" },
+            { q: "Để lưu trữ chuỗi kí tự có độ dài biến đổi, ta dùng kiểu dữ liệu nào?", a: "INT", b: "DATE", c: "VARCHAR", d: "FLOAT", ans: "c" },
             { q: "Kiểu dữ liệu DATE dùng để lưu thông tin gì?", a: "Ngày tháng năm.", b: "Giờ phút giây.", c: "Đoạn văn bản dài.", d: "Số thập phân.", ans: "a" },
-            { q: "Thuộc tính AUTO_INCREMENT trong định nghĩa cột có ý nghĩa gì?", a: "Không cho phép nhập giá trị Null.", b: "Tự động tăng giá trị lên 1 mỗi khi thêm bản ghi mới (thường dùng cho khóa chính).", c: "Tự động sắp xếp cột theo A-Z.", d: "Tự động xóa bản ghi nếu bị lỗi.", ans: "b" },
+            { q: "Thuộc tính AUTO_INCREMENT trong định nghĩa cột có ý nghĩa gì?", a: "Không cho phép nhập giá trị Null.", b: "Tự động tăng giá trị lên 1 mỗi khi thêm bản ghi mới.", c: "Tự động sắp xếp cột.", d: "Tự động xóa bản ghi lỗi.", ans: "b" },
             { q: "Tại cửa sổ cấu trúc bảng của HeidiSQL, mục 'Not null' nếu được tích chọn có nghĩa là gì?", a: "Trường này chỉ nhận số 0.", b: "Trường này bắt buộc phải có giá trị, không được để trống.", c: "Trường này là khóa ngoài.", d: "Trường này có thể để trống.", ans: "b" },
-            { q: "Để đổi tên một bảng trong HeidiSQL, ta có thể dùng phím tắt nào sau khi chọn bảng đó?", a: "F1", b: "F2", c: "F3", d: "F5", ans: "b" },
-            { q: "Để xem toàn bộ dữ liệu đang có trong một bảng trên HeidiSQL, ta chuyển sang thẻ (tab) nào?", a: "Cấu trúc (Table/Structure).", b: "Dữ liệu (Data).", c: "Khóa ngoài (Foreign keys).", d: "Chỉ mục (Indexes).", ans: "b" },
-            { q: "Tại sao chúng ta cần sao lưu (Backup) CSDL?", a: "Để làm cho CSDL chạy nhanh hơn.", b: "Phòng ngừa rủi ro mất mát dữ liệu do sự cố phần cứng, phần mềm hoặc thao tác sai.", c: "Để mã hóa dữ liệu.", d: "Để tự động tạo bảng mới.", ans: "b" },
+            { q: "Để đổi tên một bảng trong HeidiSQL, ta dùng phím tắt nào sau khi chọn bảng đó?", a: "F1", b: "F2", c: "F3", d: "F5", ans: "b" },
+            { q: "Để xem toàn bộ dữ liệu đang có trong một bảng trên HeidiSQL, ta chuyển sang thẻ nào?", a: "Cấu trúc (Table).", b: "Dữ liệu (Data).", c: "Khóa ngoài (Foreign keys).", d: "Chỉ mục (Indexes).", ans: "b" },
+            { q: "Tại sao chúng ta cần sao lưu (Backup) CSDL?", a: "Để CSDL chạy nhanh hơn.", b: "Phòng ngừa rủi ro mất mát dữ liệu do sự cố hoặc thao tác sai.", c: "Để mã hóa dữ liệu.", d: "Tự động tạo bảng mới.", ans: "b" },
             { q: "Trong HeidiSQL, thao tác xuất (sao lưu) CSDL sẽ tạo ra tệp có phần mở rộng mặc định là gì?", a: ".doc", b: ".xls", c: ".txt", d: ".sql", ans: "d" },
             { q: "Để tạo khóa chính (Primary Key) cho một trường trong HeidiSQL, ta nháy chuột phải vào trường đó và chọn gì?", a: "Tạo chỉ mục mới -> Khóa ngoài", b: "Tạo chỉ mục mới -> Khóa chính (PRIMARY)", c: "Chèn cột mới", d: "Xóa cột", ans: "b" },
             { q: "Mô hình dữ liệu quan hệ tổ chức dữ liệu dưới dạng nào?", a: "Dạng sơ đồ cây.", b: "Dạng đồ thị.", c: "Các bảng (Table) có mối quan hệ với nhau.", d: "Danh sách liên kết.", ans: "c" },
-            { q: "Mỗi cột trong bảng CSDL quan hệ còn được gọi là gì?", a: "Bản ghi (Record).", b: "Trường (Field / Attribute).", c: "Khóa (Key).", d: "Quan hệ (Relation).", ans: "b" },
+            { q: "Mỗi cột trong bảng CSDL quan hệ còn được gọi là gì?", a: "Bản ghi (Record).", b: "Trường (Field).", c: "Khóa (Key).", d: "Quan hệ (Relation).", ans: "b" },
             { q: "Mỗi hàng trong bảng biểu diễn điều gì?", a: "Một thuộc tính của đối tượng.", b: "Cấu trúc của bảng.", c: "Một bản ghi (Record) chứa thông tin cụ thể về một đối tượng.", d: "Một kiểu dữ liệu.", ans: "c" },
-            { q: "Khóa chính (Primary Key) của một bảng mang đặc điểm gì?", a: "Có thể để trống (Null).", b: "Giá trị của khóa chính có thể trùng lặp.", c: "Phân biệt duy nhất mỗi bản ghi trong bảng và không được để trống.", d: "Mỗi bảng có thể có nhiều khóa chính độc lập.", ans: "c" },
-            { q: "Có thể dùng sự kết hợp của nhiều cột để làm khóa chính được không?", a: "Không, khóa chính chỉ được phép là 1 cột.", b: "Có, được gọi là khóa chính phức hợp.", c: "Chỉ được khi dữ liệu là số.", d: "Chỉ được đối với khóa ngoài.", ans: "b" },
-            { q: "Mục đích của Khóa ngoài (Foreign Key) là gì?", a: "Dùng để đánh chỉ mục tìm kiếm cho nhanh.", b: "Thiết lập mối liên kết (quan hệ) giữa hai bảng với nhau.", c: "Thay thế cho khóa chính khi bảng bị lỗi.", d: "Tự động tính toán dữ liệu.", ans: "b" },
-            { q: "Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?", a: "Không cho phép nhập giá trị khóa ngoài nếu nó không tồn tại ở khóa chính của bảng tham chiếu.", b: "Hai bảng liên kết phải có cùng số lượng bản ghi.", c: "Tên các cột trong hai bảng phải hoàn toàn giống nhau.", d: "Không thể thêm dữ liệu vào bảng chính.", ans: "a" },
-            { q: "Khi khai báo khóa ngoài, hai trường dùng để liên kết giữa bảng con và bảng cha cần có sự đồng nhất về yếu tố nào nhất?", a: "Cùng tên cột.", b: "Cùng độ rộng hiển thị.", c: "Cùng kiểu dữ liệu.", d: "Cùng thuộc tính Auto_increment.", ans: "c" },
-            { q: "Nếu CSDL thiết lập ràng buộc tham chiếu nghiêm ngặt, khi cố tình XÓA một bản ghi ở bảng cha mà bản ghi đó đang được tham chiếu bởi bảng con, hệ thống sẽ làm gì?", a: "Tự động xóa luôn dữ liệu ở bảng con.", b: "Báo lỗi vi phạm khóa ngoại và từ chối xóa.", c: "Chuyển khóa ngoại ở bảng con thành Null.", d: "Vẫn xóa bình thường.", ans: "b" },
-            { q: "Khi nhập liệu vào các bảng có quan hệ với nhau qua khóa chính - khóa ngoài, ta phải tuân theo thứ tự nào?", a: "Nhập bảng có khóa ngoài (bảng con) trước.", b: "Nhập bảng nào trước cũng được.", c: "Nhập bảng có khóa chính (bảng cha) trước.", d: "Nhập cả 2 bảng cùng lúc.", ans: "c" },
+            { q: "Khóa chính (Primary Key) của một bảng mang đặc điểm gì?", a: "Có thể để trống.", b: "Giá trị có thể trùng lặp.", c: "Phân biệt duy nhất mỗi bản ghi trong bảng và không được để trống.", d: "Có thể có nhiều khóa chính độc lập.", ans: "c" },
+            { q: "Có thể dùng sự kết hợp của nhiều cột để làm khóa chính được không?", a: "Không, chỉ được phép 1 cột.", b: "Có, được gọi là khóa chính phức hợp.", c: "Chỉ được khi dữ liệu là số.", d: "Chỉ được đối với khóa ngoài.", ans: "b" },
+            { q: "Mục đích của Khóa ngoài (Foreign Key) là gì?", a: "Dùng để tìm kiếm cho nhanh.", b: "Thiết lập mối liên kết giữa hai bảng với nhau.", c: "Thay thế cho khóa chính.", d: "Tự động tính toán.", ans: "b" },
+            { q: "Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?", a: "Không cho phép nhập giá trị khóa ngoài nếu nó không tồn tại ở khóa chính của bảng tham chiếu.", b: "Hai bảng phải có cùng số bản ghi.", c: "Tên các cột phải giống nhau.", d: "Không thể thêm dữ liệu vào bảng chính.", ans: "a" },
+            { q: "Khi khai báo khóa ngoài, hai trường liên kết cần có sự đồng nhất về yếu tố nào nhất?", a: "Cùng tên cột.", b: "Cùng độ rộng.", c: "Cùng kiểu dữ liệu.", d: "Cùng thuộc tính Auto_increment.", ans: "c" },
+            { q: "Nếu cố tình XÓA một bản ghi ở bảng cha đang được tham chiếu bởi bảng con, hệ thống sẽ làm gì (nếu ràng buộc nghiêm ngặt)?", a: "Tự động xóa dữ liệu ở bảng con.", b: "Báo lỗi vi phạm khóa ngoại và từ chối xóa.", c: "Chuyển khóa ngoại thành Null.", d: "Xóa bình thường.", ans: "b" },
+            { q: "Khi nhập liệu vào bảng có quan hệ khóa chính - khóa ngoài, ta phải tuân theo thứ tự nào?", a: "Bảng con trước.", b: "Bảng nào trước cũng được.", c: "Bảng cha (khóa chính) trước.", d: "Cả 2 bảng cùng lúc.", ans: "c" },
             { q: "Hệ quản trị CSDL nào sau đây thuộc loại HQTCSDL quan hệ?", a: "MongoDB", b: "MySQL", c: "Redis", d: "Neo4j", ans: "b" },
-            { q: "Trong bài toán thư viện, bảng 'Mượn Trả' lấy 'Mã thẻ' từ bảng 'Bạn Đọc' để lưu người mượn. 'Mã thẻ' trong bảng 'Mượn Trả' gọi là gì?", a: "Khóa chính.", b: "Khóa ngoài.", c: "Khóa ảo.", d: "Bản ghi.", ans: "b" },
+            { q: "Bảng 'Mượn Trả' lấy 'Mã thẻ' từ bảng 'Bạn Đọc'. 'Mã thẻ' trong bảng 'Mượn Trả' gọi là gì?", a: "Khóa chính.", b: "Khóa ngoài.", c: "Khóa ảo.", d: "Bản ghi.", ans: "b" },
             { q: "SQL là viết tắt của cụm từ tiếng Anh nào?", a: "Standard Question Language", b: "Structured Query Language", c: "System Query Logic", d: "Simple Query Language", ans: "b" },
             { q: "Lệnh SQL nào dùng để LẤY / TRUY XUẤT dữ liệu từ CSDL?", a: "GET", b: "PULL", c: "SELECT", d: "EXTRACT", ans: "c" },
             { q: "Từ khóa nào đi kèm với SELECT dùng để chỉ định bảng muốn lấy dữ liệu?", a: "WHERE", b: "FROM", c: "TABLE", d: "IN", ans: "b" },
-            { q: "Mệnh đề nào dùng để thiết lập ĐIỀU KIỆN lọc các bản ghi trong lệnh SELECT, UPDATE, DELETE?", a: "FILTER", b: "IF", c: "WHERE", d: "CONDITION", ans: "c" },
-            { q: "Câu lệnh `SELECT * FROM hocsinh;` mang ý nghĩa gì?", a: "Lấy tất cả các cột và bản ghi từ bảng hocsinh.", b: "Tính tổng số bản ghi trong bảng hocsinh.", c: "Xóa toàn bộ bảng hocsinh.", d: "Sao chép bảng hocsinh.", ans: "a" },
+            { q: "Mệnh đề nào dùng để thiết lập ĐIỀU KIỆN lọc bản ghi?", a: "FILTER", b: "IF", c: "WHERE", d: "CONDITION", ans: "c" },
+            { q: "Câu lệnh `SELECT * FROM hocsinh;` mang ý nghĩa gì?", a: "Lấy tất cả cột và bản ghi từ bảng hocsinh.", b: "Tính tổng bản ghi.", c: "Xóa toàn bộ bảng.", d: "Sao chép bảng.", ans: "a" },
             { q: "Để chỉ lấy cột 'HoTen' và 'Diem' từ bảng 'HocSinh', ta viết lệnh nào?", a: "SELECT HoTen, Diem FROM HocSinh;", b: "SELECT * FROM HocSinh WHERE HoTen, Diem;", c: "SELECT HocSinh FROM HoTen, Diem;", d: "GET HoTen, Diem FROM HocSinh;", ans: "a" },
-            { q: "Lệnh SQL nào dùng để THÊM một bản ghi mới vào bảng?", a: "ADD RECORD", b: "CREATE ROW", c: "INSERT INTO", d: "UPDATE", ans: "c" },
+            { q: "Lệnh SQL nào dùng để THÊM một bản ghi mới?", a: "ADD RECORD", b: "CREATE ROW", c: "INSERT INTO", d: "UPDATE", ans: "c" },
             { q: "Cú pháp cơ bản nào sau đây đúng đối với lệnh INSERT?", a: "INSERT (giá 1, giá 2) INTO Tên_bảng;", b: "INSERT INTO Tên_bảng (Cột 1, Cột 2) VALUES (giá 1, giá 2);", c: "INSERT VALUES (giá 1) TO Tên_bảng;", d: "ADD INTO Tên_bảng (Cột 1) VALUES (giá 1);", ans: "b" },
-            { q: "Khi làm việc với chuỗi kí tự (Varchar) trong lệnh SQL, giá trị chuỗi phải được đặt trong dấu gì?", a: "Dấu ngoặc vuông [ ]", b: "Dấu ngoặc nhọn { }", c: "Dấu nháy đơn ' ' (hoặc nháy kép \" \")", d: "Không cần dấu gì", ans: "c" },
-            { q: "Lệnh SQL nào dùng để SỬA / CẬP NHẬT dữ liệu đã có trong bảng?", a: "CHANGE", b: "MODIFY", c: "UPDATE", d: "ALTER", ans: "c" },
-            { q: "Nếu chạy lệnh `UPDATE HocSinh SET Diem = 10;` (KHÔNG CÓ mệnh đề WHERE), điều gì sẽ xảy ra?", a: "Báo lỗi và không chạy.", b: "Hệ thống hỏi xác nhận bản ghi nào.", c: "Tất cả học sinh trong bảng đều được cập nhật Diem = 10.", d: "Chỉ bản ghi đầu tiên được cập nhật.", ans: "c" },
+            { q: "Khi làm việc với chuỗi (Varchar) trong SQL, giá trị chuỗi phải đặt trong dấu gì?", a: "Ngoặc vuông [ ]", b: "Ngoặc nhọn { }", c: "Nháy đơn ' '", d: "Không cần dấu", ans: "c" },
+            { q: "Lệnh SQL nào dùng để SỬA / CẬP NHẬT dữ liệu đã có?", a: "CHANGE", b: "MODIFY", c: "UPDATE", d: "ALTER", ans: "c" },
+            { q: "Nếu chạy `UPDATE HocSinh SET Diem = 10;` (KHÔNG CÓ WHERE), điều gì xảy ra?", a: "Báo lỗi.", b: "Hỏi xác nhận.", c: "Tất cả học sinh đều được cập nhật Diem = 10.", d: "Chỉ bản ghi đầu được cập nhật.", ans: "c" },
             { q: "Lệnh SQL nào dùng để XÓA các bản ghi khỏi bảng?", a: "DELETE FROM", b: "DROP TABLE", c: "REMOVE", d: "CLEAR", ans: "a" },
-            { q: "Lệnh `DROP TABLE HocSinh;` khác gì so với `DELETE FROM HocSinh;`?", a: "Giống nhau hoàn toàn.", b: "DROP xóa cấu trúc (mất bảng), DELETE chỉ xóa dữ liệu bên trong.", c: "DELETE xóa cấu trúc, DROP xóa dữ liệu.", d: "DROP chỉ dùng cho khóa ngoài.", ans: "b" },
-            { q: "Để lấy dữ liệu của những học sinh có điểm lớn hơn 8, mệnh đề WHERE được viết như thế nào?", a: "WHERE Diem => 8", b: "WHERE Diem > 8", c: "WHERE Diem >< 8", d: "WHERE 8 < Diem > 10", ans: "b" },
-            { q: "Toán tử nào trong SQL dùng để kiểm tra sự KHÁC NHAU (không bằng)?", a: "==", b: "<> hoặc !=", c: "><", d: "NOT", ans: "b" },
-            { q: "Từ khóa JOIN trong câu lệnh SELECT dùng để làm gì?", a: "Nối hai chuỗi kí tự lại với nhau.", b: "Sắp xếp dữ liệu.", c: "Truy vấn và kết nối dữ liệu từ 2 hoặc nhiều bảng dựa trên khóa liên kết.", d: "Gộp 2 CSDL thành 1.", ans: "c" },
-            { q: "Toán tử LIKE cùng với kí tự '%' trong lệnh `WHERE HoTen LIKE 'Nguyễn%'` có tác dụng gì?", a: "Tìm những người có chữ 'Nguyễn' ở cuối tên.", b: "Tìm những người họ 'Nguyễn' (bắt đầu bằng chuỗi 'Nguyễn').", c: "Tìm những người có chữ 'Nguyễn' ở bất kì vị trí nào.", d: "Xóa những người họ 'Nguyễn'.", ans: "b" },
+            { q: "Lệnh `DROP TABLE HocSinh;` khác gì so với `DELETE FROM HocSinh;`?", a: "Giống nhau.", b: "DROP xóa luôn cấu trúc bảng, DELETE chỉ xóa dữ liệu.", c: "DELETE xóa cấu trúc, DROP xóa dữ liệu.", d: "DROP chỉ dùng cho khóa ngoài.", ans: "b" },
+            { q: "Để lấy học sinh có điểm lớn hơn 8, mệnh đề WHERE viết thế nào?", a: "WHERE Diem => 8", b: "WHERE Diem > 8", c: "WHERE Diem >< 8", d: "WHERE 8 < Diem > 10", ans: "b" },
+            { q: "Toán tử nào trong SQL dùng để kiểm tra sự KHÁC NHAU?", a: "==", b: "<> hoặc !=", c: "><", d: "NOT", ans: "b" },
+            { q: "Từ khóa JOIN dùng để làm gì?", a: "Nối hai chuỗi kí tự.", b: "Sắp xếp dữ liệu.", c: "Kết nối dữ liệu từ 2 hoặc nhiều bảng dựa trên khóa liên kết.", d: "Gộp CSDL.", ans: "c" },
+            { q: "Toán tử LIKE trong `WHERE HoTen LIKE 'Nguyễn%'` có tác dụng gì?", a: "Tìm người có chữ 'Nguyễn' ở cuối.", b: "Tìm người có chuỗi bắt đầu bằng 'Nguyễn'.", c: "Tìm người có chữ 'Nguyễn' ở bất kì đâu.", d: "Xóa người họ 'Nguyễn'.", ans: "b" },
             { q: "Câu lệnh nào dùng để sắp xếp kết quả truy vấn?", a: "SORT BY", b: "GROUP BY", c: "ORDER BY", d: "ALIGN BY", ans: "c" },
-            { q: "Để truy xuất kết quả và sắp xếp giảm dần, ta thêm từ khóa nào sau ORDER BY?", a: "ASC", b: "DESC", c: "DOWN", d: "REVERSE", ans: "b" },
-            { q: "Trong giao diện viết SQL của HeidiSQL, phím tắt phổ biến nhất để thực thi (chạy) câu lệnh SQL là phím nào?", a: "F9", b: "F5", c: "Enter", d: "Ctrl + S", ans: "a" },
-            { q: "Nhóm lệnh SQL gồm (INSERT, UPDATE, DELETE) được gọi chung là thao tác gì trên CSDL?", a: "Khai báo cấu trúc.", b: "Cập nhật dữ liệu.", c: "Phân quyền bảo mật.", d: "Kiểm tra toàn vẹn.", ans: "b" }
+            { q: "Để sắp xếp giảm dần, ta thêm từ khóa nào sau ORDER BY?", a: "ASC", b: "DESC", c: "DOWN", d: "REVERSE", ans: "b" },
+            { q: "Trong HeidiSQL, phím tắt phổ biến để thực thi (chạy) SQL là phím nào?", a: "F9", b: "F5", c: "Enter", d: "Ctrl + S", ans: "a" },
+            { q: "Nhóm lệnh SQL (INSERT, UPDATE, DELETE) được gọi chung là thao tác gì?", a: "Khai báo cấu trúc.", b: "Cập nhật dữ liệu.", c: "Phân quyền bảo mật.", d: "Kiểm tra toàn vẹn.", ans: "b" }
         ];
 
-        let quizQuestions = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let isAnswering = false; // Ngăn người dùng click nhiều lần
+        let quizQuestions = [], currentQuestionIndex = 0;
+        let totalScore = 0, correctAnswersCount = 0, comboStreak = 0;
+        let timer, timeLeft = 20, isAnswering = false;
+        
+        // Trạng thái vật phẩm & danh sách câu sai
+        let used5050 = false, usedTime = false, usedSkip = false;
+        let mistakesList = [];
 
-        // Thuật toán xáo trộn mảng (Fisher-Yates Shuffle)
+        // Load Bảng xếp hạng khi mở trang
+        window.onload = function() { loadLeaderboard(); };
+
+        function loadLeaderboard() {
+            let scores = JSON.parse(localStorage.getItem('sql_leaderboard')) || [];
+            const listObj = document.getElementById('leaderboard-list');
+            if(scores.length > 0) {
+                listObj.innerHTML = '';
+                scores.forEach((s, idx) => {
+                    let medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '🏅';
+                    listObj.innerHTML += `<li><span>${medal} Kỷ lục ${idx+1}</span> <span>${s} điểm</span></li>`;
+                });
+            }
+        }
+
+        function saveScoreToLocal(newScore) {
+            let scores = JSON.parse(localStorage.getItem('sql_leaderboard')) || [];
+            scores.push(newScore);
+            scores.sort((a, b) => b - a); // Xếp giảm dần
+            scores = scores.slice(0, 5); // Lấy top 5
+            localStorage.setItem('sql_leaderboard', JSON.stringify(scores));
+        }
+
         function shuffleArray(array) {
-            let currentIndex = array.length, randomIndex;
-            while (currentIndex != 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex--;
-                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            let curId = array.length;
+            while (0 !== curId) {
+                let randId = Math.floor(Math.random() * curId); curId -= 1;
+                let tmp = array[curId]; array[curId] = array[randId]; array[randId] = tmp;
             }
             return array;
         }
 
-        // Khởi tạo và xử lý dữ liệu trước khi bắt đầu
         function startQuiz() {
-            // 1. Chuyển đổi dữ liệu và xáo trộn đáp án bên trong mỗi câu
             quizQuestions = rawQuestions.map(q => {
-                let options = [
-                    { text: q.a, isCorrect: q.ans === 'a' },
-                    { text: q.b, isCorrect: q.ans === 'b' },
-                    { text: q.c, isCorrect: q.ans === 'c' },
-                    { text: q.d, isCorrect: q.ans === 'd' }
+                let opts = [
+                    { text: q.a, isCorrect: q.ans === 'a' }, { text: q.b, isCorrect: q.ans === 'b' },
+                    { text: q.c, isCorrect: q.ans === 'c' }, { text: q.d, isCorrect: q.ans === 'd' }
                 ];
-                return {
-                    question: q.q,
-                    options: shuffleArray(options) // Xáo trộn 4 đáp án
-                };
+                return { question: q.q, options: shuffleArray(opts) };
             });
-
-            // 2. Xáo trộn thứ tự 50 câu hỏi
             quizQuestions = shuffleArray(quizQuestions);
-
-            // 3. Reset các biến trạng thái
-            currentQuestionIndex = 0;
-            score = 0;
-
-            // 4. Chuyển đổi giao diện
+            
+            // Reset trạng thái
+            currentQuestionIndex = 0; totalScore = 0; correctAnswersCount = 0; comboStreak = 0; mistakesList = [];
+            used5050 = false; usedTime = false; usedSkip = false;
+            
+            document.querySelectorAll('.powerup-btn').forEach(btn => btn.classList.remove('used'));
             document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('result-screen').style.display = 'none';
             document.getElementById('quiz-screen').style.display = 'block';
 
             loadQuestion();
         }
 
-        // Tải câu hỏi lên màn hình
+        function startTimer() {
+            timeLeft = 20;
+            const tDisplay = document.getElementById('timer-display');
+            tDisplay.innerText = timeLeft; tDisplay.classList.remove('warning');
+            timer = setInterval(() => {
+                timeLeft--; tDisplay.innerText = timeLeft;
+                if(timeLeft <= 5) tDisplay.classList.add('warning');
+                if (timeLeft <= 0) { clearInterval(timer); handleTimeOut(); }
+            }, 1000);
+        }
+
         function loadQuestion() {
             isAnswering = false;
+            document.getElementById('main-container').classList.remove('shake-screen');
             const currentQ = quizQuestions[currentQuestionIndex];
             
-            // Cập nhật Header & Progress bar
             document.getElementById('question-counter').innerText = `Câu: ${currentQuestionIndex + 1}/${quizQuestions.length}`;
-            document.getElementById('score-counter').innerText = `Điểm: ${score}`;
-            const progressPercent = ((currentQuestionIndex) / quizQuestions.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
-
-            // Hiển thị câu hỏi
+            document.getElementById('score-counter').innerText = `${totalScore} đ`;
             document.getElementById('question-text').innerText = currentQ.question;
 
-            // Render nút đáp án
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
+            const optBox = document.getElementById('options-container');
+            optBox.innerHTML = '';
             
             currentQ.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.innerHTML = `<b>${String.fromCharCode(65 + index)}.</b> ${opt.text}`;
-                btn.onclick = () => selectAnswer(opt.isCorrect, btn, optionsContainer);
-                optionsContainer.appendChild(btn);
+                btn.innerHTML = `<b>${String.fromCharCode(65 + index)}.</b> <span class="opt-text">${opt.text}</span>`;
+                btn.onclick = () => selectAnswer(opt.isCorrect, btn, optBox, opt.text);
+                optBox.appendChild(btn);
             });
+            startTimer();
         }
 
-        // Xử lý khi chọn đáp án
-        function selectAnswer(isCorrect, selectedButton, container) {
-            if (isAnswering) return; // Nếu đang chờ đổi câu thì block click
-            isAnswering = true;
-
-            const allButtons = container.querySelectorAll('.option-btn');
+        /* ----- POWER-UPS ----- */
+        function use5050() {
+            if(used5050 || isAnswering) return;
+            used5050 = true;
+            document.getElementById('btn-5050').classList.add('used');
             
-            // Khóa tất cả các nút
-            allButtons.forEach(btn => btn.disabled = true);
+            const currentQ = quizQuestions[currentQuestionIndex];
+            const btns = document.querySelectorAll('.option-btn');
+            let wrongIdx = [];
+            currentQ.options.forEach((opt, idx) => { if(!opt.isCorrect) wrongIdx.push(idx); });
+            
+            wrongIdx = shuffleArray(wrongIdx).slice(0, 2); // Chọn ngẫu nhiên 2 câu sai
+            wrongIdx.forEach(idx => btns[idx].classList.add('hidden-5050'));
+        }
+
+        function useTime() {
+            if(usedTime || isAnswering) return;
+            usedTime = true;
+            document.getElementById('btn-time').classList.add('used');
+            timeLeft += 15; // Cộng 15 giây
+            document.getElementById('timer-display').innerText = timeLeft;
+            document.getElementById('timer-display').classList.remove('warning');
+        }
+
+        function useSkip() {
+            if(usedSkip || isAnswering) return;
+            usedSkip = true;
+            isAnswering = true; // Chặn click
+            clearInterval(timer);
+            document.getElementById('btn-skip').classList.add('used');
+            
+            totalScore += 500;
+            correctAnswersCount++;
+            document.getElementById('score-counter').innerText = `${totalScore} đ`;
+            
+            const btns = document.querySelectorAll('.option-btn');
+            const currentQ = quizQuestions[currentQuestionIndex];
+            btns.forEach((btn, idx) => { if (currentQ.options[idx].isCorrect) btn.classList.add('correct'); });
+            
+            setTimeout(nextQuestion, 1500);
+        }
+        /* ---------------------- */
+
+        function handleTimeOut() {
+            if (isAnswering) return;
+            isAnswering = true; comboStreak = 0; triggerShake();
+            
+            const currentQ = quizQuestions[currentQuestionIndex];
+            let correctText = "";
+            const btns = document.querySelectorAll('.option-btn');
+            btns.forEach((btn, index) => {
+                btn.disabled = true;
+                if (currentQ.options[index].isCorrect) { btn.classList.add('correct'); correctText = currentQ.options[index].text; }
+            });
+
+            // Ghi nhận lỗi Hết giờ
+            mistakesList.push({ question: currentQ.question, chosen: "⏰ (Hết giờ)", correct: correctText });
+            setTimeout(nextQuestion, 2000);
+        }
+
+        function selectAnswer(isCorrect, selectedBtn, container, chosenText) {
+            if (isAnswering) return;
+            isAnswering = true; clearInterval(timer);
+            
+            const currentQ = quizQuestions[currentQuestionIndex];
+            let correctText = "";
+
+            const btns = container.querySelectorAll('.option-btn');
+            btns.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (currentQ.options[idx].isCorrect) { correctText = currentQ.options[idx].text; }
+            });
 
             if (isCorrect) {
-                selectedButton.classList.add('correct');
-                score++;
-                document.getElementById('score-counter').innerText = `Điểm: ${score}`;
+                selectedBtn.classList.add('correct');
+                correctAnswersCount++; comboStreak++;
+                let pts = Math.round((timeLeft / 20) * 500) + 500;
+                if(comboStreak >= 3) { pts += (comboStreak * 50); showCombo(comboStreak); }
+                totalScore += pts;
+                document.getElementById('score-counter').innerText = `${totalScore} đ`;
             } else {
-                selectedButton.classList.add('wrong');
-                // Tìm và bôi xanh đáp án đúng
-                const currentQ = quizQuestions[currentQuestionIndex];
-                allButtons.forEach((btn, index) => {
-                    if (currentQ.options[index].isCorrect) {
-                        btn.classList.add('correct');
-                    }
-                });
+                selectedBtn.classList.add('wrong');
+                comboStreak = 0; triggerShake();
+                btns.forEach((btn, idx) => { if (currentQ.options[idx].isCorrect) btn.classList.add('correct'); });
+                
+                // Lưu vào danh sách sai
+                mistakesList.push({ question: currentQ.question, chosen: chosenText, correct: correctText });
             }
-
-            // Tự động chuyển câu sau 1.5 giây
-            setTimeout(() => {
-                currentQuestionIndex++;
-                if (currentQuestionIndex < quizQuestions.length) {
-                    loadQuestion();
-                } else {
-                    endQuiz();
-                }
-            }, 1500);
+            setTimeout(nextQuestion, 1500);
         }
 
-        // Kết thúc bài làm
+        function showCombo(streak) {
+            const popup = document.getElementById('combo-popup');
+            popup.innerText = `🔥 COMBO x${streak}!`;
+            popup.classList.remove('show-combo'); void popup.offsetWidth; popup.classList.add('show-combo');
+        }
+
+        function triggerShake() {
+            const container = document.getElementById('main-container');
+            container.classList.remove('shake-screen'); void container.offsetWidth; container.classList.add('shake-screen');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) loadQuestion(); else endQuiz();
+        }
+
         function endQuiz() {
             document.getElementById('quiz-screen').style.display = 'none';
             document.getElementById('result-screen').style.display = 'block';
-
-            document.getElementById('progress-bar').style.width = '100%';
             
-            const finalScoreElem = document.getElementById('final-score');
-            finalScoreElem.innerText = `${score}/50`;
+            document.getElementById('final-score').innerText = totalScore;
+            document.getElementById('correct-count').innerText = correctAnswersCount;
+            document.getElementById('wrong-count').innerText = quizQuestions.length - correctAnswersCount;
 
-            const feedbackElem = document.getElementById('feedback-text');
-            const percent = (score / quizQuestions.length) * 100;
+            // Lưu điểm
+            saveScoreToLocal(totalScore);
+
+            const percent = (correctAnswersCount / quizQuestions.length) * 100;
+            const titleElem = document.getElementById('result-title');
+            if (percent >= 80) { titleElem.innerText = "Tuyệt đỉnh! 🏆"; titleElem.style.color = "var(--success)"; fireConfetti(); } 
+            else if (percent >= 50) { titleElem.innerText = "Khá tốt! 👍"; titleElem.style.color = "#e67e22"; } 
+            else { titleElem.innerText = "Cần nỗ lực hơn! 💪"; titleElem.style.color = "var(--danger)"; }
             
-            if (percent === 100) feedbackElem.innerText = "Tuyệt đỉnh! Bạn đúng 100% 🏆";
-            else if (percent >= 80) feedbackElem.innerText = "Xuất sắc! Kiến thức rất vững vàng 🔥";
-            else if (percent >= 50) feedbackElem.innerText = "Khá tốt! Nhưng cần ôn lại một chút nhé 👍";
-            else feedbackElem.innerText = "Chưa ổn rồi! Cố gắng luyện tập thêm nhé 💪";
+            buildReviewSection();
+        }
+
+        // Tạo giao diện Xem lại câu sai
+        function buildReviewSection() {
+            const revBox = document.getElementById('review-section');
+            if(mistakesList.length === 0) {
+                revBox.innerHTML = "<h3 style='color:var(--success); text-align:center;'>Hoàn hảo! Bạn không sai câu nào.</h3>";
+                return;
+            }
+            let html = "";
+            mistakesList.forEach((m, i) => {
+                html += `
+                    <div class="mistake-card">
+                        <div class="mistake-q">${i+1}. ${m.question}</div>
+                        <div class="mistake-wrong">❌ Bạn chọn: ${m.chosen}</div>
+                        <div class="mistake-correct">✅ Đáp án đúng: ${m.correct}</div>
+                    </div>
+                `;
+            });
+            revBox.innerHTML = html;
+        }
+
+        function toggleReview() {
+            const revBox = document.getElementById('review-section');
+            if(revBox.style.display === "block") revBox.style.display = "none";
+            else revBox.style.display = "block";
+        }
+
+        function fireConfetti() {
+            var duration = 3 * 1000, animationEnd = Date.now() + duration, defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
     </script>
 </body>
