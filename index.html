@@ -1,468 +1,690 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Đề thi Tổng hợp Lịch sử 11 (Cấu trúc 2025)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn tập Tin học 11 - Kết nối tri thức</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        
         body {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            padding: 20px 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            margin: 0;
+            padding: 0;
         }
-        
-        .quiz-container {
-            background: #ffffff;
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            max-width: 650px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        h3.subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            background: #fafafa;
+            border-left: 5px solid #3498db;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .question {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .answers label {
+            display: block;
+            background: #fff;
+            padding: 10px 15px;
+            margin-bottom: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .answers label:hover {
+            background: #e9f3f8;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        #submit-btn {
+            display: block;
             width: 100%;
-            padding: 25px 20px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background 0.3s;
         }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
+        #submit-btn:hover {
+            background-color: #27ae60;
         }
-        
-        .section-title { font-size: 16px; font-weight: 700; color: #4f46e5; text-transform: uppercase; letter-spacing: 0.5px;}
-        .progress-text { font-size: 14px; font-weight: 600; color: #4b5563; }
-        .score-badge { background: #eff6ff; color: #2563eb; padding: 6px 10px; border-radius: 6px; font-size: 14px; font-weight: 700; }
-
-        h1 { font-size: 22px; text-align: center; color: #111827; font-weight: 700; margin-bottom: 5px; }
-
-        .passage-box {
-            background: #f8fafc; border-left: 4px solid #3b82f6; padding: 15px;
-            border-radius: 0 8px 8px 0; font-size: 15px; line-height: 1.6; color: #334155; margin-bottom: 20px; font-style: italic;
+        #result-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #856404;
         }
-
-        .question-text { font-size: 17px; font-weight: 600; line-height: 1.5; color: #111827; margin-bottom: 15px; }
-        .options-container { display: flex; flex-direction: column; gap: 10px; }
-        
-        .mc-btn {
-            width: 100%; padding: 14px 16px; background: #ffffff; border: 1px solid #d1d5db;
-            border-radius: 8px; text-align: left; font-size: 15px; font-weight: 500; cursor: pointer; color: #374151; transition: 0.2s;
+        .correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724 !important;
         }
-        .mc-btn:hover { background: #f9fafb; border-color: #9ca3af; }
-        
-        .tf-item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; margin-bottom: 12px; }
-        .tf-text { font-size: 15px; font-weight: 500; line-height: 1.5; color: #1f2937; margin-bottom: 12px; }
-        .tf-buttons { display: flex; gap: 10px; }
-        .tf-btn {
-            flex: 1; padding: 10px; background: #f1f5f9; border: 2px solid transparent;
-            border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; color: #475569; transition: 0.2s;
+        .wrong {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24 !important;
         }
-        
-        .tf-btn.selected-true { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; }
-        .tf-btn.selected-false { background: #fdf4ff; border-color: #d946ef; color: #a21caf; }
-        
-        .correct-ans { background: #ecfdf5 !important; border-color: #10b981 !important; color: #059669 !important; }
-        .wrong-ans { background: #fef2f2 !important; border-color: #ef4444 !important; color: #dc2626 !important; opacity: 0.7;}
-
-        .feedback-box { padding: 14px; border-radius: 8px; display: none; margin-top: 10px;}
-        .feedback-box.show { display: block; animation: fadeIn 0.3s ease; }
-        .feedback-msg { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-        .explanation-text { font-size: 14px; line-height: 1.5; }
-        
-        .feedback-correct { background: #ecfdf5; border-left: 4px solid #10b981; color: #065f46; }
-        .feedback-wrong { background: #fef2f2; border-left: 4px solid #ef4444; color: #991b1b; }
-        
-        .btn-primary {
-            background: #2563eb; color: white; border: none; padding: 14px 20px;
-            border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;
-            width: 100%; transition: 0.2s; margin-top: 10px;
-        }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
-        
-        #next-btn { display: none; background: #10b981; }
-        #next-btn:hover { background: #059669; }
-
-        .hidden { display: none !important; }
-        .result-screen { text-align: center; }
-        .result-stats { background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: left; border: 1px solid #e2e8f0; }
-        .result-stats h3 { color: #1e293b; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px;}
-        .stat-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; color: #475569; font-weight: 500;}
-        .stat-line strong { color: #2563eb; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
-    <div id="start-screen">
-        <h1>Đề thi Tổng hợp Lịch sử 11</h1>
-        <div style="text-align: center; color: #6b7280; font-size: 14px; margin-bottom: 20px;">Cấu trúc đề thi THPT 2025</div>
+    <div class="container">
+        <h1>Ôn Tập Tin Học Lớp 11</h1>
+        <h3 class="subtitle">Sách Kết nối tri thức - Bài 19 đến Bài 22<br>(Bao gồm cả 2 định hướng KHMT và THƯD)</h3>
         
-        <div class="result-stats" style="background: #eff6ff; border-color: #bfdbfe;">
-            <h3>Cấu trúc bài kiểm tra:</h3>
-            <p style="margin-bottom:8px; font-size:14px; color:#1e293b;"><b>👉 PHẦN I: Trắc nghiệm nhiều lựa chọn</b><br>Gồm 60 câu hỏi (Chọn 1 đáp án đúng nhất).</p>
-            <p style="font-size:14px; color:#1e293b;"><b>👉 PHẦN II: Trắc nghiệm Đúng/Sai</b><br>Gồm 2 đoạn tư liệu, mỗi đoạn có 4 ý a, b, c, d (Phải chọn đủ Đúng/Sai cho cả 4 ý).</p>
-        </div>
-
-        <button class="btn-primary" onclick="startQuiz()">Bắt đầu làm bài</button>
+        <div id="quiz"></div>
+        
+        <button id="submit-btn">Nộp bài & Xem điểm</button>
+        <div id="result-container"></div>
     </div>
 
-    <div id="quiz-screen" class="hidden">
-        <div class="status-bar">
-            <span class="section-title" id="section-title">PHẦN I: NHIỀU LỰA CHỌN</span>
-            <span class="score-badge">Điểm: <span id="live-score">0</span></span>
-        </div>
-        
-        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-            <span class="progress-text" id="progress-text">Câu 1/60</span>
-        </div>
+    <script>
+        const myQuestions = [
+            // ================= KHMT (TÌM KIẾM VÀ SẮP XẾP) =================
+            {
+                question: "Câu 1 [KHMT]: Thuật toán tìm kiếm tuần tự (Linear Search) thực hiện tìm kiếm như thế nào?",
+                answers: {
+                    a: "Bắt đầu từ giữa danh sách và chia đôi liên tục.",
+                    b: "Sắp xếp danh sách trước rồi mới tìm kiếm.",
+                    c: "Duyệt lần lượt từ phần tử đầu tiên đến cuối danh sách.",
+                    d: "Tìm ngẫu nhiên một vị trí trong danh sách."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 2 [KHMT]: Điều kiện tiên quyết để sử dụng thuật toán tìm kiếm nhị phân là gì?",
+                answers: {
+                    a: "Danh sách phải có kích thước chẵn.",
+                    b: "Danh sách phải được sắp xếp từ trước.",
+                    c: "Danh sách chỉ được chứa các số nguyên.",
+                    d: "Danh sách không được có phần tử trùng lặp."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 3 [KHMT]: Trong tìm kiếm nhị phân, nếu phần tử cần tìm nhỏ hơn phần tử ở giữa, bước tiếp theo ta sẽ làm gì?",
+                answers: {
+                    a: "Tìm kiếm tiếp ở nửa đầu của danh sách.",
+                    b: "Tìm kiếm tiếp ở nửa sau của danh sách.",
+                    c: "Kết luận không tìm thấy.",
+                    d: "Dừng thuật toán."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 4 [KHMT]: Tìm kiếm tuần tự sẽ thực hiện ít bước nhất (tốt nhất) trong trường hợp nào?",
+                answers: {
+                    a: "Phần tử cần tìm nằm ở cuối danh sách.",
+                    b: "Phần tử cần tìm không có trong danh sách.",
+                    c: "Phần tử cần tìm nằm ở ngay đầu danh sách.",
+                    d: "Danh sách đã được sắp xếp."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 5 [KHMT]: Ý tưởng cốt lõi của thuật toán sắp xếp nổi bọt (Bubble Sort) là gì?",
+                answers: {
+                    a: "Chia mảng làm hai nửa để sắp xếp.",
+                    b: "Chèn phần tử vào vị trí thích hợp trong mảng đã sắp xếp.",
+                    c: "Tìm phần tử nhỏ nhất và đổi chỗ với phần tử đầu tiên.",
+                    d: "Đổi chỗ hai phần tử liền kề nếu chúng sai thứ tự."
+                },
+                correctAnswer: "d"
+            },
+            {
+                question: "Câu 6 [KHMT]: Thuật toán sắp xếp chèn (Insertion Sort) hoạt động dựa trên nguyên lí nào?",
+                answers: {
+                    a: "Phân chia danh sách thành 2 phần: phần đã sắp xếp và phần chưa sắp xếp.",
+                    b: "So sánh các cặp phần tử liền kề và đổi chỗ.",
+                    c: "Luôn tìm phần tử lớn nhất đưa về cuối.",
+                    d: "Lấy ngẫu nhiên phần tử để đổi chỗ."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 7 [KHMT]: Dữ liệu đầu vào của bài toán tìm kiếm bao gồm những gì?",
+                answers: {
+                    a: "Một danh sách cần sắp xếp.",
+                    b: "Một danh sách và giá trị cần tìm.",
+                    c: "Một dãy số chưa được sắp xếp.",
+                    d: "Hai danh sách để so sánh."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 8 [KHMT]: Thuật toán tìm kiếm tuần tự tốn nhiều thời gian nhất khi nào?",
+                answers: {
+                    a: "Phần tử cần tìm ở cuối danh sách hoặc không tồn tại trong danh sách.",
+                    b: "Phần tử cần tìm ở đầu danh sách.",
+                    c: "Danh sách đã được sắp xếp giảm dần.",
+                    d: "Danh sách có kích thước quá nhỏ."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 9 [KHMT]: Kết quả trả về của một thuật toán tìm kiếm thường là gì?",
+                answers: {
+                    a: "Một danh sách đã được sắp xếp.",
+                    b: "Giá trị lớn nhất trong danh sách.",
+                    c: "Vị trí của phần tử cần tìm hoặc thông báo không tìm thấy.",
+                    d: "Số lượng phần tử của danh sách."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 10 [KHMT]: Quá trình sắp xếp dữ liệu có nghĩa là gì?",
+                answers: {
+                    a: "Loại bỏ các dữ liệu trùng lặp.",
+                    b: "Phân bố lại các phần tử theo một thứ tự (tăng/giảm) nhất định.",
+                    c: "Lọc ra các phần tử theo điều kiện.",
+                    d: "Ghép hai danh sách lại với nhau."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 11 [KHMT]: Trong Python, toán tử 'in' áp dụng cho list sử dụng thuật toán tìm kiếm nào ngầm định bên dưới?",
+                answers: {
+                    a: "Tìm kiếm tuần tự.",
+                    b: "Tìm kiếm nhị phân.",
+                    c: "Tìm kiếm nội suy.",
+                    d: "Tìm kiếm nhảy."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 12 [KHMT]: Hàm list.sort() trong Python mặc định sắp xếp danh sách theo chiều nào?",
+                answers: {
+                    a: "Tăng dần.",
+                    b: "Giảm dần.",
+                    c: "Không thay đổi thứ tự gốc.",
+                    d: "Tùy thuộc vào dữ liệu chữ hay số."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 13 [KHMT]: Trong thuật toán sắp xếp chèn, ta bắt đầu xét việc chèn từ phần tử ở vị trí (index) số mấy?",
+                answers: {
+                    a: "Vị trí 0.",
+                    b: "Vị trí 1 (phần tử thứ hai).",
+                    c: "Vị trí cuối cùng.",
+                    d: "Vị trí giữa danh sách."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 14 [KHMT]: Khi chạy thuật toán tìm kiếm nhị phân, thao tác được thực hiện đầu tiên là gì?",
+                answers: {
+                    a: "So sánh với phần tử đầu tiên.",
+                    b: "Sắp xếp lại danh sách.",
+                    c: "Xác định vị trí phần tử nằm giữa danh sách.",
+                    d: "Chia danh sách thành 3 phần."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 15 [KHMT]: Sau một lượt duyệt (vòng lặp ngoài) của thuật toán Bubble Sort, điều gì chắc chắn xảy ra?",
+                answers: {
+                    a: "Mảng đã được sắp xếp hoàn toàn.",
+                    b: "Phần tử nhỏ nhất nổi lên đầu danh sách.",
+                    c: "Không có phần tử nào thay đổi vị trí.",
+                    d: "Phần tử lớn nhất (hoặc nhỏ nhất) được đưa về đúng vị trí ở cuối danh sách."
+                },
+                correctAnswer: "d"
+            },
+            {
+                question: "Câu 16 [KHMT]: Nếu danh sách có 50 phần tử, thuật toán tìm kiếm tuần tự cần tối đa bao nhiêu lần so sánh?",
+                answers: {
+                    a: "25 lần.",
+                    b: "5 hoặc 6 lần.",
+                    c: "50 lần.",
+                    d: "100 lần."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 17 [KHMT]: Tìm kiếm nhị phân phát huy ưu thế lớn nhất so với tìm kiếm tuần tự khi nào?",
+                answers: {
+                    a: "Danh sách chưa được sắp xếp và có kích thước nhỏ.",
+                    b: "Danh sách đã được sắp xếp và có kích thước rất lớn.",
+                    c: "Cần tìm kiếm tất cả các phần tử.",
+                    d: "Khi dữ liệu là các chuỗi kí tự."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 18 [KHMT]: Cho mảng A = [10, 20, 30, 40, 50, 60, 70]. Nếu dùng tìm kiếm nhị phân tìm số 30, phần tử giữa ở lần chia đầu tiên là?",
+                answers: {
+                    a: "30.",
+                    b: "50.",
+                    c: "40.",
+                    d: "60."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 19 [KHMT]: Để hoán đổi giá trị hai biến a và b trong Python, cú pháp nào sau đây đúng?",
+                answers: {
+                    a: "a, b = b, a",
+                    b: "a = b = a",
+                    c: "swap(a, b)",
+                    d: "a, b = a, b"
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 20 [KHMT]: Kết quả của thuật toán sắp xếp GIẢM DẦN trên mảng [5, 2, 8, 1] là?",
+                answers: {
+                    a: "[1, 2, 5, 8]",
+                    b: "[8, 1, 2, 5]",
+                    c: "[8, 5, 1, 2]",
+                    d: "[8, 5, 2, 1]"
+                },
+                correctAnswer: "d"
+            },
+            {
+                question: "Câu 21 [KHMT]: Lệnh len(A) trong Python dùng để làm gì đối với danh sách A?",
+                answers: {
+                    a: "Sắp xếp danh sách A.",
+                    b: "Trả về số lượng phần tử của danh sách A.",
+                    c: "Tìm giá trị lớn nhất trong A.",
+                    d: "Xóa phần tử cuối của A."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 22 [KHMT]: Thuật toán tìm kiếm nhị phân có tên tiếng Anh là gì?",
+                answers: {
+                    a: "Linear Search.",
+                    b: "Bubble Sort.",
+                    c: "Binary Search.",
+                    d: "Insertion Sort."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 23 [KHMT]: Ý tưởng của thuật toán sắp xếp chèn (Insertion Sort) giống với hành động nào trong thực tế?",
+                answers: {
+                    a: "Xếp các quân bài trên tay khi chơi bài.",
+                    b: "Tìm kiếm một từ trong từ điển.",
+                    c: "Xếp hàng mua vé xem phim.",
+                    d: "Lấy sách trên kệ."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 24 [KHMT]: Trong Python, để khai báo một danh sách (list) ta dùng dấu ngoặc nào?",
+                answers: {
+                    a: "{ }",
+                    b: "( )",
+                    c: "[ ]",
+                    d: "< >"
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 25 [KHMT]: Đối với danh sách có N phần tử, thuật toán Bubble Sort cần duyệt vòng lặp lớn bên ngoài nhiều nhất bao nhiêu lần?",
+                answers: {
+                    a: "N lần.",
+                    b: "N - 1 lần.",
+                    c: "N/2 lần.",
+                    d: "2 lần."
+                },
+                correctAnswer: "b"
+            },
 
-        <div id="dynamic-content"></div>
+            // ================= THƯD (CƠ SỞ DỮ LIỆU & SQL) =================
+            {
+                question: "Câu 26 [THƯD]: Việc đầu tiên cần làm để làm việc với một CSDL quan hệ là gì?",
+                answers: {
+                    a: "Tạo lập cơ sở dữ liệu (Database).",
+                    b: "Xóa dữ liệu.",
+                    c: "Sửa đổi dữ liệu.",
+                    d: "Truy vấn dữ liệu."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 27 [THƯD]: Trong phần mềm HeidiSQL, thao tác nào sau đây dùng để tạo CSDL mới?",
+                answers: {
+                    a: "Nháy đúp chuột trái vào khoảng trắng.",
+                    b: "Nháy chuột phải ở vùng danh sách CSDL -> Tạo mới -> Cơ sở dữ liệu.",
+                    c: "Bấm tổ hợp phím Ctrl + C.",
+                    d: "Vào File -> Mở CSDL."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 28 [THƯD]: Kiểu dữ liệu INT trong SQL thường được dùng để lưu trữ loại dữ liệu nào?",
+                answers: {
+                    a: "Số nguyên.",
+                    b: "Ký tự văn bản.",
+                    c: "Thời gian.",
+                    d: "Số thập phân."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 29 [THƯD]: Trong HeidiSQL, để trường khóa chính (Primary Key) tự động tăng giá trị mỗi khi thêm bản ghi mới, ta chọn thuộc tính nào?",
+                answers: {
+                    a: "NOT NULL.",
+                    b: "DEFAULT.",
+                    c: "AUTO_INCREMENT.",
+                    d: "UNSIGNED."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 30 [THƯD]: Khóa chính (Primary Key) của một bảng có đặc điểm gì bắt buộc?",
+                answers: {
+                    a: "Có thể để trống.",
+                    b: "Giá trị là duy nhất và không được để trống (Not Null).",
+                    c: "Có thể chứa các giá trị trùng lặp.",
+                    d: "Chỉ được phép là kiểu chuỗi."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 31 [THƯD]: Kiểu dữ liệu VARCHAR trong SQL dùng để lưu trữ gì?",
+                answers: {
+                    a: "Ngày tháng năm.",
+                    b: "Số nguyên.",
+                    c: "Chuỗi ký tự có độ dài biến đổi.",
+                    d: "File hình ảnh."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 32 [THƯD]: Khóa ngoài (Foreign Key) được tạo ra nhằm mục đích gì?",
+                answers: {
+                    a: "Liên kết dữ liệu giữa bảng chứa khóa ngoài với bảng chứa khóa chính.",
+                    b: "Làm khóa chính cho một bảng khác.",
+                    c: "Xóa dữ liệu tự động.",
+                    d: "Mã hóa dữ liệu."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 33 [THƯD]: Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?",
+                answers: {
+                    a: "Hai bảng phải có số cột bằng nhau.",
+                    b: "Giá trị của khóa ngoài phải tồn tại ở trường khóa chính của bảng tham chiếu.",
+                    c: "Các bảng không được phép sửa đổi.",
+                    d: "Dữ liệu khóa ngoài phải là số nguyên."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 34 [THƯD]: Lệnh SQL nào dưới đây dùng để truy xuất (lấy) dữ liệu từ bảng?",
+                answers: {
+                    a: "SELECT",
+                    b: "INSERT",
+                    c: "UPDATE",
+                    d: "DELETE"
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 35 [THƯD]: Trong câu lệnh SELECT, từ khóa nào dùng để lọc và đặt điều kiện lấy dữ liệu?",
+                answers: {
+                    a: "ORDER BY",
+                    b: "FROM",
+                    c: "WHERE",
+                    d: "GROUP BY"
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 36 [THƯD]: Lệnh SQL dùng để THÊM một dòng dữ liệu mới vào bảng là gì?",
+                answers: {
+                    a: "ADD RECORD",
+                    b: "INSERT INTO",
+                    c: "UPDATE TABLE",
+                    d: "CREATE ROW"
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 37 [THƯD]: Lệnh UPDATE trong SQL được dùng để làm gì?",
+                answers: {
+                    a: "Xóa toàn bộ bảng.",
+                    b: "Tạo bảng mới.",
+                    c: "Cập nhật, sửa đổi dữ liệu đã có trong bảng.",
+                    d: "Lấy dữ liệu ra xem."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 38 [THƯD]: Để xóa các bản ghi dữ liệu trong bảng, ta dùng lệnh SQL nào?",
+                answers: {
+                    a: "DELETE FROM",
+                    b: "DROP TABLE",
+                    c: "REMOVE RECORD",
+                    d: "CLEAR DATA"
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 39 [THƯD]: Nếu cố tình XÓA một bản ghi ở bảng chính (bảng có khóa chính) trong khi bảng phụ (bảng có khóa ngoài) vẫn còn tham chiếu đến nó thì hệ thống sẽ làm gì?",
+                answers: {
+                    a: "Tự động xóa luôn ở bảng phụ.",
+                    b: "Tự động đổi khóa ngoài thành Null.",
+                    c: "Cho phép xóa bình thường.",
+                    d: "Báo lỗi vi phạm toàn vẹn tham chiếu và từ chối xóa."
+                },
+                correctAnswer: "d"
+            },
+            {
+                question: "Câu 40 [THƯD]: Câu lệnh `SELECT * FROM hocsinh;` có ý nghĩa gì?",
+                answers: {
+                    a: "Tính tổng số học sinh.",
+                    b: "Lấy tất cả các cột dữ liệu từ bảng hocsinh.",
+                    c: "Lọc những học sinh xuất sắc.",
+                    d: "Xóa bảng hocsinh."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 41 [THƯD]: Khi tạo khóa ngoài bằng HeidiSQL, mục 'Bảng tham chiếu' (Reference table) dùng để làm gì?",
+                answers: {
+                    a: "Chọn bảng chứa khóa chính mà khóa ngoài sẽ trỏ (liên kết) tới.",
+                    b: "Chọn kiểu dữ liệu cho bảng.",
+                    c: "Chọn cột để tìm kiếm.",
+                    d: "Xác định quyền truy cập bảng."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 42 [THƯD]: Để sao lưu (Backup) cơ sở dữ liệu trong HeidiSQL, ta chọn công cụ nào?",
+                answers: {
+                    a: "Xóa CSDL.",
+                    b: "Nhập tệp SQL.",
+                    c: "Xuất cơ sở dữ liệu dưới dạng SQL (Export database as SQL).",
+                    d: "In CSDL ra giấy."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 43 [THƯD]: Để truy xuất và hiển thị dữ liệu kết hợp từ nhiều bảng khác nhau, ta sử dụng mệnh đề nào trong SQL?",
+                answers: {
+                    a: "WHERE",
+                    b: "LINK",
+                    c: "CONNECT",
+                    d: "JOIN (hoặc INNER JOIN)"
+                },
+                correctAnswer: "d"
+            },
+            {
+                question: "Câu 44 [THƯD]: Trong giao diện HeidiSQL, để khai báo thêm một trường (cột) mới vào bảng, ta chọn vào thẻ nào?",
+                answers: {
+                    a: "Thẻ Cấu trúc (Table).",
+                    b: "Thẻ Dữ liệu (Data).",
+                    c: "Thẻ Truy vấn (Query).",
+                    d: "Thẻ Cài đặt."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 45 [THƯD]: Lỗi vi phạm khóa chính sẽ xảy ra khi nào?",
+                answers: {
+                    a: "Khi nhập số âm vào kiểu INT.",
+                    b: "Khi thêm một bản ghi mới có giá trị khóa chính trùng với bản ghi đã tồn tại.",
+                    c: "Khi để trống cột họ tên.",
+                    d: "Khi nhập ngày tháng sai định dạng."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 46 [THƯD]: Để xem danh sách các bản ghi (dữ liệu) của một bảng ngay trên giao diện HeidiSQL, ta chuyển sang thẻ nào?",
+                answers: {
+                    a: "Thẻ Cấu trúc (Table).",
+                    b: "Thẻ Dữ liệu (Data).",
+                    c: "Thẻ Tùy chọn.",
+                    d: "Thẻ Biểu đồ."
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 47 [THƯD]: Trong thiết kế CSDL, nếu bảng `Diem` có trường `MaHS` trỏ tới trường `MaHS` của bảng `HocSinh`, thì `MaHS` trong bảng `Diem` đóng vai trò là gì?",
+                answers: {
+                    a: "Khóa chính.",
+                    b: "Thuộc tính ảo.",
+                    c: "Khóa ngoài.",
+                    d: "Khóa phụ."
+                },
+                correctAnswer: "c"
+            },
+            {
+                question: "Câu 48 [THƯD]: Mệnh đề LIMIT trong câu lệnh SELECT của SQL có tác dụng gì?",
+                answers: {
+                    a: "Giới hạn số lượng bản ghi hiển thị trong kết quả.",
+                    b: "Kiểm tra giới hạn ký tự nhập vào.",
+                    c: "Tính toán tốc độ truy vấn.",
+                    d: "Giới hạn người dùng truy cập CSDL."
+                },
+                correctAnswer: "a"
+            },
+            {
+                question: "Câu 49 [THƯD]: Đâu là câu lệnh SQL đúng để XÓA bản ghi có `id = 1` từ bảng `hocsinh`?",
+                answers: {
+                    a: "DELETE hocsinh WHERE id = 1;",
+                    b: "DELETE FROM hocsinh WHERE id = 1;",
+                    c: "REMOVE FROM hocsinh WHERE id = 1;",
+                    d: "DROP hocsinh WHERE id = 1;"
+                },
+                correctAnswer: "b"
+            },
+            {
+                question: "Câu 50 [THƯD]: Khi tiến hành CẬP NHẬT hoặc THÊM dữ liệu vào hai bảng có quan hệ tham chiếu, ta phải thực hiện theo thứ tự nào?",
+                answers: {
+                    a: "Thêm dữ liệu bảng có khóa ngoài (bảng con) trước, bảng có khóa chính sau.",
+                    b: "Làm bảng nào trước cũng được.",
+                    c: "Thêm dữ liệu vào bảng có khóa chính (bảng cha) trước, bảng có khóa ngoài sau.",
+                    d: "Cập nhật cả 2 bảng cùng 1 lúc bằng lệnh chung."
+                },
+                correctAnswer: "c"
+            }
+        ];
 
-        <button class="btn-primary" id="check-btn" class="hidden">Kiểm tra Đáp án</button>
-        <button class="btn-primary" id="next-btn" onclick="nextQuestion()">Tiếp tục ➔</button>
-    </div>
+        const quizContainer = document.getElementById('quiz');
+        const submitButton = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result-container');
 
-    <div id="result-screen" class="hidden result-screen">
-        <h1 style="color: #111827; margin-top: 10px;">Hoàn thành bài thi!</h1>
-        
-        <div class="result-stats" style="margin-top: 20px;">
-            <h3>📊 Bảng điểm chi tiết:</h3>
-            <div class="stat-line">
-                <span>Phần I (Nhiều lựa chọn):</span>
-                <strong id="score-part1">0/60 câu</strong>
-            </div>
-            <div class="stat-line">
-                <span>Phần II (Tư liệu Đúng/Sai):</span>
-                <strong id="score-part2">0/8 ý</strong>
-            </div>
-            <div class="stat-line" style="border-top: 1px dashed #cbd5e1; padding-top: 10px; margin-top: 10px;">
-                <span style="font-weight: 700; color: #1e293b;">TỔNG ĐIỂM QUY ĐỔI (Thang 10):</span>
-                <strong style="color: #ef4444; font-size: 18px;" id="final-score-10">0.0</strong>
-            </div>
-        </div>
+        function buildQuiz() {
+            const output = [];
 
-        <p id="final-feedback-text" style="font-size: 16px; font-weight: 600; color: #4b5563; margin-bottom: 25px;"></p>
-        
-        <button class="btn-primary" onclick="startQuiz()">Làm lại bài thi</button>
-    </div>
-</div>
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+                const answers = [];
+                for (let letter in currentQuestion.answers) {
+                    answers.push(
+                        `<label id="label_${questionNumber}_${letter}">
+                            <input type="radio" name="question${questionNumber}" value="${letter}">
+                            ${letter.toUpperCase()}. ${currentQuestion.answers[letter]}
+                        </label>`
+                    );
+                }
 
-<script>
-    const part1Questions = [
-        { q: "Tiền đề kinh tế chung của các cuộc cách mạng tư sản thời cận đại là gì?", options: ["Sự khủng hoảng của chế độ phong kiến.", "Sự nảy sinh và phát triển của quan hệ sản xuất TBCN.", "Sự xâm nhập của tư bản nước ngoài.", "Sự bùng nổ khởi nghĩa nông dân."], answer: 1, explanation: "Quan hệ sản xuất TBCN ra đời trong lòng phong kiến là tiền đề kinh tế cốt lõi." },
-        { q: "Mục tiêu cơ bản nhất của các cuộc cách mạng tư sản là gì?", options: ["Lật đổ phong kiến, mở đường cho CNTB phát triển.", "Đánh đuổi ngoại xâm.", "Thiết lập chuyên chính vô sản.", "Giải quyết ruộng đất cho nông dân."], answer: 0, explanation: "Mục tiêu chung luôn là dọn đường cho kinh tế tư bản chủ nghĩa phát triển tự do." },
-        { q: "Hai nhiệm vụ cơ bản của một cuộc cách mạng tư sản là gì?", options: ["Dân tộc và dân chủ.", "Giải phóng giai cấp và giải phóng dân tộc.", "Chống phong kiến và tư bản.", "Kinh tế và văn hóa."], answer: 0, explanation: "Dân tộc (thống nhất thị trường/đánh đuổi ngoại xâm) và Dân chủ (xóa bỏ phong kiến, đòi quyền tự do)." },
-        { q: "Động lực chính quyết định thắng lợi của các cuộc cách mạng tư sản là:", options: ["Giai cấp tư sản.", "Quý tộc mới.", "Giai cấp công nhân.", "Quần chúng nhân dân."], answer: 3, explanation: "Lực lượng đông đảo nhất làm nên thắng lợi là quần chúng nhân dân." },
-        { q: "Giai cấp lãnh đạo của cuộc Cách mạng tư sản Anh (thế kỉ XVII) là:", options: ["Tư sản và quý tộc mới.", "Giai cấp công nhân.", "Tư sản và nông dân.", "Địa chủ phong kiến."], answer: 0, explanation: "Sự liên minh giữa giai cấp tư sản và tầng lớp quý tộc mới lãnh đạo cách mạng." },
-        { q: "Cách mạng tư sản Pháp (cuối thế kỉ XVIII) được đánh giá là cuộc cách mạng tư sản:", options: ["Triệt để nhất.", "Không triệt để.", "Mang tính cải lương.", "Bảo thủ nhất."], answer: 0, explanation: "Pháp đã xóa bỏ tận gốc chế độ phong kiến và giải quyết ruộng đất cho nông dân." },
-        { q: "Hình thức của cuộc Chiến tranh giành độc lập của 13 thuộc địa Anh ở Bắc Mỹ là:", options: ["Nội chiến.", "Chiến tranh giải phóng dân tộc.", "Chiến tranh đế quốc.", "Cải cách từ trên xuống."], answer: 1, explanation: "Mang hình thức chiến tranh giải phóng dân tộc chống lại thực dân Anh." },
-        { q: "Bản Tuyên ngôn Độc lập (1776) của nước Mỹ mang ý nghĩa tiến bộ nổi bật nào?", options: ["Khẳng định quyền con người và quyền độc lập.", "Giải phóng hoàn toàn nô lệ.", "Thủ tiêu chế độ tư bản.", "Đem lại ruộng đất cho nông dân."], answer: 0, explanation: "Là văn kiện lịch sử đầu tiên tuyên bố về quyền con người và quyền dân tộc." },
-        { q: "Trong Cách mạng tư sản Pháp, quần chúng nhân dân đóng vai trò gì?", options: ["Lãnh đạo cách mạng.", "Lực lượng dự bị.", "Lực lượng nòng cốt đưa cách mạng tiến lên.", "Đứng ngoài cuộc đấu tranh."], answer: 2, explanation: "Mỗi khi cách mạng gặp khó khăn, quần chúng lại nổi dậy đưa cách mạng tiến lên các nấc thang cao hơn." },
-        { q: "Vì sao Cách mạng tư sản Anh mang tính chất không triệt để?", options: ["Không xóa bỏ hoàn toàn ngôi vua.", "Không giải quyết được quyền lực cho tư sản.", "Chỉ nổ ra ở nông thôn.", "Bị nước ngoài dập tắt."], answer: 0, explanation: "Cách mạng Anh vẫn giữ lại tàn dư phong kiến là ngôi vua (chế độ quân chủ lập hiến)." },
-        { q: "Kết quả chung của các cuộc cách mạng tư sản là gì?", options: ["Thiết lập chế độ tư bản chủ nghĩa.", "Xây dựng chủ nghĩa xã hội.", "Đưa nông dân lên nắm quyền.", "Thống nhất thị trường thế giới."], answer: 0, explanation: "Đều lật đổ chế độ phong kiến và thiết lập nhà nước tư sản." },
-        { q: "Sự kiện nào mở đầu cho cuộc Cách mạng tư sản Pháp (1789)?", options: ["Vua Lu-i XVI bị xử tử.", "Quần chúng đánh chiếm ngục Ba-xti.", "Thiết lập nền Cộng hòa.", "Tuyên bố Tuyên ngôn Nhân quyền."], answer: 1, explanation: "Sự kiện ngày 14/7/1789 nhân dân phá ngục Ba-xti mở đầu cho cách mạng." },
-        { q: "Cách mạng tư sản nổ ra sớm nhất trên thế giới diễn ra ở đâu?", options: ["Anh.", "Pháp.", "Nê-đéc-lan (Hà Lan).", "Bắc Mỹ."], answer: 2, explanation: "Cách mạng Nê-đéc-lan (giữa thế kỉ XVI) là cuộc cách mạng tư sản đầu tiên." },
-        { q: "Hình thức của Cách mạng tư sản Anh (thế kỉ XVII) là gì?", options: ["Chiến tranh giải phóng.", "Nội chiến.", "Cải cách nông nô.", "Đảo chính quân sự."], answer: 1, explanation: "Diễn ra dưới hình thức nội chiến giữa phe Quốc hội và phe Nhà vua." },
-        { q: "Đặc điểm của chế độ quân chủ lập hiến là:", options: ["Vua nắm mọi quyền hành.", "Vua trị vì nhưng không cai trị, quyền thuộc về Quốc hội.", "Bầu ra Tổng thống.", "Không có vua."], answer: 1, explanation: "Ngôi vua giữ vai trò biểu tượng, quyền lực thực tế nằm ở Quốc hội." },
-        { q: "Cuối thế kỉ XIX - đầu XX, chủ nghĩa tư bản chuyển sang giai đoạn nào?", options: ["CNXH.", "CNTB độc quyền (đế quốc chủ nghĩa).", "CNTB hiện đại.", "Phong kiến phân quyền."], answer: 1, explanation: "Sự tập trung sản xuất cao độ đã đẻ ra các tổ chức độc quyền." },
-        { q: "Đặc trưng kinh tế cơ bản nhất của CNTB độc quyền là:", options: ["Công ty TNHH.", "Các tổ chức độc quyền chi phối nền kinh tế.", "Liên minh hải quan.", "Các ngân hàng nhỏ."], answer: 1, explanation: "Các tổ chức độc quyền thâu tóm sản xuất và lũng đoạn thị trường." },
-        { q: "Sự kết hợp giữa tư bản công nghiệp và ngân hàng sinh ra:", options: ["Tư bản tài chính.", "Tư bản nhà nước.", "Tư bản thương nghiệp.", "Tư bản tư nhân."], answer: 0, explanation: "Tư bản tài chính là đặc trưng lớn của CNTB độc quyền." },
-        { q: "Đặc điểm của chủ nghĩa đế quốc Pháp là gì?", options: ["Đế quốc thực dân.", "Đế quốc cho vay lãi.", "Đế quốc quân phiệt.", "Đế quốc thương nghiệp."], answer: 1, explanation: "Pháp xuất khẩu tư bản chủ yếu dưới hình thức cho vay lãi suất cao." },
-        { q: "Đặc điểm nổi bật của chủ nghĩa đế quốc Anh là gì?", options: ["Đế quốc thực dân.", "Đế quốc cho vay lãi.", "Đế quốc quân phiệt.", "Đế quốc tài chính."], answer: 0, explanation: "Anh có hệ thống thuộc địa rộng lớn nhất thế giới." },
-        { q: "V.I. Lê-nin gọi chủ nghĩa đế quốc Đức là:", options: ["Đế quốc thực dân.", "Đế quốc cho vay lãi.", "Đế quốc quân phiệt, hiếu chiến.", "Đế quốc kinh tế."], answer: 2, explanation: "Đức ít thuộc địa nên hiếu chiến, muốn dùng quân sự chia lại thế giới." },
-        { q: "Hình thức xuất khẩu chủ yếu của chủ nghĩa đế quốc là gì?", options: ["Xuất khẩu hàng hóa.", "Xuất khẩu nguyên liệu.", "Xuất khẩu tư bản.", "Xuất khẩu chất xám."], answer: 2, explanation: "Đưa vốn ra nước ngoài đầu tư bóc lột là đặc điểm nổi bật." },
-        { q: "Khái niệm 'Chủ nghĩa tư bản hiện đại' chỉ CNTB thời gian nào?", options: ["Từ thế kỉ XIX.", "Sau Thế chiến I.", "Sau Thế chiến II (1945) đến nay.", "Từ thế kỉ XXI."], answer: 2, explanation: "Tính từ sau 1945 khi CNTB có những điều chỉnh lớn về cơ cấu." },
-        { q: "Đặc điểm của CNTB hiện đại là sự phát triển của:", options: ["Tự do cạnh tranh.", "CNTB độc quyền nhà nước.", "Kinh tế nông nghiệp.", "Thủ công nghiệp."], answer: 1, explanation: "Nhà nước tư sản can thiệp sâu vào các quá trình kinh tế." },
-        { q: "Xu hướng 'tài chính hóa' trong CNTB hiện đại là:", options: ["Chỉ dùng tiền mặt.", "Tư bản tài chính lũng đoạn toàn cầu.", "Xóa bỏ ngân hàng.", "Cấm đầu tư nước ngoài."], answer: 1, explanation: "Các định chế tài chính thao túng mọi mặt kinh tế toàn cầu." },
-        { q: "Lực lượng lao động trong CNTB hiện đại dịch chuyển sang lĩnh vực nào?", options: ["Nông nghiệp.", "Khai khoáng.", "Dịch vụ và kinh tế tri thức.", "Công nghiệp nặng."], answer: 2, explanation: "Sự tự động hóa làm tăng tỷ trọng lao động chất xám và dịch vụ." },
-        { q: "CNTB hiện đại tiếp tục tồn tại nhờ khả năng:", options: ["Tự điều chỉnh và thích ứng.", "Đàn áp vũ lực tuyệt đối.", "Duy trì chế độ nô lệ.", "Xóa bỏ khủng hoảng kinh tế."], answer: 0, explanation: "Sự linh hoạt trong điều tiết kinh tế giúp CNTB tồn tại." },
-        { q: "Toàn cầu hóa kinh tế mang lại lợi thế gì cho CNTB hiện đại?", options: ["Bảo hộ tuyệt đối.", "Mở rộng thị trường, tận dụng nhân công giá rẻ toàn cầu.", "Xóa bỏ độc quyền.", "Xóa bỏ khoảng cách giàu nghèo."], answer: 1, explanation: "Các tập đoàn đa quốc gia dễ vươn vòi ra toàn thế giới." },
-        { q: "Thách thức toàn cầu lớn nhất do CNTB hiện đại gây ra là:", options: ["Cạn kiệt tài nguyên, ô nhiễm môi trường.", "Thiếu lương thực trầm trọng.", "Thiếu nhân công cơ bắp.", "Chiến tranh lạnh."], answer: 0, explanation: "Sản xuất chạy theo lợi nhuận đã tàn phá môi trường nghiêm trọng." },
-        { q: "Mâu thuẫn cơ bản nhất không thể giải quyết của CNTB là:", options: ["Giữa độc quyền và vừa, nhỏ.", "Giữa tính chất xã hội hóa sản xuất và chiếm hữu tư nhân TBCN.", "Giữa các đế quốc.", "Giữa nước giàu và nghèo."], answer: 1, explanation: "Sản xuất mang tính xã hội hóa nhưng lợi nhuận bị chiếm hữu tư nhân." },
-        { q: "Liên Xô được thành lập vào thời gian nào?", options: ["1917.", "1922.", "1924.", "1945."], answer: 1, explanation: "Ngày 30/12/1922, Đại hội Xô viết toàn Liên bang đã tuyên bố thành lập Liên Xô." },
-        { q: "Yêu cầu khách quan nào đòi hỏi các nước cộng hòa xô viết phải liên minh?", options: ["Tập trung nguồn lực phục hồi kinh tế và tự vệ trước đế quốc.", "Bành trướng lãnh thổ.", "Yêu cầu của Hội Quốc Liên.", "Mở rộng thị trường tư bản."], answer: 0, explanation: "Các nước xô viết cần liên minh để chống lại sự bao vây của tư bản." },
-        { q: "Tư tưởng chỉ đạo của V.I. Lê-nin trong việc thành lập Liên Xô là:", options: ["Dùng vũ lực sáp nhập.", "Nga thống trị tuyệt đối.", "Sự bình đẳng, tự nguyện và quyền tự quyết.", "Đồng hóa văn hóa."], answer: 2, explanation: "Lê-nin chủ trương chống lại tư tưởng áp bức, đề cao sự bình đẳng." },
-        { q: "Đại hội Xô viết toàn Liên bang lần thứ nhất (12/1922) thông qua văn kiện nào?", options: ["Sắc lệnh hòa bình.", "Bản Tuyên ngôn thành lập và Hiệp ước Liên bang.", "Tuyên ngôn Nhân quyền.", "Hiến pháp mới."], answer: 1, explanation: "Đây là 2 văn kiện cơ sở chính thức thành lập nên nhà nước Liên Xô." },
-        { q: "Sự kiện nào đánh dấu quá trình thành lập Liên Xô được hoàn thiện về pháp lý?", options: ["Cách mạng tháng Mười (1917).", "Đại hội Xô viết toàn Nga (1922).", "Thông qua Hiến pháp đầu tiên (1924).", "Chiến tranh Vệ quốc (1945)."], answer: 2, explanation: "Tháng 1/1924, Hiến pháp Liên Xô được thông qua." },
-        { q: "Khi mới thành lập (1922), Liên Xô bao gồm mấy nước cộng hòa xô viết?", options: ["4 nước.", "6 nước.", "11 nước.", "15 nước."], answer: 0, explanation: "Giai đoạn đầu chỉ gồm 4 nước sáng lập." },
-        { q: "Bốn quốc gia đầu tiên sáng lập Liên Xô là:", options: ["Nga, Ba Lan, U-crai-na, Bê-la-rút.", "Nga, U-crai-na, Bê-la-rút, Ngoại Cáp-ca-dơ.", "Nga, Lát-vi-a, E-xtô-ni-a, Lít-va.", "Nga, U-crai-na, Bê-la-rút, Ca-dắc-xtan."], answer: 1, explanation: "Nga, U-crai-na, Bê-la-rút và Liên bang Ngoại Cáp-ca-dơ là 4 nước đầu tiên." },
-        { q: "Nhà nước Liên Xô mang bản chất của giai cấp nào?", options: ["Tư sản.", "Nông dân.", "Công nhân (chuyên chính vô sản).", "Trí thức."], answer: 2, explanation: "Liên Xô là nhà nước XHCN, mang bản chất giai cấp công nhân." },
-        { q: "Cơ quan quyền lực nhà nước cao nhất của Liên Xô khi mới thành lập là:", options: ["Hội đồng Dân ủy.", "Đại hội Xô viết toàn Liên bang.", "Ủy ban Trung ương Đảng.", "Xô viết tối cao Nga."], answer: 1, explanation: "Đại hội Xô viết toàn Liên bang nắm quyền lập pháp và tối cao." },
-        { q: "Sự thành lập Liên Xô có ý nghĩa quốc tế quan trọng như thế nào?", options: ["Phá vỡ thế độc tôn của CNTB, cổ vũ cách mạng thế giới.", "Chấm dứt hoàn toàn chủ nghĩa đế quốc.", "Khởi đầu Chiến tranh lạnh.", "Đánh bại phát xít."], answer: 0, explanation: "Trở thành chỗ dựa cho phong trào độc lập dân tộc trên thế giới." },
-        { q: "Về mặt đối nội, việc thành lập Liên Xô có tác dụng gì?", options: ["Thành siêu cường kinh tế ngay lập tức.", "Tạo sức mạnh tổng hợp để bảo vệ độc lập và xây dựng CNXH.", "Giải quyết triệt để mâu thuẫn giai cấp.", "Tránh được Thế chiến II."], answer: 1, explanation: "Giúp tập trung tối đa nguồn lực kinh tế và quốc phòng." },
-        { q: "Sự ra đời của Liên Xô minh chứng cho sự thành công của học thuyết nào?", options: ["Học thuyết CNTB hiện đại.", "Học thuyết Mác - Lênin về vấn đề dân tộc.", "Học thuyết phân chia quyền lực.", "Học thuyết tiến hóa."], answer: 1, explanation: "Chứng minh tính đúng đắn của chủ nghĩa Mác - Lênin về quyền tự quyết dân tộc." },
-        { q: "Quốc huy Liên Xô có biểu tượng gì tượng trưng cho liên minh công - nông?", options: ["Ngôi sao vàng.", "Búa liềm.", "Bông lúa mạch.", "Cây đuốc."], answer: 1, explanation: "Búa (công nhân) và Liềm (nông dân) đan chéo vào nhau." },
-        { q: "Việc thành lập Liên Xô để lại bài học gì cho các quốc gia đa dân tộc?", options: ["Dùng quân sự đàn áp.", "Bình đẳng, tôn trọng và đoàn kết các dân tộc.", "Chia nhỏ đất nước.", "Áp đặt ngôn ngữ."], answer: 1, explanation: "Sự tôn trọng, bình đẳng là chìa khóa duy trì quốc gia thống nhất." },
-        { q: "Tên gọi đầy đủ của nhà nước Liên Xô là gì?", options: ["Liên bang Cộng hòa Xã hội chủ nghĩa Xô viết.", "Cộng hòa Liên bang Nga.", "Liên bang Xô viết tự do.", "Cộng hòa XHCN Nga."], answer: 0, explanation: "Viết tắt là Liên bang Xô viết hoặc Liên Xô." },
-        { q: "Hệ thống XHCN thế giới chính thức hình thành vào thời gian nào?", options: ["Sau 1917.", "Sau Thế chiến II (1945).", "Sau Cách mạng Trung Quốc (1949).", "Sau Cách mạng Cu-ba (1959)."], answer: 1, explanation: "Sự ra đời của các nước Dân chủ nhân dân Đông Âu tạo nên hệ thống XHCN." },
-        { q: "Sự kiện nào đánh dấu CNXH trở thành một hệ thống thế giới?", options: ["Sự ra đời của các nước Đông Âu.", "Thắng lợi Cách mạng Trung Quốc.", "Thành lập SEV.", "Thành lập khối Vác-sa-va."], answer: 0, explanation: "Trước 1945 chỉ có Liên Xô. Việc các nước Đông Âu đi lên CNXH đã hình thành hệ thống." },
-        { q: "Thắng lợi của cách mạng nào (1949) làm hệ thống XHCN nối liền Âu - Á?", options: ["Việt Nam.", "Trung Quốc.", "Cu-ba.", "Triều Tiên."], answer: 1, explanation: "Tháng 10/1949, nước CHND Trung Hoa ra đời đi lên CNXH." },
-        { q: "Quốc gia đầu tiên ở Mỹ Latinh tiến lên xây dựng CNXH là?", options: ["Vê-nê-xu-ê-la.", "Ni-ca-ra-gua.", "Cu-ba.", "Bra-xin."], answer: 2, explanation: "Sau cách mạng 1959, Cu-ba đã kiên định con đường đi lên CNXH." },
-        { q: "Thời kì phát triển hưng thịnh nhất của hệ thống XHCN là thời gian nào?", options: ["Thập niên 1920-1930.", "Những năm 1950 - nửa đầu 1970.", "Thập niên 1980-1990.", "Từ 2000 đến nay."], answer: 1, explanation: "Giai đoạn hệ thống XHCN phát triển mạnh mẽ và là đối trọng lớn với TBCN." },
-        { q: "Nguyên nhân sâu xa dẫn đến sự sụp đổ của CNXH ở Liên Xô và Đông Âu là:", options: ["Đường lối chủ quan, duy ý chí; chậm đổi mới.", "Sự chống phá của phương Tây.", "Lạc hậu quân sự.", "Thế chiến III bùng nổ."], answer: 0, explanation: "Sai lầm trong đường lối và duy trì bao cấp quá lâu là nguyên nhân gốc rễ." },
-        { q: "Chế độ XHCN ở Liên Xô chính thức sụp đổ vào thời gian nào?", options: ["1989.", "1990.", "Tháng 12/1991.", "1992."], answer: 2, explanation: "Tháng 12/1991, Tổng thống Goóc-ba-chốp từ chức." },
-        { q: "Sự sụp đổ của Liên Xô và Đông Âu mang ý nghĩa gì?", options: ["Chứng tỏ CNXH sai lầm.", "Là tổn thất nặng nề, nhưng không đồng nghĩa lý tưởng XHCN sụp đổ.", "Chấm dứt CNXH trên trái đất.", "Làm phong trào công nhân tan rã."], answer: 1, explanation: "Chỉ là sự sụp đổ của một mô hình cụ thể chưa hoàn thiện." },
-        { q: "Cải cách mở cửa ở Trung Quốc bắt đầu từ năm nào?", options: ["1978.", "1986.", "1989.", "1991."], answer: 0, explanation: "Tháng 12/1978, Đảng CS Trung Quốc đề ra đường lối cải cách." },
-        { q: "Trọng tâm của cải cách mở cửa ở Trung Quốc là gì?", options: ["Cải tổ chính trị.", "Phát triển kinh tế, xây dựng CNXH mang màu sắc Trung Quốc.", "Sức mạnh quân sự.", "Liên minh quân sự."], answer: 1, explanation: "Lấy phát triển kinh tế làm trung tâm để hiện đại hóa đất nước." },
-        { q: "Công cuộc Đổi mới ở Việt Nam bắt đầu vào năm nào?", options: ["1975.", "1986.", "1991.", "1995."], answer: 1, explanation: "Đại hội VI của Đảng (12/1986) đã đề ra đường lối Đổi mới." },
-        { q: "Đặc điểm chung trong công cuộc đổi mới ở Việt Nam và cải cách ở Trung Quốc là:", options: ["Lấy cải tổ chính trị làm trọng tâm.", "Xóa bỏ vai trò của Đảng.", "Chuyển từ bao cấp sang kinh tế thị trường định hướng XHCN.", "Gia nhập hệ thống tư bản."], answer: 2, explanation: "Cả hai đều từ bỏ bao cấp, chuyển sang kinh tế thị trường nhưng do nhà nước XHCN quản lý." },
-        { q: "Hiện nay, những quốc gia nào vẫn đang kiên định con đường XHCN?", options: ["Nga, Trung Quốc, Việt Nam, Triều Tiên.", "Trung Quốc, Việt Nam, Cu-ba, Lào, Triều Tiên.", "Việt Nam, Lào, Campuchia, Cu-ba.", "Trung Quốc, Cu-ba, Ba Lan, Việt Nam."], answer: 1, explanation: "Đây là 5 quốc gia XHCN hiện nay trên thế giới." },
-        { q: "Thành tựu lớn nhất của công cuộc đổi mới ở Việt Nam và Trung Quốc là gì?", options: ["Thành siêu cường kinh tế số 1.", "Thoát khỏi khủng hoảng kinh tế, duy trì tăng trưởng cao.", "Xóa bỏ hoàn toàn phân hóa giàu nghèo.", "Sản xuất được vũ khí hạt nhân."], answer: 1, explanation: "Đổi mới đã cứu vãn nền kinh tế và nâng cao đời sống nhân dân." },
-        { q: "Trong quá trình đổi mới, các nước XHCN đối mặt với thách thức lớn nào?", options: ["Cấm vận của LHQ.", "Sự phát triển của AI.", "Nguy cơ chệch hướng XHCN, tụt hậu kinh tế và sự chống phá.", "Bùng nổ dân số."], answer: 2, explanation: "Đó là những thách thức cốt lõi mà các Đảng Cộng sản phải vượt qua." }
-    ];
-
-    // BỘ DỮ LIỆU: PHẦN 2 (2 ĐOẠN TƯ LIỆU)
-    const part2Questions = [
-        {
-            passage: "Từ sau Chiến tranh thế giới thứ hai, chủ nghĩa tư bản bước sang giai đoạn phát triển mới, gọi là chủ nghĩa tư bản hiện đại. Trong giai đoạn này, nhà nước tư sản tăng cường can thiệp vào kinh tế. Tuy nhiên, dù có khả năng tự điều chỉnh thông qua các chính sách phúc lợi, CNTB hiện đại vẫn không thể khắc phục được những mâu thuẫn cơ bản, điển hình là các cuộc khủng hoảng kinh tế chu kì.",
-            statements: [
-                { text: "a) CNTB hiện đại được xác định bắt đầu từ sau Chiến tranh thế giới thứ nhất.", answer: false, explanation: "Được xác định từ sau Thế chiến II (1945)." },
-                { text: "b) Đặc trưng lớn của giai đoạn này là sự can thiệp của nhà nước tư sản vào các quá trình kinh tế.", answer: true, explanation: "Đó là sự hình thành CNTB độc quyền nhà nước." },
-                { text: "c) Các chính sách phúc lợi xã hội đã giúp CNTB xóa bỏ hoàn toàn mâu thuẫn giai cấp.", answer: false, explanation: "Phúc lợi xã hội chỉ làm dịu mâu thuẫn chứ không thể xóa bỏ hoàn toàn." },
-                { text: "d) Khủng hoảng kinh tế mang tính chu kì là căn bệnh trầm kha mà CNTB hiện đại không thể giải quyết triệt để.", answer: true, explanation: "Khủng hoảng là quy luật cố hữu do mâu thuẫn của phương thức sản xuất tư bản." }
-            ]
-        },
-        {
-            passage: "Trước những khủng hoảng trầm trọng về kinh tế - xã hội vào những năm 70 - 80 của thế kỉ XX, Trung Quốc (năm 1978) và Việt Nam (năm 1986) đã tiến hành công cuộc cải cách, đổi mới. Sự thành công của công cuộc cải cách này đã đưa đất nước thoát khỏi khủng hoảng, từng bước quá độ lên CNXH và chứng minh sức sống mãnh liệt của học thuyết Mác - Lênin.",
-            statements: [
-                { text: "a) Trung Quốc và Việt Nam đều bắt đầu công cuộc cải cách, đổi mới vào cùng một năm.", answer: false, explanation: "Trung Quốc bắt đầu năm 1978, Việt Nam là năm 1986." },
-                { text: "b) Nguyên nhân dẫn đến quyết định đổi mới là do sự khủng hoảng kinh tế - xã hội trầm trọng ở trong nước.", answer: true, explanation: "Nền kinh tế bao cấp đã lâm vào khủng hoảng sâu sắc." },
-                { text: "c) Trong quá trình đổi mới, cả hai quốc gia đều từ bỏ mục tiêu xây dựng chủ nghĩa xã hội.", answer: false, explanation: "Cả hai đều kiên định con đường đi lên CNXH." },
-                { text: "d) Sự thành công của công cuộc đổi mới đã chứng tỏ học thuyết Mác - Lênin vẫn giữ nguyên giá trị thời đại.", answer: true, explanation: "Sự vận dụng linh hoạt đã mang lại sức sống thực tiễn cho học thuyết." }
-            ]
-        }
-    ];
-
-    let currentSection = 1;
-    let currentIndex = 0;
-    let scorePart1 = 0;
-    let scorePart2 = 0;
-    let isAnswered = false;
-    let tfAnswers = [null, null, null, null]; 
-
-    function startQuiz() {
-        currentSection = 1; currentIndex = 0;
-        scorePart1 = 0; scorePart2 = 0;
-        
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        
-        loadQuestion();
-    }
-
-    function loadQuestion() {
-        isAnswered = false;
-        const dynContent = document.getElementById('dynamic-content');
-        const checkBtn = document.getElementById('check-btn');
-        const nextBtn = document.getElementById('next-btn');
-        
-        nextBtn.style.display = 'none';
-        
-        if (currentSection === 1) {
-            document.getElementById('section-title').innerText = "PHẦN I: NHIỀU LỰA CHỌN";
-            document.getElementById('progress-text').innerText = `Câu ${currentIndex + 1}/${part1Questions.length}`;
-            document.getElementById('live-score').innerText = scorePart1;
-            checkBtn.style.display = 'none';
-
-            const q = part1Questions[currentIndex];
-            let html = `
-                <div class="question-text">${q.q}</div>
-                <div class="options-container">
-            `;
-            q.options.forEach((opt, idx) => {
-                html += `<button class="mc-btn" id="mc-btn-${idx}" onclick="selectMcAnswer(${idx}, ${q.answer}, '${q.explanation}')">${opt}</button>`;
+                output.push(
+                    `<div class="question-card" id="q-card-${questionNumber}">
+                        <div class="question">${currentQuestion.question}</div>
+                        <div class="answers">${answers.join('')}</div>
+                    </div>`
+                );
             });
-            html += `
-                </div>
-                <div class="feedback-box" id="feedback-box">
-                    <div class="feedback-msg" id="feedback-msg"></div>
-                    <div class="explanation-text" id="explanation-text"></div>
-                </div>
-            `;
-            dynContent.innerHTML = html;
 
-        } else if (currentSection === 2) {
-            tfAnswers = [null, null, null, null];
-            document.getElementById('section-title').innerText = "PHẦN II: TƯ LIỆU ĐÚNG/SAI";
-            document.getElementById('progress-text').innerText = `Đoạn tư liệu ${currentIndex + 1}/${part2Questions.length}`;
-            document.getElementById('live-score').innerText = scorePart2;
-            
-            checkBtn.style.display = 'block';
-            checkBtn.disabled = true;
+            quizContainer.innerHTML = output.join('');
+        }
 
-            const q = part2Questions[currentIndex];
-            let html = `
-                <div class="passage-box">${q.passage}</div>
-                <div class="options-container">
-            `;
-            q.statements.forEach((stmt, idx) => {
-                html += `
-                    <div class="tf-item">
-                        <div class="tf-text">${stmt.text}</div>
-                        <div class="tf-buttons">
-                            <button class="tf-btn" id="tf-btn-${idx}-true" onclick="selectTfAnswer(${idx}, true)">Đúng</button>
-                            <button class="tf-btn" id="tf-btn-${idx}-false" onclick="selectTfAnswer(${idx}, false)">Sai</button>
-                        </div>
-                        <div class="feedback-box" id="tf-feedback-${idx}" style="margin-top:10px;">
-                            <div class="explanation-text" id="tf-expl-${idx}"></div>
-                        </div>
-                    </div>
-                `;
+        function showResults() {
+            let numCorrect = 0;
+
+            myQuestions.forEach((currentQuestion, questionNumber) => {
+                const answerContainer = document.getElementById(`q-card-${questionNumber}`);
+                const selector = `input[name=question${questionNumber}]:checked`;
+                const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+
+                // Reset styles
+                for(let letter in currentQuestion.answers) {
+                    document.getElementById(`label_${questionNumber}_${letter}`).classList.remove('correct', 'wrong');
+                }
+
+                if (userAnswer === currentQuestion.correctAnswer) {
+                    numCorrect++;
+                    document.getElementById(`label_${questionNumber}_${userAnswer}`).classList.add('correct');
+                } else {
+                    if (userAnswer) {
+                        document.getElementById(`label_${questionNumber}_${userAnswer}`).classList.add('wrong');
+                    }
+                    // Show the correct answer
+                    document.getElementById(`label_${questionNumber}_${currentQuestion.correctAnswer}`).classList.add('correct');
+                }
             });
-            html += `</div>`;
+
+            const scorePercent = (numCorrect / myQuestions.length) * 10;
+            resultContainer.innerHTML = `Bạn đã làm đúng ${numCorrect} / ${myQuestions.length} câu. <br> Điểm của bạn: ${scorePercent.toFixed(1)} điểm.`;
+            resultContainer.style.display = 'block';
             
-            checkBtn.onclick = () => checkTfAnswers(q);
-            dynContent.innerHTML = html;
-        }
-    }
-
-    function selectMcAnswer(selectedIndex, correctIndex, explanation) {
-        if (isAnswered) return;
-        isAnswered = true;
-
-        const btnSelected = document.getElementById(`mc-btn-${selectedIndex}`);
-        const btnCorrect = document.getElementById(`mc-btn-${correctIndex}`);
-        const feedbackBox = document.getElementById('feedback-box');
-        
-        if (selectedIndex === correctIndex) {
-            btnSelected.classList.add('correct-ans');
-            scorePart1++;
-            document.getElementById('live-score').innerText = scorePart1;
-            feedbackBox.className = "feedback-box feedback-correct show";
-            document.getElementById('feedback-msg').innerText = "✅ Chính xác!";
-        } else {
-            btnSelected.classList.add('wrong-ans');
-            btnCorrect.classList.add('correct-ans');
-            feedbackBox.className = "feedback-box feedback-wrong show";
-            document.getElementById('feedback-msg').innerText = "❌ Chưa chính xác!";
-        }
-        
-        document.getElementById('explanation-text').innerText = "Giải thích: " + explanation;
-        triggerNextButton();
-    }
-
-    function selectTfAnswer(stmtIndex, boolValue) {
-        if (isAnswered) return;
-        tfAnswers[stmtIndex] = boolValue;
-
-        document.getElementById(`tf-btn-${stmtIndex}-true`).classList.remove('selected-true');
-        document.getElementById(`tf-btn-${stmtIndex}-false`).classList.remove('selected-false');
-        
-        if (boolValue) document.getElementById(`tf-btn-${stmtIndex}-true`).classList.add('selected-true');
-        else document.getElementById(`tf-btn-${stmtIndex}-false`).classList.add('selected-false');
-
-        if (!tfAnswers.includes(null)) {
-            document.getElementById('check-btn').disabled = false;
-        }
-    }
-
-    function checkTfAnswers(q) {
-        isAnswered = true;
-        document.getElementById('check-btn').style.display = 'none';
-
-        for (let i = 0; i < 4; i++) {
-            const userAns = tfAnswers[i];
-            const correctAns = q.statements[i].answer;
-            const explBox = document.getElementById(`tf-feedback-${i}`);
-            
-            document.getElementById(`tf-btn-${i}-${correctAns}`).classList.add('correct-ans');
-            
-            if (userAns !== correctAns) {
-                document.getElementById(`tf-btn-${i}-${userAns}`).classList.add('wrong-ans');
-                explBox.className = "feedback-box feedback-wrong show";
-                document.getElementById(`tf-expl-${i}`).innerHTML = `<b>❌ Sai:</b> ${q.statements[i].explanation}`;
-            } else {
-                scorePart2++;
-                document.getElementById('live-score').innerText = scorePart2;
-                explBox.className = "feedback-box feedback-correct show";
-                document.getElementById(`tf-expl-${i}`).innerHTML = `<b>✅ Đúng:</b> ${q.statements[i].explanation}`;
-            }
-        }
-        triggerNextButton();
-    }
-
-    function triggerNextButton() {
-        const nextBtn = document.getElementById('next-btn');
-        nextBtn.style.display = 'block';
-        
-        if (currentSection === 1 && currentIndex === part1Questions.length - 1) {
-            nextBtn.innerText = 'Chuyển sang Phần II ➔';
-        } else if (currentSection === 2 && currentIndex === part2Questions.length - 1) {
-            nextBtn.innerText = 'Xem Điểm Tổng Hợp 🏆';
-        } else {
-            nextBtn.innerText = 'Tiếp tục ➔';
+            // Scroll to bottom to see result
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        setTimeout(() => { window.scrollTo(0, document.body.scrollHeight); }, 150);
-    }
+        // Khởi tạo bài trắc nghiệm
+        buildQuiz();
 
-    function nextQuestion() {
-        if (currentSection === 1) {
-            if (currentIndex < part1Questions.length - 1) {
-                currentIndex++;
-                loadQuestion();
-            } else {
-                currentSection = 2; 
-                currentIndex = 0;
-                loadQuestion();
-            }
-        } else if (currentSection === 2) {
-            if (currentIndex < part2Questions.length - 1) {
-                currentIndex++;
-                loadQuestion();
-            } else {
-                showResult();
-            }
-        }
-        window.scrollTo(0, 0);
-    }
-
-    function showResult() {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        
-        document.getElementById('score-part1').innerText = `${scorePart1}/60 câu`;
-        document.getElementById('score-part2').innerText = `${scorePart2}/8 ý`;
-
-        // Phần 1: 6 điểm (60 câu = 0.1đ/câu), Phần 2: 4 điểm (8 ý = 0.5đ/ý)
-        const point1 = scorePart1 * 0.1;
-        const point2 = scorePart2 * 0.5;
-        const finalScore = (point1 + point2).toFixed(1);
-
-        document.getElementById('final-score-10').innerText = finalScore;
-        
-        const feedbackEl = document.getElementById('final-feedback-text');
-        if (finalScore >= 9) {
-            feedbackEl.innerText = "Tuyệt đỉnh! Kiến thức của bạn quá vững vàng.";
-            feedbackEl.style.color = "#10b981";
-        } else if (finalScore >= 7) {
-            feedbackEl.innerText = "Rất tốt! Cố gắng luyện tập thêm một chút nữa nhé.";
-            feedbackEl.style.color = "#2563eb";
-        } else if (finalScore >= 5) {
-            feedbackEl.innerText = "Đạt yêu cầu! Nhưng cần ôn kỹ lại tài liệu nhiều hơn.";
-            feedbackEl.style.color = "#d97706";
-        } else {
-            feedbackEl.innerText = "Điểm chưa tốt rồi! Hãy đọc kĩ lại bài giảng và thi lại nhé.";
-            feedbackEl.style.color = "#ef4444";
-        }
-        
-        window.scrollTo(0, 0);
-    }
-</script>
+        // Lắng nghe sự kiện nộp bài
+        submitButton.addEventListener('click', showResults);
+    </script>
 </body>
 </html>
