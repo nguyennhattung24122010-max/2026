@@ -3,230 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trắc Nghiệm GDQP&AN 11 - PRO VIP</title>
+    <title>Trắc Nghiệm GDQP&AN 11</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
             --success: #10b981;
+            --success-bg: #d1fae5;
             --danger: #ef4444;
-            --bg: #f3f4f6;
+            --danger-bg: #fee2e2;
+            --bg-color: #f8fafc;
             --card-bg: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
+            --text-main: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-main);
-            margin: 0;
-            padding: 0;
             line-height: 1.6;
         }
 
-        .header {
-            background-color: var(--card-bg);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        /* Thanh công cụ dính trên đầu trang */
+        .sticky-header {
             position: sticky;
             top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             z-index: 1000;
             padding: 15px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-bottom: 1px solid var(--border);
         }
 
-        .header h1 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .progress-container {
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
             width: 100%;
             max-width: 800px;
-            background: #e5e7eb;
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .score-text { color: var(--primary); }
+        .progress-text { color: var(--text-light); }
+
+        .progress-bar-bg {
+            width: 100%;
+            max-width: 800px;
+            height: 8px;
+            background: #e2e8f0;
             border-radius: 10px;
-            margin-top: 15px;
-            height: 10px;
             overflow: hidden;
         }
 
-        .progress-bar {
+        .progress-bar-fill {
             height: 100%;
-            background: var(--primary);
+            background: linear-gradient(90deg, #3b82f6, #2dd4bf);
             width: 0%;
-            transition: width 0.4s ease;
+            transition: width 0.5s ease-out;
         }
 
-        .progress-text {
-            margin-top: 5px;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
+        /* Container câu hỏi */
         .container {
             max-width: 800px;
-            margin: 30px auto;
+            margin: 40px auto;
             padding: 0 15px;
         }
 
         .question-card {
             background: var(--card-bg);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 5px solid var(--primary);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            transition: transform 0.2s ease;
         }
 
         .question-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
         }
 
-        .question-title {
-            font-size: 1.15rem;
+        .lesson-badge {
+            display: inline-block;
+            background: #eff6ff;
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #111827;
         }
 
-        .options {
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .options-grid {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
+        /* Style cho từng đáp án */
         .option-label {
             display: flex;
             align-items: center;
-            padding: 12px 15px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
+            padding: 15px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             font-weight: 500;
+            background: #fff;
+            position: relative;
         }
 
-        .option-label:hover {
-            background-color: #f8fafc;
+        .option-label:hover:not(.disabled) {
+            background: #f8fafc;
             border-color: #cbd5e1;
         }
 
         .option-label input[type="radio"] {
-            margin-right: 15px;
-            transform: scale(1.3);
-            accent-color: var(--primary);
+            display: none; /* Ẩn nút radio mặc định */
         }
 
-        /* Khi radio được chọn */
-        .option-label:has(input:checked) {
-            border-color: var(--primary);
-            background-color: #e0e7ff;
-        }
-
-        .submit-container {
-            text-align: center;
-            margin: 40px 0;
-        }
-
-        .btn-submit {
-            background-color: var(--primary);
-            color: white;
-            font-size: 1.25rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
-            transition: all 0.3s;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.39);
-        }
-
-        #result-board {
-            display: none;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .score-circle {
-            width: 120px;
-            height: 120px;
+        /* Custom Radio Button */
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #94a3b8;
             border-radius: 50%;
+            margin-right: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-            margin: 0 auto 20px;
+            flex-shrink: 0;
+            transition: all 0.2s;
         }
 
-        .score-pass { background-color: var(--success); }
-        .score-fail { background-color: var(--danger); }
+        .radio-custom::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.2s;
+        }
 
-        /* Highlight sau khi nộp */
-        .correct { background-color: #d1fae5 !important; border-color: var(--success) !important; color: #065f46; }
-        .wrong { background-color: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; }
+        .option-label input[type="radio"]:checked + .radio-custom {
+            border-color: var(--primary);
+        }
+
+        .option-label input[type="radio"]:checked + .radio-custom::after {
+            transform: scale(1);
+        }
+
+        /* Trạng thái sau khi trả lời */
+        .option-label.disabled {
+            cursor: default;
+            opacity: 0.9;
+        }
+
+        .option-label.correct {
+            background-color: var(--success-bg);
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .option-label.correct .radio-custom {
+            border-color: var(--success);
+            background-color: var(--success);
+        }
         
-        .lesson-tag {
-            font-size: 0.8rem;
-            background: #e0e7ff;
-            color: var(--primary);
-            padding: 3px 8px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            display: inline-block;
-            font-weight: bold;
+        .option-label.correct .radio-custom::after {
+            background: white; /* Đổi màu nhân radio */
+            transform: scale(1);
         }
+
+        .option-label.wrong {
+            background-color: var(--danger-bg);
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .option-label.wrong .radio-custom {
+            border-color: var(--danger);
+            background-color: var(--danger);
+        }
+
+        .option-label.wrong .radio-custom::after {
+            background: white;
+            transform: scale(1);
+        }
+
+        /* Hiển thị đáp án đúng nếu chọn sai */
+        .option-label.show-correct {
+            border-color: var(--success);
+            border-style: dashed;
+            background-color: #f0fdf4;
+        }
+        
+        .icon-result {
+            margin-left: auto;
+            font-size: 1.2rem;
+            display: none;
+        }
+        
+        .correct .icon-result, .wrong .icon-result, .show-correct .icon-result {
+            display: block;
+        }
+
+        #completion-modal {
+            display: none;
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-restart {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .btn-restart:hover { background-color: var(--primary-dark); }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>Hệ Thống Trắc Nghiệm GDQP 11</h1>
-    <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
+<div class="sticky-header">
+    <div class="stats-container">
+        <div class="score-text">Đúng: <span id="score">0</span>/<span id="total-questions">50</span></div>
+        <div class="progress-text">Tiến độ: <span id="answered-count">0</span>/50</div>
     </div>
-    <div class="progress-text" id="progressText">Đã trả lời: 0/50 câu</div>
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+    </div>
 </div>
 
 <div class="container">
-    <div id="result-board">
-        <h2 style="margin-top: 0;">KẾT QUẢ CỦA TỔNG TÀI</h2>
-        <div class="score-circle" id="scoreCircle">0/50</div>
-        <p id="scoreMessage" style="font-size: 1.2rem; font-weight: bold;"></p>
-        <button class="btn-submit" onclick="location.reload()" style="padding: 10px 25px; font-size: 1rem; margin-top: 15px;">Làm Lại</button>
+    <div id="quiz-container">
+        <!-- Các câu hỏi sẽ được render bằng JS -->
     </div>
 
-    <form id="quizForm">
-        <!-- Các câu hỏi sẽ được sinh ra ở đây -->
-    </form>
-    
-    <div class="submit-container">
-        <button type="button" class="btn-submit" onclick="submitQuiz()">CHỐT ĐÁP ÁN</button>
+    <div id="completion-modal">
+        <h2>🎉 ĐÃ HOÀN THÀNH BÀI KIỂM TRA 🎉</h2>
+        <h1 style="font-size: 3rem; color: var(--primary); margin: 15px 0;" id="final-score">0/50</h1>
+        <p id="final-message" style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 20px;"></p>
+        <button class="btn-restart" onclick="location.reload()">Làm lại từ đầu</button>
     </div>
 </div>
 
 <script>
     // BỘ 50 CÂU HỎI (15 câu Bài 2, 35 câu Bài 6)
     const questions = [
-        // --- BÀI 2: Luật Nghĩa vụ quân sự và trách nhiệm ---
         { l: "Bài 2", q: "Theo Luật NVQS 2015, công dân nam đủ bao nhiêu tuổi trở lên phải đăng ký nghĩa vụ quân sự?", opts: { A: "16 tuổi", B: "17 tuổi", C: "18 tuổi", D: "19 tuổi" }, a: "B" },
         { l: "Bài 2", q: "Độ tuổi gọi nhập ngũ trong thời bình đối với công dân nam không học cao đẳng, đại học là?", opts: { A: "18 đến hết 22 tuổi", B: "18 đến hết 25 tuổi", C: "18 đến hết 27 tuổi", D: "18 đến hết 30 tuổi" }, a: "B" },
         { l: "Bài 2", q: "Công dân nam được đào tạo trình độ cao đẳng, đại học đã được tạm hoãn thì độ tuổi gọi nhập ngũ đến hết bao nhiêu tuổi?", opts: { A: "25 tuổi", B: "26 tuổi", C: "27 tuổi", D: "28 tuổi" }, a: "C" },
@@ -243,7 +303,7 @@
         { l: "Bài 2", q: "Một trong những trách nhiệm của học sinh trong việc thực hiện NVQS là?", opts: { A: "Tìm mọi cách để được tạm hoãn", B: "Không cần tìm hiểu pháp luật về NVQS", C: "Học tập chính trị, quân sự; chấp hành quy định về đăng ký NVQS", D: "Tự ý bỏ học để nhập ngũ" }, a: "C" },
         { l: "Bài 2", q: "Việc xử lý công dân vi phạm pháp luật về nghĩa vụ quân sự được quy định như thế nào?", opts: { A: "Chỉ bị nhắc nhở", B: "Xử phạt hành chính hoặc truy cứu trách nhiệm hình sự", C: "Đuổi học hoặc buộc thôi việc", D: "Không bị xử lý nếu dưới 18 tuổi" }, a: "B" },
 
-        // --- BÀI 6: Súng bộ binh, thuốc nổ, vật cản và vũ khí tự tạo ---
+        // --- BÀI 6 ---
         { l: "Bài 6", q: "Súng tiểu liên AK do ai thiết kế?", opts: { A: "M.T. Kalashnikov", B: "Simonov", C: "Makarov", D: "Tokarev" }, a: "A" },
         { l: "Bài 6", q: "Súng tiểu liên AK (phiên bản chuẩn) ra đời vào năm nào?", opts: { A: "1943", B: "1945", C: "1947", D: "1954" }, a: "C" },
         { l: "Bài 6", q: "Cỡ đạn của súng tiểu liên AK là bao nhiêu?", opts: { A: "5,56 mm", B: "7,62 mm", C: "9 mm", D: "12,7 mm" }, a: "B" },
@@ -261,128 +321,136 @@
         { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để định hướng bay cho đầu đạn?", opts: { A: "Hộp khóa nòng", B: "Nòng súng", C: "Bộ phận ngắm", D: "Bệ khóa nòng" }, a: "B" },
         { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để ngắm bắn vào các mục tiêu ở cự ly khác nhau?", opts: { A: "Bộ phận ngắm", B: "Khóa nòng", C: "Bệ khóa nòng", D: "Thoi đẩy" }, a: "A" },
         { l: "Bài 6", q: "Chế độ bắn chủ yếu của súng tiểu liên AK là gì?", opts: { A: "Bắn phát một", B: "Bắn liên thanh", C: "Bắn tỉa", D: "Bắn găm" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ là gì?", opts: { A: "Chất rắn không cháy", B: "Hóa chất phát sáng", C: "Chất hoặc hỗn hợp chất hóa học, khi bị kích thích sẽ sinh ra phản ứng nổ", D: "Một loại khí độc" }, a: "C" },
+        { l: "Bài 6", q: "Thuốc nổ là gì?", opts: { A: "Chất rắn không cháy", B: "Hóa chất phát sáng", C: "Chất hoặc hỗn hợp chất, khi bị kích thích sẽ sinh ra phản ứng nổ", D: "Một loại khí độc" }, a: "C" },
         { l: "Bài 6", q: "Thuốc nổ TNT có màu gì?", opts: { A: "Màu trắng", B: "Màu đen", C: "Màu vàng nhạt", D: "Màu xanh dương" }, a: "C" },
-        { l: "Bài 6", q: "Tính chất nào sau đây là của thuốc nổ TNT?", opts: { A: "Rất nhạy nổ với va đập, cọ xát", B: "Kém nhạy nổ với va đập, cọ xát", C: "Dễ tan trong nước", D: "Tự bốc cháy ở nhiệt độ phòng" }, a: "B" },
+        { l: "Bài 6", q: "Tính chất nào sau đây là của thuốc nổ TNT?", opts: { A: "Rất nhạy nổ với va đập", B: "Kém nhạy nổ với va đập, cọ xát", C: "Dễ tan trong nước", D: "Tự bốc cháy ở nhiệt độ phòng" }, a: "B" },
         { l: "Bài 6", q: "Thuốc nổ TNT nóng chảy ở nhiệt độ bao nhiêu?", opts: { A: "50 °C", B: "81 °C", C: "100 °C", D: "310 °C" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ C4 có hình dạng và màu sắc như thế nào?", opts: { A: "Dạng bột màu đen", B: "Dạng tinh thể màu vàng", C: "Dẻo, màu trắng đục", D: "Dạng lỏng màu đỏ" }, a: "C" },
-        { l: "Bài 6", q: "So với TNT, độ nhạy nổ với va đập của thuốc nổ C4 như thế nào?", opts: { A: "Nhạy hơn rất nhiều", B: "Tương đương", C: "Kém nhạy hơn, an toàn hơn", D: "Không thể nổ khi va đập" }, a: "C" },
+        { l: "Bài 6", q: "Thuốc nổ C4 có hình dạng và màu sắc như thế nào?", opts: { A: "Dạng bột đen", B: "Dạng tinh thể vàng", C: "Dẻo, màu trắng đục", D: "Dạng lỏng màu đỏ" }, a: "C" },
+        { l: "Bài 6", q: "So với TNT, độ nhạy nổ với va đập của thuốc nổ C4 như thế nào?", opts: { A: "Nhạy hơn rất nhiều", B: "Tương đương", C: "Kém nhạy hơn, an toàn hơn", D: "Không nổ khi va đập" }, a: "C" },
         { l: "Bài 6", q: "Thuốc nổ C4 có tan trong nước không?", opts: { A: "Tan rất nhanh", B: "Không tan trong nước", C: "Chỉ tan trong nước nóng", D: "Tạo thành axit khi gặp nước" }, a: "B" },
         { l: "Bài 6", q: "Thuốc nổ đen (thuốc phóng) có thành phần cấu tạo chủ yếu gồm những gì?", opts: { A: "Nitroglycerin và Cồn", B: "Diêm tiêu, than củi, lưu huỳnh", C: "Axit Nitric và Amoniac", D: "Nhựa đường và Xăng" }, a: "B" },
         { l: "Bài 6", q: "Đặc điểm của thuốc nổ Amonit là gì?", opts: { A: "Màu trắng ngà, dễ hút ẩm, dễ vón cục", B: "Màu đen, cứng như đá", C: "Dạng dẻo, không sợ nước", D: "Dạng khí" }, a: "A" },
-        { l: "Bài 6", q: "Vật cản là gì?", opts: { A: "Các loại xe tăng, thiết giáp", B: "Những vật thể tự nhiên hoặc nhân tạo dùng để cản trở sự cơ động của địch", C: "Các trạm radar phát sóng", D: "Vũ khí hạt nhân" }, a: "B" },
-        { l: "Bài 6", q: "Vật cản được chia làm mấy loại chính?", opts: { A: "2 loại: tự nhiên và nhân tạo", B: "3 loại: trên không, trên bộ, dưới nước", C: "2 loại: của ta và của địch", D: "Chỉ có 1 loại duy nhất" }, a: "A" },
+        { l: "Bài 6", q: "Vật cản là gì?", opts: { A: "Các loại xe tăng, thiết giáp", B: "Những vật thể tự nhiên hoặc nhân tạo dùng để cản trở sự cơ động của địch", C: "Các trạm radar", D: "Vũ khí hạt nhân" }, a: "B" },
+        { l: "Bài 6", q: "Vật cản được chia làm mấy loại chính?", opts: { A: "2 loại: tự nhiên và nhân tạo", B: "3 loại: trên không, trên bộ, dưới nước", C: "2 loại: của ta và của địch", D: "Chỉ có 1 loại" }, a: "A" },
         { l: "Bài 6", q: "Các vật thể như sông, suối, đầm lầy, vách núi được gọi là gì?", opts: { A: "Vật cản nổ", B: "Vật cản không nổ", C: "Vật cản tự nhiên", D: "Vật cản nhân tạo" }, a: "C" },
-        { l: "Bài 6", q: "Vật cản nhân tạo được chia thành những loại nào?", opts: { A: "Vật cản bằng sắt và bằng gỗ", B: "Vật cản nổ và vật cản không nổ", C: "Vật cản chống bộ binh và chống máy bay", D: "Vật cản điện và vật cản từ" }, a: "B" },
+        { l: "Bài 6", q: "Vật cản nhân tạo được chia thành những loại nào?", opts: { A: "Vật cản sắt và gỗ", B: "Vật cản nổ và không nổ", C: "Vật cản bộ binh và máy bay", D: "Vật cản điện và từ" }, a: "B" },
         { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản nổ?", opts: { A: "Hàng rào thép gai", B: "Hào chống tăng", C: "Bãi mìn, lựu đạn gài", D: "Hố chông" }, a: "C" },
         { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản KHÔNG nổ?", opts: { A: "Mìn chống tăng", B: "Lượng nổ lõm", C: "Hàng rào thép gai, chông, rào bùng nhùng", D: "Bom nổ chậm" }, a: "C" },
-        { l: "Bài 6", q: "Vũ khí tự tạo là gì?", opts: { A: "Vũ khí mua từ nước ngoài", B: "Vũ khí do lực lượng vũ trang hoặc nhân dân tự chế tạo", C: "Vũ khí công nghệ cao dùng AI", D: "Súng trường tiêu chuẩn của quân đội" }, a: "B" },
+        { l: "Bài 6", q: "Vũ khí tự tạo là gì?", opts: { A: "Vũ khí mua từ nước ngoài", B: "Vũ khí do lực lượng vũ trang hoặc nhân dân tự chế tạo", C: "Vũ khí dùng AI", D: "Súng trường tiêu chuẩn" }, a: "B" },
         { l: "Bài 6", q: "Các loại vũ khí như chông, mìn, cạm bẫy thường được xếp vào nhóm nào?", opts: { A: "Vũ khí hủy diệt hàng loạt", B: "Vũ khí tự tạo / vật cản", C: "Vũ khí hạt nhân", D: "Vũ khí sinh học" }, a: "B" },
-        { l: "Bài 6", q: "Tác dụng của việc sử dụng vũ khí tự tạo trong chiến tranh nhân dân là gì?", opts: { A: "Tiêu diệt máy bay ném bom chiến lược", B: "Thay thế hoàn toàn súng đạn hiện đại", C: "Tiêu hao, tiêu diệt sinh lực địch, gây tâm lý hoang mang, cản trở cơ động", D: "Đánh chặn tên lửa hành trình" }, a: "C" }
+        { l: "Bài 6", q: "Tác dụng của việc sử dụng vũ khí tự tạo trong chiến tranh nhân dân là gì?", opts: { A: "Tiêu diệt máy bay chiến lược", B: "Thay thế hoàn toàn súng đạn", C: "Tiêu hao sinh lực địch, gây hoang mang, cản trở cơ động", D: "Đánh chặn tên lửa" }, a: "C" }
     ];
 
-    const form = document.getElementById("quizForm");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
-    let answeredQuestions = new Set();
+    const quizContainer = document.getElementById("quiz-container");
+    const scoreEl = document.getElementById("score");
+    const answeredCountEl = document.getElementById("answered-count");
+    const progressBar = document.getElementById("progress-bar");
+    const totalQuestionsEl = document.getElementById("total-questions");
+    const completionModal = document.getElementById("completion-modal");
+    const finalScore = document.getElementById("final-score");
+    const finalMessage = document.getElementById("final-message");
 
-    // Sinh HTML câu hỏi
+    let currentScore = 0;
+    let answeredQuestions = 0;
+    const totalQuestions = questions.length;
+
+    totalQuestionsEl.innerText = totalQuestions;
+
+    // Sinh HTML các câu hỏi
     function renderQuiz() {
         let html = '';
         questions.forEach((q, i) => {
             html += `
-            <div class="question-card" id="qCard${i}">
-                <div class="lesson-tag">${q.l}</div>
-                <div class="question-title">Câu ${i + 1}: ${q.q}</div>
-                <div class="options">
+            <div class="question-card" id="qCard_${i}">
+                <div class="lesson-badge">${q.l}</div>
+                <div class="question-text">Câu ${i + 1}: ${q.q}</div>
+                <div class="options-grid">
             `;
             for (const [key, value] of Object.entries(q.opts)) {
                 html += `
                     <label class="option-label" id="lbl_${i}_${key}">
-                        <input type="radio" name="q${i}" value="${key}" onchange="updateProgress(${i})">
-                        ${key}. ${value}
+                        <input type="radio" name="q${i}" value="${key}" onclick="handleAnswer(${i}, '${key}')">
+                        <div class="radio-custom"></div>
+                        <span><strong>${key}.</strong> ${value}</span>
+                        <span class="icon-result"></span>
                     </label>
                 `;
             }
             html += `</div></div>`;
         });
-        form.innerHTML = html;
+        quizContainer.innerHTML = html;
     }
 
-    // Cập nhật thanh tiến trình
-    function updateProgress(questionIndex) {
-        answeredQuestions.add(questionIndex);
-        const count = answeredQuestions.size;
-        const total = questions.length;
-        const percent = (count / total) * 100;
+    // Xử lý khi người dùng click chọn 1 đáp án
+    function handleAnswer(qIndex, selectedKey) {
+        const q = questions[qIndex];
+        const correctKey = q.a;
         
-        progressBar.style.width = percent + '%';
-        progressText.innerText = `Đã trả lời: ${count}/${total} câu`;
-    }
-
-    // Nộp bài
-    function submitQuiz() {
-        if(answeredQuestions.size < questions.length) {
-            const confirmSubmit = confirm(`Tổng tài mới làm ${answeredQuestions.size}/${questions.length} câu. Ngài có chắc chắn muốn nộp bài không?`);
-            if(!confirmSubmit) return;
-        }
-
-        let score = 0;
-        questions.forEach((q, i) => {
-            // Reset CSS cũ
-            for (const key of Object.keys(q.opts)) {
-                document.getElementById(`lbl_${i}_${key}`).classList.remove('correct', 'wrong');
-            }
-
-            const selected = document.querySelector(`input[name="q${i}"]:checked`);
-            
-            if (selected) {
-                const ans = selected.value;
-                if (ans === q.a) {
-                    score++;
-                    document.getElementById(`lbl_${i}_${ans}`).classList.add('correct');
-                } else {
-                    document.getElementById(`lbl_${i}_${ans}`).classList.add('wrong');
-                    document.getElementById(`lbl_${i}_${q.a}`).classList.add('correct');
-                }
-            } else {
-                // Bôi xanh đáp án đúng nếu chưa làm
-                document.getElementById(`lbl_${i}_${q.a}`).classList.add('correct');
-            }
-        });
-
-        // Hướng dẫn hiển thị kết quả
-        const resultBoard = document.getElementById('result-board');
-        const scoreCircle = document.getElementById('scoreCircle');
-        const scoreMessage = document.getElementById('scoreMessage');
+        // Vô hiệu hóa tất cả các lựa chọn của câu này
+        const labels = document.querySelectorAll(`label[id^="lbl_${qIndex}_"]`);
+        const radios = document.querySelectorAll(`input[name="q${qIndex}"]`);
         
-        resultBoard.style.display = 'block';
-        scoreCircle.innerText = `${score}/${questions.length}`;
-        
-        const percent = score / questions.length;
-        if (percent >= 0.8) {
-            scoreCircle.className = 'score-circle score-pass';
-            scoreMessage.innerText = "Xuất sắc! Quả không hổ danh là Lọ thánh chí tôn! 👑";
-            scoreMessage.style.color = "var(--success)";
-        } else if (percent >= 0.5) {
-            scoreCircle.className = 'score-circle score-pass';
-            scoreMessage.innerText = "Khá lắm! Tổng tài nắm bài rất vững! 👍";
-            scoreMessage.style.color = "#059669";
+        labels.forEach(lbl => lbl.classList.add('disabled'));
+        radios.forEach(radio => radio.disabled = true);
+
+        // Kiểm tra đúng / sai
+        const selectedLabel = document.getElementById(`lbl_${qIndex}_${selectedKey}`);
+        const correctLabel = document.getElementById(`lbl_${qIndex}_${correctKey}`);
+
+        if (selectedKey === correctKey) {
+            // Trả lời ĐÚNG
+            selectedLabel.classList.add('correct');
+            selectedLabel.querySelector('.icon-result').innerText = '✔️';
+            currentScore++;
         } else {
-            scoreCircle.className = 'score-circle score-fail';
-            scoreMessage.innerText = "Tổng tài cần ôn lại binh pháp thêm chút nữa! 📚";
-            scoreMessage.style.color = "var(--danger)";
+            // Trả lời SAI
+            selectedLabel.classList.add('wrong');
+            selectedLabel.querySelector('.icon-result').innerText = '❌';
+            
+            // Hiển thị đáp án đúng
+            correctLabel.classList.add('show-correct');
+            correctLabel.querySelector('.icon-result').innerText = '✔️';
         }
 
-        // Cuộn mượt lên trên cùng
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Vô hiệu hóa form
-        const inputs = document.querySelectorAll('input[type="radio"]');
-        inputs.forEach(input => input.disabled = true);
+        // Cập nhật thống kê
+        answeredQuestions++;
+        scoreEl.innerText = currentScore;
+        answeredCountEl.innerText = answeredQuestions;
+        progressBar.style.width = (answeredQuestions / totalQuestions * 100) + '%';
+
+        // Tự động cuộn xuống câu tiếp theo (nếu mượt)
+        const nextCard = document.getElementById(`qCard_${qIndex + 1}`);
+        if (nextCard) {
+            setTimeout(() => {
+                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 600);
+        }
+
+        // Kiểm tra xem đã hoàn thành chưa
+        if (answeredQuestions === totalQuestions) {
+            showCompletion();
+        }
     }
 
-    // Khởi chạy
+    function showCompletion() {
+        completionModal.style.display = 'block';
+        finalScore.innerText = `${currentScore}/${totalQuestions}`;
+        
+        const percent = currentScore / totalQuestions;
+        if (percent >= 0.8) {
+            finalMessage.innerText = "Tuyệt vời! Kiến thức của bạn rất vững chắc.";
+        } else if (percent >= 0.5) {
+            finalMessage.innerText = "Khá tốt! Bạn đã nắm được nội dung cơ bản.";
+        } else {
+            finalMessage.innerText = "Cố gắng ôn tập thêm các nội dung trong SGK nhé!";
+        }
+
+        setTimeout(() => {
+            completionModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1000);
+    }
+
+    // Khởi tạo
     renderQuiz();
 </script>
 
