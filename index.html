@@ -3,482 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ôn tập SQL - Bản Pro Max Haha</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Trắc Nghiệm GDQP&AN 11 - PRO VIP</title>
     <style>
         :root {
-            --primary: #8e44ad; --secondary: #9b59b6;
-            --success: #27ae60; --danger: #e74c3c;
-            --warning: #f39c12; --bg: #2c3e50;
-            --text-main: #2c3e50;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            min-height: 100vh; display: flex; justify-content: center; align-items: center;
-            color: var(--text-main); overflow-x: hidden; padding: 20px;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f3f4f6 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
         }
-        .app-container {
-            width: 100%; max-width: 850px; background: rgba(255, 255, 255, 0.97);
-            border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            overflow: hidden; position: relative;
-        }
-        /* --- MÀN HÌNH BẮT ĐẦU --- */
-        #start-screen, #result-screen { padding: 50px 30px; text-align: center; }
-        h1 { font-size: 2.8rem; color: var(--primary); margin-bottom: 10px; font-weight: 900; text-transform: uppercase; }
-        .description { font-size: 1.1rem; color: #7f8c8d; margin-bottom: 25px; font-weight: 700; }
-        
-        .leaderboard-box { background: #fdf2e9; padding: 20px; border-radius: 15px; margin: 0 auto 30px; max-width: 400px; border: 2px dashed var(--warning); }
-        .leaderboard-box h3 { color: #d35400; margin-bottom: 10px; }
-        .leaderboard-list { list-style: none; text-align: left; }
-        .leaderboard-list li { padding: 8px 0; border-bottom: 1px solid #fadbd8; font-weight: bold; display: flex; justify-content: space-between;}
-        
-        .btn {
-            background: linear-gradient(45deg, var(--primary), #e74c3c);
-            color: white; border: none; padding: 18px 50px; font-size: 1.4rem;
-            font-weight: 900; border-radius: 50px; cursor: pointer;
-            transition: all 0.3s; box-shadow: 0 10px 20px rgba(142, 68, 173, 0.4);
-        }
-        .btn:hover { transform: translateY(-5px) scale(1.05); }
-        
-        /* --- MÀN HÌNH CHƠI --- */
-        #quiz-screen { display: none; padding: 30px; position: relative; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 1.2rem; font-weight: bold; }
-        .timer-circle {
-            background: var(--bg); color: white; width: 65px; height: 65px;
-            border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            font-size: 2rem; font-weight: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.3s;
-        }
-        .timer-circle.warning { background: var(--danger); animation: pulse 0.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        .score-box { background: #f1c40f; color: #d35400; padding: 10px 20px; border-radius: 12px; font-size: 1.4rem;}
-        
-        /* Power-ups */
-        .powerups-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-        .powerup-btn {
-            background: #ecf0f1; border: 2px solid #bdc3c7; border-radius: 50px; padding: 10px 20px;
-            font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px;
-        }
-        .powerup-btn:hover:not(.used) { background: #dff9fb; border-color: #7ed6df; transform: translateY(-3px); }
-        .powerup-btn.used { background: #e0e0e0; color: #a0a0a0; text-decoration: line-through; cursor: not-allowed; border-color: #e0e0e0; opacity: 0.6; }
-        
-        .question-text { font-size: 1.5rem; font-weight: 900; margin-bottom: 30px; line-height: 1.4; text-align: center; }
-        
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .option-btn {
-            background: white; border: 3px solid #ecf0f1; padding: 20px;
-            font-size: 1.2rem; border-radius: 16px; cursor: pointer; text-align: left;
-            transition: all 0.2s; font-weight: 700; color: var(--text-main); position: relative;
-        }
-        .option-btn:hover:not(:disabled) { border-color: var(--secondary); background: #f9efff; transform: translateY(-3px); }
-        .option-btn.correct { background: var(--success) !important; border-color: var(--success) !important; color: white !important; }
-        .option-btn.wrong { background: var(--danger) !important; border-color: var(--danger) !important; color: white !important; }
-        .option-btn.hidden-5050 { visibility: hidden; opacity: 0; } /* Hiệu ứng 50/50 */
 
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
-        .shake-screen { animation: shake 0.4s both; }
-
-        #combo-popup {
-            position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%) scale(0);
-            font-size: 4rem; font-weight: 900; color: #f1c40f; text-shadow: 3px 3px 0 #d35400;
-            opacity: 0; pointer-events: none; z-index: 10;
+        .header {
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .show-combo { animation: popIn 1s ease-out forwards; }
-        @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
 
-        /* --- MÀN HÌNH KẾT QUẢ & REVIEW --- */
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            margin-top: 15px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text {
+            margin-top: 5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid var(--primary);
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.3);
+            accent-color: var(--primary);
+        }
+
+        /* Khi radio được chọn */
+        .option-label:has(input:checked) {
+            border-color: var(--primary);
+            background-color: #e0e7ff;
+        }
+
+        .submit-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.39);
+        }
+
+        #result-board {
+            display: none;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
         .score-circle {
-            width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, #f1c40f, #e67e22);
-            color: white; display: flex; justify-content: center; align-items: center; flex-direction: column; margin: 0 auto 20px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            margin: 0 auto 20px;
         }
-        .score-circle span.big { font-size: 3rem; font-weight: 900; }
-        
-        .review-section { margin-top: 30px; text-align: left; display: none; }
-        .review-btn { background: #34495e; color: white; padding: 10px 20px; border: none; border-radius: 10px; cursor: pointer; font-size: 1.1rem; font-weight: bold; width: 100%; margin-bottom: 15px;}
-        .mistake-card { background: #ffeded; border-left: 5px solid var(--danger); padding: 15px; margin-bottom: 15px; border-radius: 8px; }
-        .mistake-q { font-weight: 900; margin-bottom: 8px; font-size: 1.1rem; }
-        .mistake-wrong { color: var(--danger); text-decoration: line-through; margin-bottom: 5px; }
-        .mistake-correct { color: var(--success); font-weight: bold; }
 
-        @media (min-width: 600px) { .options-grid { grid-template-columns: 1fr 1fr; } }
+        .score-pass { background-color: var(--success); }
+        .score-fail { background-color: var(--danger); }
+
+        /* Highlight sau khi nộp */
+        .correct { background-color: #d1fae5 !important; border-color: var(--success) !important; color: #065f46; }
+        .wrong { background-color: #fee2e2 !important; border-color: var(--danger) !important; color: #991b1b; }
+        
+        .lesson-tag {
+            font-size: 0.8rem;
+            background: #e0e7ff;
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: inline-block;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <div class="app-container" id="main-container">
-        
-        <!-- Màn hình bắt đầu -->
-        <div id="start-screen">
-            <h1>Đấu Trường SQL</h1>
-            <p class="description">Phiên bản Tối Thượng - Có Quyền Trợ Giúp & Lưu Điểm</p>
-            
-            <div class="leaderboard-box">
-                <h3>🏆 Bảng Phong Thần (Top 5)</h3>
-                <ul class="leaderboard-list" id="leaderboard-list">
-                    <li>Chưa có dữ liệu. Hãy chơi để lập kỷ lục!</li>
-                </ul>
-            </div>
-            
-            <button class="btn" onclick="startQuiz()">🔥 VÀO THI NGAY</button>
-        </div>
+<div class="header">
+    <h1>Hệ Thống Trắc Nghiệm GDQP 11</h1>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText">Đã trả lời: 0/50 câu</div>
+</div>
 
-        <!-- Màn hình làm bài -->
-        <div id="quiz-screen">
-            <div class="top-bar">
-                <span id="question-counter">Câu: 1/50</span>
-                <div class="timer-circle" id="timer-display">20</div>
-                <span class="score-box" id="score-counter">0 đ</span>
-            </div>
-            
-            <!-- Khu vực Item Trợ giúp -->
-            <div class="powerups-container">
-                <button class="powerup-btn" id="btn-5050" onclick="use5050()">✂️ 50/50</button>
-                <button class="powerup-btn" id="btn-time" onclick="useTime()">⏳ +15s</button>
-                <button class="powerup-btn" id="btn-skip" onclick="useSkip()">⏭️ Bỏ qua</button>
-            </div>
-
-            <div id="combo-popup">🔥 COMBO!</div>
-            <div class="question-text" id="question-text">Đang tải câu hỏi...</div>
-            <div class="options-grid" id="options-container"></div>
-        </div>
-
-        <!-- Màn hình kết quả -->
-        <div id="result-screen" style="display: none;">
-            <h1 id="result-title">Kết thúc!</h1>
-            <div class="score-circle">
-                <span class="big" id="final-score">0</span>
-                <span style="font-weight: bold;">ĐIỂM TỔNG</span>
-            </div>
-            
-            <p style="font-size: 1.3rem; margin-bottom: 20px; font-weight: bold;">
-                Đúng: <span id="correct-count" style="color:var(--success)">0</span> | 
-                Sai: <span id="wrong-count" style="color:var(--danger)">0</span>
-            </p>
-
-            <button class="btn" onclick="location.reload()" style="margin-bottom: 20px;">🔄 VỀ TRANG CHỦ</button>
-            
-            <button class="review-btn" id="toggle-review-btn" onclick="toggleReview()">🔍 Xem lại các câu đã làm sai</button>
-            <div class="review-section" id="review-section">
-                <!-- Chứa các câu sai -->
-            </div>
-        </div>
+<div class="container">
+    <div id="result-board">
+        <h2 style="margin-top: 0;">KẾT QUẢ CỦA TỔNG TÀI</h2>
+        <div class="score-circle" id="scoreCircle">0/50</div>
+        <p id="scoreMessage" style="font-size: 1.2rem; font-weight: bold;"></p>
+        <button class="btn-submit" onclick="location.reload()" style="padding: 10px 25px; font-size: 1rem; margin-top: 15px;">Làm Lại</button>
     </div>
 
-    <script>
-        // Dữ liệu 50 câu (Giữ nguyên)
-        const rawQuestions = [
-            { q: "Một trong những công việc thường gặp nhất trong xử lí thông tin của một bài toán quản lí là gì?", a: "Sắp xếp phần cứng máy tính.", b: "Lập trình web.", c: "Tạo lập, cập nhật, tìm kiếm và kết xuất thông tin.", d: "Cài đặt hệ điều hành.", ans: "c" },
-            { q: "Cơ sở dữ liệu (Database) được định nghĩa cơ bản là gì?", a: "Một tập hợp các tệp văn bản lưu trên USB.", b: "Tập hợp các dữ liệu có liên quan với nhau, được lưu trữ trên máy tính.", c: "Một phần mềm dùng để soạn thảo văn bản.", d: "Máy chủ cung cấp dịch vụ mạng.", ans: "b" },
-            { q: "Hệ quản trị cơ sở dữ liệu (DBMS) là gì?", a: "Là phần cứng chuyên dụng lưu trữ dữ liệu.", b: "Là phần mềm cung cấp môi trường thuận lợi và hiệu quả để tạo lập, lưu trữ và khai thác thông tin của CSDL.", c: "Là ngôn ngữ lập trình tạo ra CSDL.", d: "Là trình duyệt web để xem CSDL.", ans: "b" },
-            { q: "Quá trình 'Cập nhật dữ liệu' trong bài toán quản lí bao gồm những thao tác nào?", a: "Chỉ thêm dữ liệu mới.", b: "Tìm kiếm và in báo cáo.", c: "Thêm, sửa, xóa dữ liệu.", d: "Sắp xếp dữ liệu theo vần A-Z.", ans: "c" },
-            { q: "'Kết xuất thông tin' từ CSDL KHÔNG bao gồm công việc nào dưới đây?", a: "Tìm kiếm các bản ghi thỏa mãn điều kiện.", b: "Lập báo cáo, thống kê.", c: "Xóa toàn bộ CSDL.", d: "In dữ liệu ra giấy.", ans: "c" },
-            { q: "Phần mềm HeidiSQL là gì?", a: "Hệ điều hành cho máy chủ.", b: "Phần mềm đồ họa mã nguồn mở dùng để quản trị CSDL MySQL, MariaDB...", c: "Ngôn ngữ lập trình CSDL.", d: "Phần mềm bảo mật dữ liệu.", ans: "b" },
-            { q: "Trong HeidiSQL, để tạo một CSDL mới ta thực hiện thao tác nào?", a: "Vào menu Edit -> New Database.", b: "Nháy đúp chuột vào màn hình chính.", c: "Nháy chuột phải ở vùng danh sách CSDL bên trái -> Tạo mới -> Cơ sở dữ liệu.", d: "Bấm tổ hợp Ctrl + N.", ans: "c" },
-            { q: "Kiểu dữ liệu INT trong MySQL/HeidiSQL được dùng để lưu trữ gì?", a: "Số thực.", b: "Số nguyên.", c: "Kí tự văn bản.", d: "Thời gian.", ans: "b" },
-            { q: "Để lưu trữ chuỗi kí tự có độ dài biến đổi, ta dùng kiểu dữ liệu nào?", a: "INT", b: "DATE", c: "VARCHAR", d: "FLOAT", ans: "c" },
-            { q: "Kiểu dữ liệu DATE dùng để lưu thông tin gì?", a: "Ngày tháng năm.", b: "Giờ phút giây.", c: "Đoạn văn bản dài.", d: "Số thập phân.", ans: "a" },
-            { q: "Thuộc tính AUTO_INCREMENT trong định nghĩa cột có ý nghĩa gì?", a: "Không cho phép nhập giá trị Null.", b: "Tự động tăng giá trị lên 1 mỗi khi thêm bản ghi mới.", c: "Tự động sắp xếp cột.", d: "Tự động xóa bản ghi lỗi.", ans: "b" },
-            { q: "Tại cửa sổ cấu trúc bảng của HeidiSQL, mục 'Not null' nếu được tích chọn có nghĩa là gì?", a: "Trường này chỉ nhận số 0.", b: "Trường này bắt buộc phải có giá trị, không được để trống.", c: "Trường này là khóa ngoài.", d: "Trường này có thể để trống.", ans: "b" },
-            { q: "Để đổi tên một bảng trong HeidiSQL, ta dùng phím tắt nào sau khi chọn bảng đó?", a: "F1", b: "F2", c: "F3", d: "F5", ans: "b" },
-            { q: "Để xem toàn bộ dữ liệu đang có trong một bảng trên HeidiSQL, ta chuyển sang thẻ nào?", a: "Cấu trúc (Table).", b: "Dữ liệu (Data).", c: "Khóa ngoài (Foreign keys).", d: "Chỉ mục (Indexes).", ans: "b" },
-            { q: "Tại sao chúng ta cần sao lưu (Backup) CSDL?", a: "Để CSDL chạy nhanh hơn.", b: "Phòng ngừa rủi ro mất mát dữ liệu do sự cố hoặc thao tác sai.", c: "Để mã hóa dữ liệu.", d: "Tự động tạo bảng mới.", ans: "b" },
-            { q: "Trong HeidiSQL, thao tác xuất (sao lưu) CSDL sẽ tạo ra tệp có phần mở rộng mặc định là gì?", a: ".doc", b: ".xls", c: ".txt", d: ".sql", ans: "d" },
-            { q: "Để tạo khóa chính (Primary Key) cho một trường trong HeidiSQL, ta nháy chuột phải vào trường đó và chọn gì?", a: "Tạo chỉ mục mới -> Khóa ngoài", b: "Tạo chỉ mục mới -> Khóa chính (PRIMARY)", c: "Chèn cột mới", d: "Xóa cột", ans: "b" },
-            { q: "Mô hình dữ liệu quan hệ tổ chức dữ liệu dưới dạng nào?", a: "Dạng sơ đồ cây.", b: "Dạng đồ thị.", c: "Các bảng (Table) có mối quan hệ với nhau.", d: "Danh sách liên kết.", ans: "c" },
-            { q: "Mỗi cột trong bảng CSDL quan hệ còn được gọi là gì?", a: "Bản ghi (Record).", b: "Trường (Field).", c: "Khóa (Key).", d: "Quan hệ (Relation).", ans: "b" },
-            { q: "Mỗi hàng trong bảng biểu diễn điều gì?", a: "Một thuộc tính của đối tượng.", b: "Cấu trúc của bảng.", c: "Một bản ghi (Record) chứa thông tin cụ thể về một đối tượng.", d: "Một kiểu dữ liệu.", ans: "c" },
-            { q: "Khóa chính (Primary Key) của một bảng mang đặc điểm gì?", a: "Có thể để trống.", b: "Giá trị có thể trùng lặp.", c: "Phân biệt duy nhất mỗi bản ghi trong bảng và không được để trống.", d: "Có thể có nhiều khóa chính độc lập.", ans: "c" },
-            { q: "Có thể dùng sự kết hợp của nhiều cột để làm khóa chính được không?", a: "Không, chỉ được phép 1 cột.", b: "Có, được gọi là khóa chính phức hợp.", c: "Chỉ được khi dữ liệu là số.", d: "Chỉ được đối với khóa ngoài.", ans: "b" },
-            { q: "Mục đích của Khóa ngoài (Foreign Key) là gì?", a: "Dùng để tìm kiếm cho nhanh.", b: "Thiết lập mối liên kết giữa hai bảng với nhau.", c: "Thay thế cho khóa chính.", d: "Tự động tính toán.", ans: "b" },
-            { q: "Ràng buộc toàn vẹn tham chiếu (Foreign Key Constraint) đảm bảo điều gì?", a: "Không cho phép nhập giá trị khóa ngoài nếu nó không tồn tại ở khóa chính của bảng tham chiếu.", b: "Hai bảng phải có cùng số bản ghi.", c: "Tên các cột phải giống nhau.", d: "Không thể thêm dữ liệu vào bảng chính.", ans: "a" },
-            { q: "Khi khai báo khóa ngoài, hai trường liên kết cần có sự đồng nhất về yếu tố nào nhất?", a: "Cùng tên cột.", b: "Cùng độ rộng.", c: "Cùng kiểu dữ liệu.", d: "Cùng thuộc tính Auto_increment.", ans: "c" },
-            { q: "Nếu cố tình XÓA một bản ghi ở bảng cha đang được tham chiếu bởi bảng con, hệ thống sẽ làm gì (nếu ràng buộc nghiêm ngặt)?", a: "Tự động xóa dữ liệu ở bảng con.", b: "Báo lỗi vi phạm khóa ngoại và từ chối xóa.", c: "Chuyển khóa ngoại thành Null.", d: "Xóa bình thường.", ans: "b" },
-            { q: "Khi nhập liệu vào bảng có quan hệ khóa chính - khóa ngoài, ta phải tuân theo thứ tự nào?", a: "Bảng con trước.", b: "Bảng nào trước cũng được.", c: "Bảng cha (khóa chính) trước.", d: "Cả 2 bảng cùng lúc.", ans: "c" },
-            { q: "Hệ quản trị CSDL nào sau đây thuộc loại HQTCSDL quan hệ?", a: "MongoDB", b: "MySQL", c: "Redis", d: "Neo4j", ans: "b" },
-            { q: "Bảng 'Mượn Trả' lấy 'Mã thẻ' từ bảng 'Bạn Đọc'. 'Mã thẻ' trong bảng 'Mượn Trả' gọi là gì?", a: "Khóa chính.", b: "Khóa ngoài.", c: "Khóa ảo.", d: "Bản ghi.", ans: "b" },
-            { q: "SQL là viết tắt của cụm từ tiếng Anh nào?", a: "Standard Question Language", b: "Structured Query Language", c: "System Query Logic", d: "Simple Query Language", ans: "b" },
-            { q: "Lệnh SQL nào dùng để LẤY / TRUY XUẤT dữ liệu từ CSDL?", a: "GET", b: "PULL", c: "SELECT", d: "EXTRACT", ans: "c" },
-            { q: "Từ khóa nào đi kèm với SELECT dùng để chỉ định bảng muốn lấy dữ liệu?", a: "WHERE", b: "FROM", c: "TABLE", d: "IN", ans: "b" },
-            { q: "Mệnh đề nào dùng để thiết lập ĐIỀU KIỆN lọc bản ghi?", a: "FILTER", b: "IF", c: "WHERE", d: "CONDITION", ans: "c" },
-            { q: "Câu lệnh `SELECT * FROM hocsinh;` mang ý nghĩa gì?", a: "Lấy tất cả cột và bản ghi từ bảng hocsinh.", b: "Tính tổng bản ghi.", c: "Xóa toàn bộ bảng.", d: "Sao chép bảng.", ans: "a" },
-            { q: "Để chỉ lấy cột 'HoTen' và 'Diem' từ bảng 'HocSinh', ta viết lệnh nào?", a: "SELECT HoTen, Diem FROM HocSinh;", b: "SELECT * FROM HocSinh WHERE HoTen, Diem;", c: "SELECT HocSinh FROM HoTen, Diem;", d: "GET HoTen, Diem FROM HocSinh;", ans: "a" },
-            { q: "Lệnh SQL nào dùng để THÊM một bản ghi mới?", a: "ADD RECORD", b: "CREATE ROW", c: "INSERT INTO", d: "UPDATE", ans: "c" },
-            { q: "Cú pháp cơ bản nào sau đây đúng đối với lệnh INSERT?", a: "INSERT (giá 1, giá 2) INTO Tên_bảng;", b: "INSERT INTO Tên_bảng (Cột 1, Cột 2) VALUES (giá 1, giá 2);", c: "INSERT VALUES (giá 1) TO Tên_bảng;", d: "ADD INTO Tên_bảng (Cột 1) VALUES (giá 1);", ans: "b" },
-            { q: "Khi làm việc với chuỗi (Varchar) trong SQL, giá trị chuỗi phải đặt trong dấu gì?", a: "Ngoặc vuông [ ]", b: "Ngoặc nhọn { }", c: "Nháy đơn ' '", d: "Không cần dấu", ans: "c" },
-            { q: "Lệnh SQL nào dùng để SỬA / CẬP NHẬT dữ liệu đã có?", a: "CHANGE", b: "MODIFY", c: "UPDATE", d: "ALTER", ans: "c" },
-            { q: "Nếu chạy `UPDATE HocSinh SET Diem = 10;` (KHÔNG CÓ WHERE), điều gì xảy ra?", a: "Báo lỗi.", b: "Hỏi xác nhận.", c: "Tất cả học sinh đều được cập nhật Diem = 10.", d: "Chỉ bản ghi đầu được cập nhật.", ans: "c" },
-            { q: "Lệnh SQL nào dùng để XÓA các bản ghi khỏi bảng?", a: "DELETE FROM", b: "DROP TABLE", c: "REMOVE", d: "CLEAR", ans: "a" },
-            { q: "Lệnh `DROP TABLE HocSinh;` khác gì so với `DELETE FROM HocSinh;`?", a: "Giống nhau.", b: "DROP xóa luôn cấu trúc bảng, DELETE chỉ xóa dữ liệu.", c: "DELETE xóa cấu trúc, DROP xóa dữ liệu.", d: "DROP chỉ dùng cho khóa ngoài.", ans: "b" },
-            { q: "Để lấy học sinh có điểm lớn hơn 8, mệnh đề WHERE viết thế nào?", a: "WHERE Diem => 8", b: "WHERE Diem > 8", c: "WHERE Diem >< 8", d: "WHERE 8 < Diem > 10", ans: "b" },
-            { q: "Toán tử nào trong SQL dùng để kiểm tra sự KHÁC NHAU?", a: "==", b: "<> hoặc !=", c: "><", d: "NOT", ans: "b" },
-            { q: "Từ khóa JOIN dùng để làm gì?", a: "Nối hai chuỗi kí tự.", b: "Sắp xếp dữ liệu.", c: "Kết nối dữ liệu từ 2 hoặc nhiều bảng dựa trên khóa liên kết.", d: "Gộp CSDL.", ans: "c" },
-            { q: "Toán tử LIKE trong `WHERE HoTen LIKE 'Nguyễn%'` có tác dụng gì?", a: "Tìm người có chữ 'Nguyễn' ở cuối.", b: "Tìm người có chuỗi bắt đầu bằng 'Nguyễn'.", c: "Tìm người có chữ 'Nguyễn' ở bất kì đâu.", d: "Xóa người họ 'Nguyễn'.", ans: "b" },
-            { q: "Câu lệnh nào dùng để sắp xếp kết quả truy vấn?", a: "SORT BY", b: "GROUP BY", c: "ORDER BY", d: "ALIGN BY", ans: "c" },
-            { q: "Để sắp xếp giảm dần, ta thêm từ khóa nào sau ORDER BY?", a: "ASC", b: "DESC", c: "DOWN", d: "REVERSE", ans: "b" },
-            { q: "Trong HeidiSQL, phím tắt phổ biến để thực thi (chạy) SQL là phím nào?", a: "F9", b: "F5", c: "Enter", d: "Ctrl + S", ans: "a" },
-            { q: "Nhóm lệnh SQL (INSERT, UPDATE, DELETE) được gọi chung là thao tác gì?", a: "Khai báo cấu trúc.", b: "Cập nhật dữ liệu.", c: "Phân quyền bảo mật.", d: "Kiểm tra toàn vẹn.", ans: "b" }
-        ];
+    <form id="quizForm">
+        <!-- Các câu hỏi sẽ được sinh ra ở đây -->
+    </form>
+    
+    <div class="submit-container">
+        <button type="button" class="btn-submit" onclick="submitQuiz()">CHỐT ĐÁP ÁN</button>
+    </div>
+</div>
 
-        let quizQuestions = [], currentQuestionIndex = 0;
-        let totalScore = 0, correctAnswersCount = 0, comboStreak = 0;
-        let timer, timeLeft = 20, isAnswering = false;
-        
-        // Trạng thái vật phẩm & danh sách câu sai
-        let used5050 = false, usedTime = false, usedSkip = false;
-        let mistakesList = [];
+<script>
+    // BỘ 50 CÂU HỎI (15 câu Bài 2, 35 câu Bài 6)
+    const questions = [
+        // --- BÀI 2: Luật Nghĩa vụ quân sự và trách nhiệm ---
+        { l: "Bài 2", q: "Theo Luật NVQS 2015, công dân nam đủ bao nhiêu tuổi trở lên phải đăng ký nghĩa vụ quân sự?", opts: { A: "16 tuổi", B: "17 tuổi", C: "18 tuổi", D: "19 tuổi" }, a: "B" },
+        { l: "Bài 2", q: "Độ tuổi gọi nhập ngũ trong thời bình đối với công dân nam không học cao đẳng, đại học là?", opts: { A: "18 đến hết 22 tuổi", B: "18 đến hết 25 tuổi", C: "18 đến hết 27 tuổi", D: "18 đến hết 30 tuổi" }, a: "B" },
+        { l: "Bài 2", q: "Công dân nam được đào tạo trình độ cao đẳng, đại học đã được tạm hoãn thì độ tuổi gọi nhập ngũ đến hết bao nhiêu tuổi?", opts: { A: "25 tuổi", B: "26 tuổi", C: "27 tuổi", D: "28 tuổi" }, a: "C" },
+        { l: "Bài 2", q: "Cơ quan nào có thẩm quyền đăng ký nghĩa vụ quân sự cho công dân cư trú tại địa phương?", opts: { A: "Công an cấp xã", B: "UBND cấp huyện", C: "Ban Chỉ huy quân sự cấp xã", D: "Hội đồng NVQS cấp tỉnh" }, a: "C" },
+        { l: "Bài 2", q: "Thời gian khám sức khỏe gọi nhập ngũ và thực hiện nghĩa vụ tham gia CAND hàng năm thường diễn ra vào thời gian nào?", opts: { A: "Từ 1/1 đến 30/2", B: "Từ 1/11 đến 31/12", C: "Từ 1/5 đến 31/6", D: "Từ 1/8 đến 30/9" }, a: "B" },
+        { l: "Bài 2", q: "Lễ giao nhận quân hằng năm thường được tổ chức vào khoảng thời gian nào?", opts: { A: "Tháng 2 hoặc tháng 3", B: "Tháng 11 hoặc tháng 12", C: "Tháng 5 hoặc tháng 6", D: "Tháng 8 hoặc tháng 9" }, a: "A" },
+        { l: "Bài 2", q: "Hành vi nào sau đây bị nghiêm cấm trong thực hiện nghĩa vụ quân sự?", opts: { A: "Đăng ký NVQS đúng hạn", B: "Trốn tránh thực hiện NVQS", C: "Khám sức khỏe theo lệnh gọi", D: "Chấp hành lệnh gọi nhập ngũ" }, a: "B" },
+        { l: "Bài 2", q: "Công dân nữ có phải thực hiện nghĩa vụ quân sự không?", opts: { A: "Bắt buộc như nam giới", B: "Hoàn toàn không được tham gia", C: "Tự nguyện tham gia nếu quân đội có nhu cầu", D: "Chỉ được làm công tác y tế" }, a: "C" },
+        { l: "Bài 2", q: "Thời hạn phục vụ tại ngũ trong thời bình của hạ sĩ quan, binh sĩ là bao nhiêu tháng?", opts: { A: "12 tháng", B: "18 tháng", C: "24 tháng", D: "36 tháng" }, a: "C" },
+        { l: "Bài 2", q: "Thời hạn thực hiện nghĩa vụ tham gia Công an nhân dân là bao nhiêu tháng?", opts: { A: "18 tháng", B: "24 tháng", C: "30 tháng", D: "36 tháng" }, a: "B" },
+        { l: "Bài 2", q: "Đối tượng nào sau đây được TẠM HOÃN gọi nhập ngũ?", opts: { A: "Con của liệt sĩ", B: "Học sinh đang học THPT", C: "Người không đủ sức khỏe phục vụ tại ngũ", D: "Cán bộ, công chức" }, a: "B" },
+        { l: "Bài 2", q: "Đối tượng nào sau đây được MIỄN gọi nhập ngũ?", opts: { A: "Sinh viên đại học", B: "Người lao động duy nhất nuôi gia đình", C: "Con của liệt sĩ, con của thương binh hạng một", D: "Học sinh giỏi cấp quốc gia" }, a: "C" },
+        { l: "Bài 2", q: "Tiêu chuẩn tuyển quân thực hiện nghĩa vụ tham gia CAND bao gồm những gì?", opts: { A: "Chỉ cần đủ chiều cao và cân nặng", B: "Lý lịch rõ ràng, nghiêm chỉnh chấp hành pháp luật, đủ sức khỏe", C: "Phải là đảng viên Đảng Cộng sản Việt Nam", D: "Phải tốt nghiệp đại học trở lên" }, a: "B" },
+        { l: "Bài 2", q: "Một trong những trách nhiệm của học sinh trong việc thực hiện NVQS là?", opts: { A: "Tìm mọi cách để được tạm hoãn", B: "Không cần tìm hiểu pháp luật về NVQS", C: "Học tập chính trị, quân sự; chấp hành quy định về đăng ký NVQS", D: "Tự ý bỏ học để nhập ngũ" }, a: "C" },
+        { l: "Bài 2", q: "Việc xử lý công dân vi phạm pháp luật về nghĩa vụ quân sự được quy định như thế nào?", opts: { A: "Chỉ bị nhắc nhở", B: "Xử phạt hành chính hoặc truy cứu trách nhiệm hình sự", C: "Đuổi học hoặc buộc thôi việc", D: "Không bị xử lý nếu dưới 18 tuổi" }, a: "B" },
 
-        // Load Bảng xếp hạng khi mở trang
-        window.onload = function() { loadLeaderboard(); };
+        // --- BÀI 6: Súng bộ binh, thuốc nổ, vật cản và vũ khí tự tạo ---
+        { l: "Bài 6", q: "Súng tiểu liên AK do ai thiết kế?", opts: { A: "M.T. Kalashnikov", B: "Simonov", C: "Makarov", D: "Tokarev" }, a: "A" },
+        { l: "Bài 6", q: "Súng tiểu liên AK (phiên bản chuẩn) ra đời vào năm nào?", opts: { A: "1943", B: "1945", C: "1947", D: "1954" }, a: "C" },
+        { l: "Bài 6", q: "Cỡ đạn của súng tiểu liên AK là bao nhiêu?", opts: { A: "5,56 mm", B: "7,62 mm", C: "9 mm", D: "12,7 mm" }, a: "B" },
+        { l: "Bài 6", q: "Súng tiểu liên AK trang bị cho ai?", opts: { A: "Chỉ trang bị cho sĩ quan", B: "Từng người sử dụng", C: "Tổ 3 người sử dụng", D: "Trang bị cho cấp tiểu đội dùng chung" }, a: "B" },
+        { l: "Bài 6", q: "Súng AK có thể tiêu diệt sinh lực địch bằng cách nào?", opts: { A: "Chỉ bằng hỏa lực", B: "Bằng hỏa lực, lưỡi lê và báng súng", C: "Chỉ dùng để bắn tỉa", D: "Bằng cách phóng lựu đạn" }, a: "B" },
+        { l: "Bài 6", q: "Tầm bắn ghi trên thước ngắm của súng tiểu liên AK là bao nhiêu?", opts: { A: "500m", B: "800m (hoặc 1000m tùy phiên bản)", C: "1500m", D: "2000m" }, a: "B" },
+        { l: "Bài 6", q: "Tầm bắn hiệu quả của súng tiểu liên AK là bao nhiêu?", opts: { A: "300m", B: "400m", C: "500m", D: "800m" }, a: "B" },
+        { l: "Bài 6", q: "Sơ tốc đầu đạn của súng tiểu liên AK là bao nhiêu?", opts: { A: "715 m/s", B: "820 m/s", C: "900 m/s", D: "1000 m/s" }, a: "A" },
+        { l: "Bài 6", q: "Tốc độ bắn lý thuyết của súng AK là bao nhiêu phát/phút?", opts: { A: "100 phát/phút", B: "400 phát/phút", C: "600 phát/phút", D: "800 phát/phút" }, a: "C" },
+        { l: "Bài 6", q: "Tốc độ bắn thực tế ở chế độ liên thanh của súng AK là bao nhiêu phát/phút?", opts: { A: "40 phát/phút", B: "100 phát/phút", C: "200 phát/phút", D: "600 phát/phút" }, a: "B" },
+        { l: "Bài 6", q: "Tốc độ bắn thực tế ở chế độ phát một của súng AK là bao nhiêu phát/phút?", opts: { A: "40 phát/phút", B: "60 phát/phút", C: "100 phát/phút", D: "120 phát/phút" }, a: "A" },
+        { l: "Bài 6", q: "Trọng lượng của súng AK (không có đạn) là khoảng bao nhiêu?", opts: { A: "3,1 kg (AKM) / 3,8 kg (AK-47)", B: "4,5 kg", C: "2,5 kg", D: "5,0 kg" }, a: "A" },
+        { l: "Bài 6", q: "Hộp tiếp đạn của súng AK chứa được bao nhiêu viên đạn?", opts: { A: "20 viên", B: "30 viên", C: "40 viên", D: "45 viên" }, a: "B" },
+        { l: "Bài 6", q: "Súng tiểu liên AK có bao nhiêu bộ phận chính?", opts: { A: "9 bộ phận", B: "10 bộ phận", C: "11 bộ phận", D: "12 bộ phận" }, a: "C" },
+        { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để định hướng bay cho đầu đạn?", opts: { A: "Hộp khóa nòng", B: "Nòng súng", C: "Bộ phận ngắm", D: "Bệ khóa nòng" }, a: "B" },
+        { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để ngắm bắn vào các mục tiêu ở cự ly khác nhau?", opts: { A: "Bộ phận ngắm", B: "Khóa nòng", C: "Bệ khóa nòng", D: "Thoi đẩy" }, a: "A" },
+        { l: "Bài 6", q: "Chế độ bắn chủ yếu của súng tiểu liên AK là gì?", opts: { A: "Bắn phát một", B: "Bắn liên thanh", C: "Bắn tỉa", D: "Bắn găm" }, a: "B" },
+        { l: "Bài 6", q: "Thuốc nổ là gì?", opts: { A: "Chất rắn không cháy", B: "Hóa chất phát sáng", C: "Chất hoặc hỗn hợp chất hóa học, khi bị kích thích sẽ sinh ra phản ứng nổ", D: "Một loại khí độc" }, a: "C" },
+        { l: "Bài 6", q: "Thuốc nổ TNT có màu gì?", opts: { A: "Màu trắng", B: "Màu đen", C: "Màu vàng nhạt", D: "Màu xanh dương" }, a: "C" },
+        { l: "Bài 6", q: "Tính chất nào sau đây là của thuốc nổ TNT?", opts: { A: "Rất nhạy nổ với va đập, cọ xát", B: "Kém nhạy nổ với va đập, cọ xát", C: "Dễ tan trong nước", D: "Tự bốc cháy ở nhiệt độ phòng" }, a: "B" },
+        { l: "Bài 6", q: "Thuốc nổ TNT nóng chảy ở nhiệt độ bao nhiêu?", opts: { A: "50 °C", B: "81 °C", C: "100 °C", D: "310 °C" }, a: "B" },
+        { l: "Bài 6", q: "Thuốc nổ C4 có hình dạng và màu sắc như thế nào?", opts: { A: "Dạng bột màu đen", B: "Dạng tinh thể màu vàng", C: "Dẻo, màu trắng đục", D: "Dạng lỏng màu đỏ" }, a: "C" },
+        { l: "Bài 6", q: "So với TNT, độ nhạy nổ với va đập của thuốc nổ C4 như thế nào?", opts: { A: "Nhạy hơn rất nhiều", B: "Tương đương", C: "Kém nhạy hơn, an toàn hơn", D: "Không thể nổ khi va đập" }, a: "C" },
+        { l: "Bài 6", q: "Thuốc nổ C4 có tan trong nước không?", opts: { A: "Tan rất nhanh", B: "Không tan trong nước", C: "Chỉ tan trong nước nóng", D: "Tạo thành axit khi gặp nước" }, a: "B" },
+        { l: "Bài 6", q: "Thuốc nổ đen (thuốc phóng) có thành phần cấu tạo chủ yếu gồm những gì?", opts: { A: "Nitroglycerin và Cồn", B: "Diêm tiêu, than củi, lưu huỳnh", C: "Axit Nitric và Amoniac", D: "Nhựa đường và Xăng" }, a: "B" },
+        { l: "Bài 6", q: "Đặc điểm của thuốc nổ Amonit là gì?", opts: { A: "Màu trắng ngà, dễ hút ẩm, dễ vón cục", B: "Màu đen, cứng như đá", C: "Dạng dẻo, không sợ nước", D: "Dạng khí" }, a: "A" },
+        { l: "Bài 6", q: "Vật cản là gì?", opts: { A: "Các loại xe tăng, thiết giáp", B: "Những vật thể tự nhiên hoặc nhân tạo dùng để cản trở sự cơ động của địch", C: "Các trạm radar phát sóng", D: "Vũ khí hạt nhân" }, a: "B" },
+        { l: "Bài 6", q: "Vật cản được chia làm mấy loại chính?", opts: { A: "2 loại: tự nhiên và nhân tạo", B: "3 loại: trên không, trên bộ, dưới nước", C: "2 loại: của ta và của địch", D: "Chỉ có 1 loại duy nhất" }, a: "A" },
+        { l: "Bài 6", q: "Các vật thể như sông, suối, đầm lầy, vách núi được gọi là gì?", opts: { A: "Vật cản nổ", B: "Vật cản không nổ", C: "Vật cản tự nhiên", D: "Vật cản nhân tạo" }, a: "C" },
+        { l: "Bài 6", q: "Vật cản nhân tạo được chia thành những loại nào?", opts: { A: "Vật cản bằng sắt và bằng gỗ", B: "Vật cản nổ và vật cản không nổ", C: "Vật cản chống bộ binh và chống máy bay", D: "Vật cản điện và vật cản từ" }, a: "B" },
+        { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản nổ?", opts: { A: "Hàng rào thép gai", B: "Hào chống tăng", C: "Bãi mìn, lựu đạn gài", D: "Hố chông" }, a: "C" },
+        { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản KHÔNG nổ?", opts: { A: "Mìn chống tăng", B: "Lượng nổ lõm", C: "Hàng rào thép gai, chông, rào bùng nhùng", D: "Bom nổ chậm" }, a: "C" },
+        { l: "Bài 6", q: "Vũ khí tự tạo là gì?", opts: { A: "Vũ khí mua từ nước ngoài", B: "Vũ khí do lực lượng vũ trang hoặc nhân dân tự chế tạo", C: "Vũ khí công nghệ cao dùng AI", D: "Súng trường tiêu chuẩn của quân đội" }, a: "B" },
+        { l: "Bài 6", q: "Các loại vũ khí như chông, mìn, cạm bẫy thường được xếp vào nhóm nào?", opts: { A: "Vũ khí hủy diệt hàng loạt", B: "Vũ khí tự tạo / vật cản", C: "Vũ khí hạt nhân", D: "Vũ khí sinh học" }, a: "B" },
+        { l: "Bài 6", q: "Tác dụng của việc sử dụng vũ khí tự tạo trong chiến tranh nhân dân là gì?", opts: { A: "Tiêu diệt máy bay ném bom chiến lược", B: "Thay thế hoàn toàn súng đạn hiện đại", C: "Tiêu hao, tiêu diệt sinh lực địch, gây tâm lý hoang mang, cản trở cơ động", D: "Đánh chặn tên lửa hành trình" }, a: "C" }
+    ];
 
-        function loadLeaderboard() {
-            let scores = JSON.parse(localStorage.getItem('sql_leaderboard')) || [];
-            const listObj = document.getElementById('leaderboard-list');
-            if(scores.length > 0) {
-                listObj.innerHTML = '';
-                scores.forEach((s, idx) => {
-                    let medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '🏅';
-                    listObj.innerHTML += `<li><span>${medal} Kỷ lục ${idx+1}</span> <span>${s} điểm</span></li>`;
-                });
-            }
-        }
+    const form = document.getElementById("quizForm");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    let answeredQuestions = new Set();
 
-        function saveScoreToLocal(newScore) {
-            let scores = JSON.parse(localStorage.getItem('sql_leaderboard')) || [];
-            scores.push(newScore);
-            scores.sort((a, b) => b - a); // Xếp giảm dần
-            scores = scores.slice(0, 5); // Lấy top 5
-            localStorage.setItem('sql_leaderboard', JSON.stringify(scores));
-        }
-
-        function shuffleArray(array) {
-            let curId = array.length;
-            while (0 !== curId) {
-                let randId = Math.floor(Math.random() * curId); curId -= 1;
-                let tmp = array[curId]; array[curId] = array[randId]; array[randId] = tmp;
-            }
-            return array;
-        }
-
-        function startQuiz() {
-            quizQuestions = rawQuestions.map(q => {
-                let opts = [
-                    { text: q.a, isCorrect: q.ans === 'a' }, { text: q.b, isCorrect: q.ans === 'b' },
-                    { text: q.c, isCorrect: q.ans === 'c' }, { text: q.d, isCorrect: q.ans === 'd' }
-                ];
-                return { question: q.q, options: shuffleArray(opts) };
-            });
-            quizQuestions = shuffleArray(quizQuestions);
-            
-            // Reset trạng thái
-            currentQuestionIndex = 0; totalScore = 0; correctAnswersCount = 0; comboStreak = 0; mistakesList = [];
-            used5050 = false; usedTime = false; usedSkip = false;
-            
-            document.querySelectorAll('.powerup-btn').forEach(btn => btn.classList.remove('used'));
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('quiz-screen').style.display = 'block';
-
-            loadQuestion();
-        }
-
-        function startTimer() {
-            timeLeft = 20;
-            const tDisplay = document.getElementById('timer-display');
-            tDisplay.innerText = timeLeft; tDisplay.classList.remove('warning');
-            timer = setInterval(() => {
-                timeLeft--; tDisplay.innerText = timeLeft;
-                if(timeLeft <= 5) tDisplay.classList.add('warning');
-                if (timeLeft <= 0) { clearInterval(timer); handleTimeOut(); }
-            }, 1000);
-        }
-
-        function loadQuestion() {
-            isAnswering = false;
-            document.getElementById('main-container').classList.remove('shake-screen');
-            const currentQ = quizQuestions[currentQuestionIndex];
-            
-            document.getElementById('question-counter').innerText = `Câu: ${currentQuestionIndex + 1}/${quizQuestions.length}`;
-            document.getElementById('score-counter').innerText = `${totalScore} đ`;
-            document.getElementById('question-text').innerText = currentQ.question;
-
-            const optBox = document.getElementById('options-container');
-            optBox.innerHTML = '';
-            
-            currentQ.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerHTML = `<b>${String.fromCharCode(65 + index)}.</b> <span class="opt-text">${opt.text}</span>`;
-                btn.onclick = () => selectAnswer(opt.isCorrect, btn, optBox, opt.text);
-                optBox.appendChild(btn);
-            });
-            startTimer();
-        }
-
-        /* ----- POWER-UPS ----- */
-        function use5050() {
-            if(used5050 || isAnswering) return;
-            used5050 = true;
-            document.getElementById('btn-5050').classList.add('used');
-            
-            const currentQ = quizQuestions[currentQuestionIndex];
-            const btns = document.querySelectorAll('.option-btn');
-            let wrongIdx = [];
-            currentQ.options.forEach((opt, idx) => { if(!opt.isCorrect) wrongIdx.push(idx); });
-            
-            wrongIdx = shuffleArray(wrongIdx).slice(0, 2); // Chọn ngẫu nhiên 2 câu sai
-            wrongIdx.forEach(idx => btns[idx].classList.add('hidden-5050'));
-        }
-
-        function useTime() {
-            if(usedTime || isAnswering) return;
-            usedTime = true;
-            document.getElementById('btn-time').classList.add('used');
-            timeLeft += 15; // Cộng 15 giây
-            document.getElementById('timer-display').innerText = timeLeft;
-            document.getElementById('timer-display').classList.remove('warning');
-        }
-
-        function useSkip() {
-            if(usedSkip || isAnswering) return;
-            usedSkip = true;
-            isAnswering = true; // Chặn click
-            clearInterval(timer);
-            document.getElementById('btn-skip').classList.add('used');
-            
-            totalScore += 500;
-            correctAnswersCount++;
-            document.getElementById('score-counter').innerText = `${totalScore} đ`;
-            
-            const btns = document.querySelectorAll('.option-btn');
-            const currentQ = quizQuestions[currentQuestionIndex];
-            btns.forEach((btn, idx) => { if (currentQ.options[idx].isCorrect) btn.classList.add('correct'); });
-            
-            setTimeout(nextQuestion, 1500);
-        }
-        /* ---------------------- */
-
-        function handleTimeOut() {
-            if (isAnswering) return;
-            isAnswering = true; comboStreak = 0; triggerShake();
-            
-            const currentQ = quizQuestions[currentQuestionIndex];
-            let correctText = "";
-            const btns = document.querySelectorAll('.option-btn');
-            btns.forEach((btn, index) => {
-                btn.disabled = true;
-                if (currentQ.options[index].isCorrect) { btn.classList.add('correct'); correctText = currentQ.options[index].text; }
-            });
-
-            // Ghi nhận lỗi Hết giờ
-            mistakesList.push({ question: currentQ.question, chosen: "⏰ (Hết giờ)", correct: correctText });
-            setTimeout(nextQuestion, 2000);
-        }
-
-        function selectAnswer(isCorrect, selectedBtn, container, chosenText) {
-            if (isAnswering) return;
-            isAnswering = true; clearInterval(timer);
-            
-            const currentQ = quizQuestions[currentQuestionIndex];
-            let correctText = "";
-
-            const btns = container.querySelectorAll('.option-btn');
-            btns.forEach((btn, idx) => {
-                btn.disabled = true;
-                if (currentQ.options[idx].isCorrect) { correctText = currentQ.options[idx].text; }
-            });
-
-            if (isCorrect) {
-                selectedBtn.classList.add('correct');
-                correctAnswersCount++; comboStreak++;
-                let pts = Math.round((timeLeft / 20) * 500) + 500;
-                if(comboStreak >= 3) { pts += (comboStreak * 50); showCombo(comboStreak); }
-                totalScore += pts;
-                document.getElementById('score-counter').innerText = `${totalScore} đ`;
-            } else {
-                selectedBtn.classList.add('wrong');
-                comboStreak = 0; triggerShake();
-                btns.forEach((btn, idx) => { if (currentQ.options[idx].isCorrect) btn.classList.add('correct'); });
-                
-                // Lưu vào danh sách sai
-                mistakesList.push({ question: currentQ.question, chosen: chosenText, correct: correctText });
-            }
-            setTimeout(nextQuestion, 1500);
-        }
-
-        function showCombo(streak) {
-            const popup = document.getElementById('combo-popup');
-            popup.innerText = `🔥 COMBO x${streak}!`;
-            popup.classList.remove('show-combo'); void popup.offsetWidth; popup.classList.add('show-combo');
-        }
-
-        function triggerShake() {
-            const container = document.getElementById('main-container');
-            container.classList.remove('shake-screen'); void container.offsetWidth; container.classList.add('shake-screen');
-        }
-
-        function nextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < quizQuestions.length) loadQuestion(); else endQuiz();
-        }
-
-        function endQuiz() {
-            document.getElementById('quiz-screen').style.display = 'none';
-            document.getElementById('result-screen').style.display = 'block';
-            
-            document.getElementById('final-score').innerText = totalScore;
-            document.getElementById('correct-count').innerText = correctAnswersCount;
-            document.getElementById('wrong-count').innerText = quizQuestions.length - correctAnswersCount;
-
-            // Lưu điểm
-            saveScoreToLocal(totalScore);
-
-            const percent = (correctAnswersCount / quizQuestions.length) * 100;
-            const titleElem = document.getElementById('result-title');
-            if (percent >= 80) { titleElem.innerText = "Tuyệt đỉnh! 🏆"; titleElem.style.color = "var(--success)"; fireConfetti(); } 
-            else if (percent >= 50) { titleElem.innerText = "Khá tốt! 👍"; titleElem.style.color = "#e67e22"; } 
-            else { titleElem.innerText = "Cần nỗ lực hơn! 💪"; titleElem.style.color = "var(--danger)"; }
-            
-            buildReviewSection();
-        }
-
-        // Tạo giao diện Xem lại câu sai
-        function buildReviewSection() {
-            const revBox = document.getElementById('review-section');
-            if(mistakesList.length === 0) {
-                revBox.innerHTML = "<h3 style='color:var(--success); text-align:center;'>Hoàn hảo! Bạn không sai câu nào.</h3>";
-                return;
-            }
-            let html = "";
-            mistakesList.forEach((m, i) => {
+    // Sinh HTML câu hỏi
+    function renderQuiz() {
+        let html = '';
+        questions.forEach((q, i) => {
+            html += `
+            <div class="question-card" id="qCard${i}">
+                <div class="lesson-tag">${q.l}</div>
+                <div class="question-title">Câu ${i + 1}: ${q.q}</div>
+                <div class="options">
+            `;
+            for (const [key, value] of Object.entries(q.opts)) {
                 html += `
-                    <div class="mistake-card">
-                        <div class="mistake-q">${i+1}. ${m.question}</div>
-                        <div class="mistake-wrong">❌ Bạn chọn: ${m.chosen}</div>
-                        <div class="mistake-correct">✅ Đáp án đúng: ${m.correct}</div>
-                    </div>
+                    <label class="option-label" id="lbl_${i}_${key}">
+                        <input type="radio" name="q${i}" value="${key}" onchange="updateProgress(${i})">
+                        ${key}. ${value}
+                    </label>
                 `;
-            });
-            revBox.innerHTML = html;
+            }
+            html += `</div></div>`;
+        });
+        form.innerHTML = html;
+    }
+
+    // Cập nhật thanh tiến trình
+    function updateProgress(questionIndex) {
+        answeredQuestions.add(questionIndex);
+        const count = answeredQuestions.size;
+        const total = questions.length;
+        const percent = (count / total) * 100;
+        
+        progressBar.style.width = percent + '%';
+        progressText.innerText = `Đã trả lời: ${count}/${total} câu`;
+    }
+
+    // Nộp bài
+    function submitQuiz() {
+        if(answeredQuestions.size < questions.length) {
+            const confirmSubmit = confirm(`Tổng tài mới làm ${answeredQuestions.size}/${questions.length} câu. Ngài có chắc chắn muốn nộp bài không?`);
+            if(!confirmSubmit) return;
         }
 
-        function toggleReview() {
-            const revBox = document.getElementById('review-section');
-            if(revBox.style.display === "block") revBox.style.display = "none";
-            else revBox.style.display = "block";
+        let score = 0;
+        questions.forEach((q, i) => {
+            // Reset CSS cũ
+            for (const key of Object.keys(q.opts)) {
+                document.getElementById(`lbl_${i}_${key}`).classList.remove('correct', 'wrong');
+            }
+
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            
+            if (selected) {
+                const ans = selected.value;
+                if (ans === q.a) {
+                    score++;
+                    document.getElementById(`lbl_${i}_${ans}`).classList.add('correct');
+                } else {
+                    document.getElementById(`lbl_${i}_${ans}`).classList.add('wrong');
+                    document.getElementById(`lbl_${i}_${q.a}`).classList.add('correct');
+                }
+            } else {
+                // Bôi xanh đáp án đúng nếu chưa làm
+                document.getElementById(`lbl_${i}_${q.a}`).classList.add('correct');
+            }
+        });
+
+        // Hướng dẫn hiển thị kết quả
+        const resultBoard = document.getElementById('result-board');
+        const scoreCircle = document.getElementById('scoreCircle');
+        const scoreMessage = document.getElementById('scoreMessage');
+        
+        resultBoard.style.display = 'block';
+        scoreCircle.innerText = `${score}/${questions.length}`;
+        
+        const percent = score / questions.length;
+        if (percent >= 0.8) {
+            scoreCircle.className = 'score-circle score-pass';
+            scoreMessage.innerText = "Xuất sắc! Quả không hổ danh là Lọ thánh chí tôn! 👑";
+            scoreMessage.style.color = "var(--success)";
+        } else if (percent >= 0.5) {
+            scoreCircle.className = 'score-circle score-pass';
+            scoreMessage.innerText = "Khá lắm! Tổng tài nắm bài rất vững! 👍";
+            scoreMessage.style.color = "#059669";
+        } else {
+            scoreCircle.className = 'score-circle score-fail';
+            scoreMessage.innerText = "Tổng tài cần ôn lại binh pháp thêm chút nữa! 📚";
+            scoreMessage.style.color = "var(--danger)";
         }
 
-        function fireConfetti() {
-            var duration = 3 * 1000, animationEnd = Date.now() + duration, defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
-    </script>
+        // Cuộn mượt lên trên cùng
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // Vô hiệu hóa form
+        const inputs = document.querySelectorAll('input[type="radio"]');
+        inputs.forEach(input => input.disabled = true);
+    }
+
+    // Khởi chạy
+    renderQuiz();
+</script>
+
 </body>
 </html>
