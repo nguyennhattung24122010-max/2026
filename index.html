@@ -31,7 +31,7 @@
             print-color-adjust: exact !important;
         }
 
-        /* Thanh công cụ nổi trên màn hình điện thoại */
+        /* Nút in nổi trên màn hình điện thoại */
         .toolbar {
             position: fixed;
             bottom: 20px;
@@ -45,16 +45,16 @@
             background: var(--teal);
             color: var(--gold-light);
             border: 2px solid var(--gold);
-            padding: 10px 18px;
+            padding: 12px 24px;
             border-radius: 30px;
             font-family: 'Playfair Display', serif;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .book {
@@ -67,7 +67,7 @@
 
         .page {
             width: 100%;
-            max-width: 794px; /* Chuẩn rộng A4 ở 96dpi */
+            max-width: 794px;
             background: var(--bg-color);
             position: relative;
             box-shadow: 0 8px 25px rgba(0,0,0,0.3);
@@ -77,7 +77,6 @@
             border: 1px solid #d4c5a9;
         }
 
-        /* Khung viền cổ điển bên trong mỗi trang */
         .page-inner {
             margin: 14px;
             padding: 28px 22px;
@@ -146,7 +145,7 @@
         .cover-frame-photo {
             width: 92%;
             max-width: 480px;
-            margin: 10px auto 20px auto;
+            margin: 10px auto 15px auto;
             border: 3px solid var(--gold);
             padding: 5px;
             background: rgba(255,255,255,0.1);
@@ -155,7 +154,7 @@
 
         .cover-frame-photo img {
             width: 100%;
-            height: 230px;
+            height: 220px;
             object-fit: cover;
             display: block;
         }
@@ -246,7 +245,6 @@
             padding: 5px;
             background-color: #fff;
             box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            position: relative;
         }
 
         .image-box img {
@@ -254,7 +252,6 @@
             height: 230px;
             object-fit: cover;
             display: block;
-            background-color: #eee;
         }
 
         .caption {
@@ -360,23 +357,6 @@
             height: 20px;
         }
 
-        /* Nhấn vào ảnh để tự đổi ảnh từ máy nếu cần */
-        .change-img-hint {
-            display: none;
-            font-size: 11px;
-            color: var(--red-brown);
-            text-align: center;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        body.edit-mode .change-img-hint {
-            display: block;
-        }
-        body.edit-mode img {
-            cursor: pointer;
-            outline: 2px dashed var(--red-brown);
-        }
-
         /* ----- CHUẨN IN ẤN A4 ----- */
         @media print {
             @page {
@@ -386,7 +366,7 @@
             body {
                 background: none;
             }
-            .toolbar, .change-img-hint {
+            .toolbar {
                 display: none !important;
             }
             .book {
@@ -421,11 +401,8 @@
         
         <!-- TRANG 1: BÌA TẬP SAN -->
         <div class="page cover">
-            <!-- Dùng chính xác định dạng link /thumb/ đã hiện thành công ở bản 1 (20:19) -->
-            <img class="cover-bg-img wiki-img" 
-                 data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
-                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
-                 alt="Bìa Việt Nam Quốc Tự">
+            <!-- Hình ảnh nhúng trực tiếp dạng base64 an toàn tuyệt đối, không sợ chặn mạng -->
+            <img class="cover-bg-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" alt="Bìa Việt Nam Quốc Tự">
             
             <div class="page-inner">
                 <div>
@@ -435,12 +412,8 @@
                 </div>
 
                 <div>
-                    <div class="change-img-hint">👆 Chạm vào ảnh bất kỳ để đổi ảnh từ điện thoại của bạn</div>
                     <div class="cover-frame-photo">
-                        <img class="wiki-img" 
-                             data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
-                             alt="Bảo tháp 13 tầng Việt Nam Quốc Tự">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" alt="Bảo tháp 13 tầng Việt Nam Quốc Tự">
                     </div>
                     <div style="font-size: 11px; color: var(--gold-light); font-style: italic;">
                         Bảo tháp 13 tầng uy nghiêm (Nguồn: Wikimedia Commons)
@@ -522,21 +495,18 @@
                     <div class="heading-divider"></div>
 
                     <div class="image-box">
-                        <img class="wiki-img" 
-                             data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
-                             alt="Bảo tháp cổ Việt Nam Quốc Tự">
-                        <div class="caption">Ngôi tháp 7 tầng của Việt Nam Quốc Tự giai đoạn trước đợt đại trùng tu năm 2014 — Nguồn ảnh: Wikimedia Commons (Tác giả: Bùi Thụy Đào Nguyên)</div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" alt="Bảo tháp cổ Việt Nam Quốc Tự">
+                        <div class="caption">Ngôi tháp của Việt Nam Quốc Tự — Nguồn ảnh: Wikimedia Commons</div>
                     </div>
 
                     <p class="text-content drop-cap">
-                        Việt Nam Quốc Tự là một trong những ngôi chùa quan trọng và mang ý nghĩa lịch sử to lớn đối với Phật giáo tại Thành phố Hồ Chí Minh. Tọa lạc tại số 244 đường Ba Tháng Hai, Phường 12, Quận 10, ngôi tự viện được Giáo hội Phật giáo Việt Nam Thống nhất khởi công xây dựng vào ngày 26 tháng 4 năm 1964 trên một khu đất rộng lớn hơn 45.000 mét vuông.
+                        Việt Nam Quốc Tự là một trong những ngôi chùa quan trọng và mang ý nghĩa lịch sử to lớn đối với Phật giáo tại Thành phố Hồ Chí Minh. Tọa lạc tại số 244 đường Ba Tháng Hai, Phường 12, Quận 10, ngôi tự viện được Giáo hội Phật giáo Việt Nam Thống nhất khởi công xây dựng vào ngày 26 tháng 4 năm 1964 trên một khu đất rộng lớn.
                     </p>
                     <p class="text-content">
-                        Trải qua những biến thiên của lịch sử sau năm 1975, quy mô khuôn viên của chùa từng bị thu hẹp đáng kể. Đến năm 1993, chùa được chính quyền cấp lại quyền sử dụng đất và Hòa thượng Thích Từ Nhơn đã đứng ra xin phép trùng tu lại ngôi tháp 7 tầng cùng các hạng mục thờ tự.
+                        Trải qua những biến thiên của lịch sử sau năm 1975, quy mô khuôn viên của chùa từng bị thu hẹp đáng kể. Đến năm 1993, chùa được chính quyền cấp lại quyền sử dụng đất và Hòa thượng Thích Từ Nhơn đã đứng ra xin phép trùng tu lại các hạng mục thờ tự.
                     </p>
                     <p class="text-content">
-                        Đánh dấu một bước ngoặt lịch sử, vào tháng 10 năm 2014, Thành phố Hồ Chí Minh đã giao thêm đất nâng tổng diện tích lên hơn 11.000 mét vuông. Công trình đại trùng tu hoàn toàn mới được khởi công và chính thức khánh thành vào tháng 11 năm 2017, trở thành Trụ sở của Ban Trị sự Giáo hội Phật giáo Việt Nam TP.HCM.
+                        Đánh dấu một bước ngoặt lịch sử, vào tháng 10 năm 2014, công trình đại trùng tu hoàn toàn mới được khởi công và chính thức khánh thành vào tháng 11 năm 2017, trở thành Trụ sở của Ban Trị sự Giáo hội Phật giáo Việt Nam TP.HCM.
                     </p>
                 </div>
 
@@ -560,25 +530,21 @@
                     <div class="heading-divider"></div>
 
                     <div class="image-box">
-                        <img class="wiki-img" 
-                             data-wiki-title="File:Việt_Nam_Quốc_Tự_5.jpg"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg/800px-Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg" 
-                             alt="Kiến trúc Việt Nam Quốc Tự">
-                        <div class="caption">Phù điêu bánh xe Pháp luân kết hợp trống đồng và hoa văn truyền thống trên mặt tiền chùa — Nguồn ảnh: Wikimedia Commons</div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg/800px-Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg" alt="Kiến trúc Việt Nam Quốc Tự">
+                        <div class="caption">Họa tiết hoa văn truyền thống trên mặt tiền chùa — Nguồn ảnh: Wikimedia Commons</div>
                     </div>
 
                     <p class="text-content drop-cap">
-                        Vẻ đẹp của Việt Nam Quốc Tự là sự kết tinh hoàn hảo giữa nét kiến trúc Phật giáo truyền thống miền Bắc (mái đao cong vút) mang đậm bản sắc văn hóa dân tộc và kỹ thuật xây dựng kiên cố của thời đại mới. Ngôi chùa nổi bật với gam màu vàng hoàng gia chủ đạo và hệ thống mái ngói đỏ nâu uy nghiêm.
+                        Vẻ đẹp của Việt Nam Quốc Tự là sự kết tinh hoàn hảo giữa nét kiến trúc Phật giáo truyền thống mang đậm bản sắc văn hóa dân tộc và kỹ thuật xây dựng kiên cố của thời đại mới. Ngôi chùa nổi bật với gam màu vàng hoàng gia chủ đạo và hệ thống mái ngói đỏ nâu uy nghiêm.
                     </p>
                     <p class="text-content">
-                        Các hạng mục chính bao gồm Cổng Tam quan rộng lớn, Tòa Chánh điện 5 gian, Bảo tháp 13 tầng, Tháp chuông, Tháp trống và khu hội trường hành chính. Toàn bộ hệ thống đầu đao, cột gỗ và phù điêu đều được chạm trổ họa tiết hoa sen, rồng chầu và trống đồng Đông Sơn vô cùng tinh xảo.
+                        Các hạng mục chính bao gồm Cổng Tam quan rộng lớn, Tòa Chánh điện, Bảo tháp 13 tầng, Tháp chuông và khu hội trường hành chính. Toàn bộ hệ thống cột kèo và phù điêu đều được chạm trổ họa tiết hoa sen, rồng chầu vô cùng tinh xảo.
                     </p>
 
                     <div class="info-card">
                         <strong>Điểm nhấn kiến trúc:</strong><br>
-                        • <strong>Diện tích khuôn viên:</strong> Hơn 11.000 m² với mật độ cây xanh hài hòa.<br>
-                        • <strong>Phong cách:</strong> Kiến trúc cổ truyền Việt Nam kết hợp không gian mở.<br>
-                        • <strong>Mặt bằng:</strong> Bố trí đăng đối theo trục thần đạo truyền thống.
+                        • <strong>Khuôn viên:</strong> Không gian rộng lớn với nhiều cây xanh và hồ nước.<br>
+                        • <strong>Phong cách:</strong> Kiến trúc cổ truyền Việt Nam kết hợp không gian mở trang nghiêm.
                     </div>
                 </div>
 
@@ -602,21 +568,18 @@
                     <div class="heading-divider"></div>
 
                     <div class="image-box">
-                        <img class="wiki-img" 
-                             data-wiki-title="File:Chánh_điện_Việt_Nam_Quốc_Tự.jpg"
-                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg/800px-Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg" 
-                             alt="Chánh điện và không gian Việt Nam Quốc Tự">
-                        <div class="caption">Không gian thờ tự uy nghiêm với nghệ thuật chạm khắc gỗ và đúc đồng — Nguồn ảnh: Wikimedia Commons</div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg/800px-Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg" alt="Chánh điện Việt Nam Quốc Tự">
+                        <div class="caption">Không gian thờ tự uy nghiêm bên trong chùa — Nguồn ảnh: Wikimedia Commons</div>
                     </div>
 
                     <p class="text-content drop-cap">
                         Điểm nhấn nổi bật nhất trong quần thể kiến trúc Việt Nam Quốc Tự là Ngôi Bảo tháp 13 tầng (Tháp Đa Bảo) vươn cao 63 mét lên bầu trời Sài Gòn. Được khởi công xây dựng vào tháng 1 năm 2015, mỗi con số của tòa bảo tháp đều hàm chứa ý nghĩa lịch sử thiêng liêng và sâu sắc của Phật giáo Việt Nam.
                     </p>
                     <p class="text-content">
-                        Chiều cao <strong>63 mét</strong> là để tưởng nhớ năm <strong>1963</strong> – năm bùng nổ phong trào Phật giáo đấu tranh bất bạo động đòi bình đẳng tôn giáo tại miền Nam. Con số <strong>13 tầng</strong> đại diện cho tinh thần đoàn kết của <strong>13 tổ chức, tông phái và hội đoàn Phật giáo</strong> đã cùng nhau thống nhất ý chí trong cuộc vận động lịch sử ấy.
+                        Chiều cao <strong>63 mét</strong> là để tưởng nhớ năm <strong>1963</strong> – năm bùng nổ phong trào Phật giáo đấu tranh bất bạo động đòi bình đẳng tôn giáo. Con số <strong>13 tầng</strong> đại diện cho tinh thần đoàn kết của <strong>13 tổ chức, tông phái và hội đoàn Phật giáo</strong> đã cùng nhau thống nhất ý chí.
                     </p>
                     <p class="text-content">
-                        Đặc biệt nhất, bảo tháp là nơi tôn trí vĩnh viễn <strong>Xá lợi Trái tim bất diệt của Bồ tát Thích Quảng Đức</strong> – vị Hòa thượng đã vị pháp thiêu thân năm 1963, biến nơi đây thành trung tâm chiêm bái linh thiêng bậc nhất.
+                        Đặc biệt nhất, bảo tháp là nơi tôn trí vĩnh viễn <strong>Xá lợi Trái tim bất diệt của Bồ tát Thích Quảng Đức</strong>, biến nơi đây thành trung tâm chiêm bái linh thiêng bậc nhất.
                     </p>
                 </div>
 
@@ -643,19 +606,15 @@
                         Bước vào bên trong Tòa Chánh điện của Việt Nam Quốc Tự, du khách và Phật tử sẽ choáng ngợp trước pho tượng Đức Phật Bổn Sư Thích Ca Mâu Ni bằng đồng nguyên khối được tôn trí ở vị trí trung tâm. Pho tượng nặng tới 35 tấn và cao 7,5 mét, là một trong những tôn tượng Phật bằng đồng trong nhà lớn nhất tại Việt Nam hiện nay.
                     </p>
                     <p class="text-content">
-                        Bên cạnh đó, chùa còn sở hữu quả Đại hồng chung (chuông đồng lớn) nặng 3 tấn, cao 2,9 mét và chiếc trống sấm đường kính hơn 2 mét. Tiếng chuông ngân vang mỗi sớm chiều giữa lòng Quận 10 sầm uất như xua tan đi mọi ồn ào, mang lại sự tĩnh tại và bình an trong tâm hồn.
+                        Bên cạnh đó, chùa còn sở hữu quả Đại hồng chung nặng 3 tấn. Tiếng chuông ngân vang mỗi sớm chiều giữa lòng quận 10 sầm uất như xua tan đi mọi ồn ào, mang lại sự tĩnh tại và bình an trong tâm hồn.
                     </p>
 
                     <div class="info-card">
                         <strong>Vai trò văn hóa – xã hội hiện nay:</strong><br>
                         • Là trụ sở hành chính của Ban Trị sự Giáo hội Phật giáo Việt Nam TP.HCM.<br>
-                        • Nơi tổ chức các Đại lễ Phật Đản, Vu Lan, triển lãm văn hóa nghệ thuật Phật giáo và các khóa tu học cho hàng ngàn người dân thành phố.<br>
-                        • Điểm đến văn hóa – du lịch tâm linh tiêu biểu của Thành phố Hồ Chí Minh.
+                        • Nơi tổ chức các Đại lễ Phật Đản, Vu Lan và các khóa tu học cho đông đảo Phật tử.<br>
+                        • Điểm đến văn hóa – du lịch tâm linh tiêu biểu của thành phố.
                     </div>
-
-                    <p class="text-content">
-                        Với sự kết hợp hài hòa giữa giá trị lịch sử hào hùng, kiến trúc tráng lệ và không gian tu học thanh tịnh, Việt Nam Quốc Tự xứng đáng là niềm tự hào của Phật giáo và nhân dân Thành phố Hồ Chí Minh.
-                    </p>
                 </div>
 
                 <div class="page-footer">
@@ -706,64 +665,10 @@
 
     </div>
 
-    <!-- Thanh công cụ nổi -->
+    <!-- Nút In độc lập, gọn gàng -->
     <div class="toolbar">
-        <button class="btn-tool" onclick="toggleEditImages()">🖼 Đổi Ảnh</button>
         <button class="btn-tool" onclick="window.print()">🖨 In Tập San</button>
     </div>
 
-    <!-- Input ẩn để chọn ảnh từ điện thoại nếu người dùng muốn tự thay -->
-    <input type="file" id="imgUploader" accept="image/*" style="display: none;">
-
-    <script>
-        // 1. Tự động gọi API chính thức của Wikipedia để lấy link ảnh chuẩn xác nhất nếu link tĩnh gặp sự cố
-        document.querySelectorAll('.wiki-img').forEach(img => {
-            img.addEventListener('error', async function() {
-                if (this.dataset.retried) return;
-                this.dataset.retried = 'true';
-                const fileTitle = this.getAttribute('data-wiki-title');
-                try {
-                    const res = await fetch(`https://vi.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(fileTitle)}&prop=imageinfo&iiprop=url&iiurlwidth=800&format=json&origin=*`);
-                    const data = await res.json();
-                    const pages = data.query.pages;
-                    const pageId = Object.keys(pages)[0];
-                    if (pages[pageId].imageinfo && pages[pageId].imageinfo[0]) {
-                        this.src = pages[pageId].imageinfo[0].thumburl || pages[pageId].imageinfo[0].url;
-                    }
-                } catch (e) {
-                    console.error('Lỗi tải API Wiki:', e);
-                }
-            });
-        });
-
-        // 2. Tính năng dự phòng tuyệt đối: Cho phép bấm vào ảnh để chọn ảnh trực tiếp từ thư viện điện thoại
-        let currentImgTarget = null;
-        const uploader = document.getElementById('imgUploader');
-
-        function toggleEditImages() {
-            document.body.classList.toggle('edit-mode');
-            if (document.body.classList.contains('edit-mode')) {
-                alert('Chế độ Đổi Ảnh đã bật! Bạn có thể chạm vào bất kỳ bức ảnh nào trong tập san để chọn ảnh từ điện thoại của mình.');
-            }
-        }
-
-        document.querySelectorAll('img').forEach(img => {
-            img.addEventListener('click', function() {
-                if (!document.body.classList.contains('edit-mode')) return;
-                currentImgTarget = this;
-                uploader.click();
-            });
-        });
-
-        uploader.addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0] && currentImgTarget) {
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    currentImgTarget.src = evt.target.result;
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        });
-    </script>
 </body>
 </html>
