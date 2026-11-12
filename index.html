@@ -2,21 +2,22 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trắc Nghiệm GDQP&AN 11</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- CỐT LÕI: Chặn gửi referrer để lấy ảnh từ Wikimedia khi chạy offline -->
+    <meta name="referrer" content="no-referrer">
+    <title>Tập San: Việt Nam Quốc Tự 2026</title>
+    
+    <!-- Font chữ Tạp chí -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500;1,700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --success: #10b981;
-            --success-bg: #d1fae5;
-            --danger: #ef4444;
-            --danger-bg: #fee2e2;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
+            --teal-dark: #0c2a1a; /* Xanh ngọc lục bảo thẫm */
+            --gold: #d4af37;      /* Vàng kim */
+            --paper: #fdfbf7;     /* Nền giấy */
+            --text-dark: #222222; /* Chữ xám đen */
         }
 
         * {
@@ -26,433 +27,549 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* Thanh công cụ dính trên đầu trang */
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            padding: 15px 20px;
+            background-color: #d1d5db;
+            font-family: 'Lora', serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            border-bottom: 1px solid var(--border);
+            gap: 40px;
+            padding: 40px 15px;
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased;
         }
 
-        .stats-container {
+        /* KHUÔN TRANG A4 */
+        .page {
+            background-color: var(--paper);
+            width: 210mm;
+            min-height: 297mm;
+            max-width: 100%;
+            padding: 25mm 20mm;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden; /* Quan trọng để ảnh bìa không tràn viền */
+        }
+
+        /* HEADER & FOOTER */
+        .page-header {
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 1.1rem;
+            align-items: center;
+            border-bottom: 1px solid rgba(12, 42, 26, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 35px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--teal-dark);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+        
+        .page-footer {
+            margin-top: auto;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--teal-dark);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
 
-        .score-text { color: var(--primary); }
-        .progress-text { color: var(--text-light); }
-
-        .progress-bar-bg {
-            width: 100%;
-            max-width: 800px;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 10px;
-            overflow: hidden;
+        /* TYPOGRAPHY CHUNG */
+        .title-font {
+            font-family: 'Playfair Display', serif;
         }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #2dd4bf);
-            width: 0%;
-            transition: width 0.5s ease-out;
+        /* NỘI DUNG VĂN BẢN (FLEX & COLUMN) */
+        .content-body {
+            column-count: 2;
+            column-gap: 30px;
+            text-align: justify;
+            font-size: 14.5px;
+            line-height: 1.8;
         }
-
-        /* Container câu hỏi */
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 15px;
-        }
-
-        .question-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--border);
-            transition: transform 0.2s ease;
-        }
-
-        .question-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .lesson-badge {
-            display: inline-block;
-            background: #eff6ff;
-            color: var(--primary-dark);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .question-text {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .content-body p {
             margin-bottom: 20px;
-            color: #0f172a;
+        }
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4.2rem;
+            line-height: 0.8;
+            padding-right: 12px;
+            padding-top: 5px;
+            color: var(--teal-dark);
+            font-family: 'Playfair Display', serif;
+            font-weight: 800;
         }
 
-        .options-grid {
+        /* ----------------------------------------------------
+           CSS FALLBACK CHO ẢNH BỊ CHẶN 
+           Tự động chuyển thành khung Xanh Ngọc + Chữ Vàng 
+        -----------------------------------------------------*/
+        img {
+            background-color: var(--teal-dark);
+            position: relative;
+            color: transparent;
+            min-height: 200px;
+            object-fit: cover;
+        }
+        img::after {
+            content: attr(alt);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--teal-dark);
+            color: var(--gold);
+            font-size: 16px;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .img-box {
+            width: 100%;
+            margin-bottom: 30px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+        }
+        .img-box img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .img-caption {
+            font-size: 12px;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+            text-align: right;
+            border-right: 3px solid var(--gold);
+            padding-right: 10px;
         }
 
-        /* Style cho từng đáp án */
-        .option-label {
+        /* ----- TRANG 1: BÌA ----- */
+        .cover-page {
+            padding: 0;
             display: flex;
-            align-items: center;
-            padding: 15px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            background: #fff;
-            position: relative;
-        }
-
-        .option-label:hover:not(.disabled) {
-            background: #f8fafc;
-            border-color: #cbd5e1;
-        }
-
-        .option-label input[type="radio"] {
-            display: none; /* Ẩn nút radio mặc định */
-        }
-
-        /* Custom Radio Button */
-        .radio-custom {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #94a3b8;
-            border-radius: 50%;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
-            flex-shrink: 0;
-            transition: all 0.2s;
-        }
-
-        .radio-custom::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.2s;
-        }
-
-        .option-label input[type="radio"]:checked + .radio-custom {
-            border-color: var(--primary);
-        }
-
-        .option-label input[type="radio"]:checked + .radio-custom::after {
-            transform: scale(1);
-        }
-
-        /* Trạng thái sau khi trả lời */
-        .option-label.disabled {
-            cursor: default;
-            opacity: 0.9;
-        }
-
-        .option-label.correct {
-            background-color: var(--success-bg);
-            border-color: var(--success);
-            color: #065f46;
-        }
-
-        .option-label.correct .radio-custom {
-            border-color: var(--success);
-            background-color: var(--success);
-        }
-        
-        .option-label.correct .radio-custom::after {
-            background: white; /* Đổi màu nhân radio */
-            transform: scale(1);
-        }
-
-        .option-label.wrong {
-            background-color: var(--danger-bg);
-            border-color: var(--danger);
-            color: #991b1b;
-        }
-
-        .option-label.wrong .radio-custom {
-            border-color: var(--danger);
-            background-color: var(--danger);
-        }
-
-        .option-label.wrong .radio-custom::after {
-            background: white;
-            transform: scale(1);
-        }
-
-        /* Hiển thị đáp án đúng nếu chọn sai */
-        .option-label.show-correct {
-            border-color: var(--success);
-            border-style: dashed;
-            background-color: #f0fdf4;
-        }
-        
-        .icon-result {
-            margin-left: auto;
-            font-size: 1.2rem;
-            display: none;
-        }
-        
-        .correct .icon-result, .wrong .icon-result, .show-correct .icon-result {
-            display: block;
-        }
-
-        #completion-modal {
-            display: none;
+            align-items: center;
             text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            margin-top: 30px;
-            border: 2px solid var(--primary);
+            color: var(--paper);
+            background-color: var(--teal-dark);
+        }
+        .cover-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            /* Nếu ảnh hỏng, CSS Fallback ở trên sẽ che bằng màu xanh và hiện alt */
+        }
+        .cover-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(12, 42, 26, 0.65), rgba(12, 42, 26, 0.85));
+            z-index: 1;
+        }
+        .cover-content-box {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(12, 42, 26, 0.4);
+            backdrop-filter: blur(5px);
+            padding: 50px 40px;
+            border: 2px solid var(--gold);
+            width: 80%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .cover-top-text {
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 15px;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+        .cover-main-title {
+            font-size: 50px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+        }
+        .cover-subtitle {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 40px;
+            color: rgba(253, 251, 247, 0.9);
+        }
+        .cover-badge {
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            padding: 15px 0;
+            width: 100%;
         }
 
-        .btn-restart {
-            background-color: var(--primary);
-            color: white;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
+        /* ----- TRANG 2: MỤC LỤC & DANH SÁCH ----- */
+        .toc-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+        }
+        .toc-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .toc-header h2 {
+            color: var(--teal-dark);
+            font-size: 38px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+        }
+        .toc-header .divider {
+            width: 60px;
+            height: 3px;
+            background-color: var(--gold);
+            margin: 0 auto;
+        }
+        .toc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .toc-item {
+            display: flex;
+            align-items: baseline;
+            width: 100%;
+        }
+        .toc-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--teal-dark);
+            text-transform: uppercase;
+            flex-shrink: 0; 
+        }
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 2px dotted rgba(12, 42, 26, 0.4);
+            margin: 0 15px;
+        }
+        .toc-page-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+        .member-list {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* NÚT IN ẤN */
+        .print-btn {
+            position: fixed;
+            bottom: 30px; 
+            right: 30px;
+            background-color: var(--teal-dark);
+            color: var(--gold);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 17px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             cursor: pointer;
-            margin-top: 20px;
-            transition: background 0.3s;
+            z-index: 9999;
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .btn-restart:hover { background-color: var(--primary-dark); }
+        /* ĐIỆN THOẠI RESPONSIVE */
+        @media (max-width: 768px) {
+            .page {
+                width: 100%;
+                min-height: auto;
+                padding: 20px 15px;
+            }
+            .content-body {
+                column-count: 1;
+            }
+            .cover-main-title { font-size: 38px; }
+            .toc-wrapper { padding: 0 5%; }
+            .toc-title { font-size: 14px; }
+        }
+
+        /* CHUẨN IN ẤN A4 */
+        @media print {
+            @page { size: A4; margin: 0; }
+            body { background: none; padding: 0; margin: 0; gap: 0; }
+            .page { 
+                width: 210mm; 
+                height: 297mm;
+                min-height: 297mm;
+                margin: 0; 
+                padding: 25mm 20mm;
+                box-shadow: none; 
+                page-break-after: always; 
+                overflow: hidden;
+            }
+            .content-body { column-count: 2; }
+            .no-print { display: none !important; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sticky-header">
-    <div class="stats-container">
-        <div class="score-text">Đúng: <span id="score">0</span>/<span id="total-questions">50</span></div>
-        <div class="progress-text">Tiến độ: <span id="answered-count">0</span>/50</div>
-    </div>
-    <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progress-bar"></div>
-    </div>
-</div>
+    <!-- Nút In -->
+    <button onclick="window.print()" class="print-btn no-print">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        In Tập San
+    </button>
 
-<div class="container">
-    <div id="quiz-container">
-        <!-- Các câu hỏi sẽ được render bằng JS -->
-    </div>
-
-    <div id="completion-modal">
-        <h2>🎉 ĐÃ HOÀN THÀNH BÀI KIỂM TRA 🎉</h2>
-        <h1 style="font-size: 3rem; color: var(--primary); margin: 15px 0;" id="final-score">0/50</h1>
-        <p id="final-message" style="font-size: 1.2rem; color: var(--text-light); margin-bottom: 20px;"></p>
-        <button class="btn-restart" onclick="location.reload()">Làm lại từ đầu</button>
-    </div>
-</div>
-
-<script>
-    // BỘ 50 CÂU HỎI (15 câu Bài 2, 35 câu Bài 6)
-    const questions = [
-        { l: "Bài 2", q: "Theo Luật NVQS 2015, công dân nam đủ bao nhiêu tuổi trở lên phải đăng ký nghĩa vụ quân sự?", opts: { A: "16 tuổi", B: "17 tuổi", C: "18 tuổi", D: "19 tuổi" }, a: "B" },
-        { l: "Bài 2", q: "Độ tuổi gọi nhập ngũ trong thời bình đối với công dân nam không học cao đẳng, đại học là?", opts: { A: "18 đến hết 22 tuổi", B: "18 đến hết 25 tuổi", C: "18 đến hết 27 tuổi", D: "18 đến hết 30 tuổi" }, a: "B" },
-        { l: "Bài 2", q: "Công dân nam được đào tạo trình độ cao đẳng, đại học đã được tạm hoãn thì độ tuổi gọi nhập ngũ đến hết bao nhiêu tuổi?", opts: { A: "25 tuổi", B: "26 tuổi", C: "27 tuổi", D: "28 tuổi" }, a: "C" },
-        { l: "Bài 2", q: "Cơ quan nào có thẩm quyền đăng ký nghĩa vụ quân sự cho công dân cư trú tại địa phương?", opts: { A: "Công an cấp xã", B: "UBND cấp huyện", C: "Ban Chỉ huy quân sự cấp xã", D: "Hội đồng NVQS cấp tỉnh" }, a: "C" },
-        { l: "Bài 2", q: "Thời gian khám sức khỏe gọi nhập ngũ và thực hiện nghĩa vụ tham gia CAND hàng năm thường diễn ra vào thời gian nào?", opts: { A: "Từ 1/1 đến 30/2", B: "Từ 1/11 đến 31/12", C: "Từ 1/5 đến 31/6", D: "Từ 1/8 đến 30/9" }, a: "B" },
-        { l: "Bài 2", q: "Lễ giao nhận quân hằng năm thường được tổ chức vào khoảng thời gian nào?", opts: { A: "Tháng 2 hoặc tháng 3", B: "Tháng 11 hoặc tháng 12", C: "Tháng 5 hoặc tháng 6", D: "Tháng 8 hoặc tháng 9" }, a: "A" },
-        { l: "Bài 2", q: "Hành vi nào sau đây bị nghiêm cấm trong thực hiện nghĩa vụ quân sự?", opts: { A: "Đăng ký NVQS đúng hạn", B: "Trốn tránh thực hiện NVQS", C: "Khám sức khỏe theo lệnh gọi", D: "Chấp hành lệnh gọi nhập ngũ" }, a: "B" },
-        { l: "Bài 2", q: "Công dân nữ có phải thực hiện nghĩa vụ quân sự không?", opts: { A: "Bắt buộc như nam giới", B: "Hoàn toàn không được tham gia", C: "Tự nguyện tham gia nếu quân đội có nhu cầu", D: "Chỉ được làm công tác y tế" }, a: "C" },
-        { l: "Bài 2", q: "Thời hạn phục vụ tại ngũ trong thời bình của hạ sĩ quan, binh sĩ là bao nhiêu tháng?", opts: { A: "12 tháng", B: "18 tháng", C: "24 tháng", D: "36 tháng" }, a: "C" },
-        { l: "Bài 2", q: "Thời hạn thực hiện nghĩa vụ tham gia Công an nhân dân là bao nhiêu tháng?", opts: { A: "18 tháng", B: "24 tháng", C: "30 tháng", D: "36 tháng" }, a: "B" },
-        { l: "Bài 2", q: "Đối tượng nào sau đây được TẠM HOÃN gọi nhập ngũ?", opts: { A: "Con của liệt sĩ", B: "Học sinh đang học THPT", C: "Người không đủ sức khỏe phục vụ tại ngũ", D: "Cán bộ, công chức" }, a: "B" },
-        { l: "Bài 2", q: "Đối tượng nào sau đây được MIỄN gọi nhập ngũ?", opts: { A: "Sinh viên đại học", B: "Người lao động duy nhất nuôi gia đình", C: "Con của liệt sĩ, con của thương binh hạng một", D: "Học sinh giỏi cấp quốc gia" }, a: "C" },
-        { l: "Bài 2", q: "Tiêu chuẩn tuyển quân thực hiện nghĩa vụ tham gia CAND bao gồm những gì?", opts: { A: "Chỉ cần đủ chiều cao và cân nặng", B: "Lý lịch rõ ràng, nghiêm chỉnh chấp hành pháp luật, đủ sức khỏe", C: "Phải là đảng viên Đảng Cộng sản Việt Nam", D: "Phải tốt nghiệp đại học trở lên" }, a: "B" },
-        { l: "Bài 2", q: "Một trong những trách nhiệm của học sinh trong việc thực hiện NVQS là?", opts: { A: "Tìm mọi cách để được tạm hoãn", B: "Không cần tìm hiểu pháp luật về NVQS", C: "Học tập chính trị, quân sự; chấp hành quy định về đăng ký NVQS", D: "Tự ý bỏ học để nhập ngũ" }, a: "C" },
-        { l: "Bài 2", q: "Việc xử lý công dân vi phạm pháp luật về nghĩa vụ quân sự được quy định như thế nào?", opts: { A: "Chỉ bị nhắc nhở", B: "Xử phạt hành chính hoặc truy cứu trách nhiệm hình sự", C: "Đuổi học hoặc buộc thôi việc", D: "Không bị xử lý nếu dưới 18 tuổi" }, a: "B" },
-
-        // --- BÀI 6 ---
-        { l: "Bài 6", q: "Súng tiểu liên AK do ai thiết kế?", opts: { A: "M.T. Kalashnikov", B: "Simonov", C: "Makarov", D: "Tokarev" }, a: "A" },
-        { l: "Bài 6", q: "Súng tiểu liên AK (phiên bản chuẩn) ra đời vào năm nào?", opts: { A: "1943", B: "1945", C: "1947", D: "1954" }, a: "C" },
-        { l: "Bài 6", q: "Cỡ đạn của súng tiểu liên AK là bao nhiêu?", opts: { A: "5,56 mm", B: "7,62 mm", C: "9 mm", D: "12,7 mm" }, a: "B" },
-        { l: "Bài 6", q: "Súng tiểu liên AK trang bị cho ai?", opts: { A: "Chỉ trang bị cho sĩ quan", B: "Từng người sử dụng", C: "Tổ 3 người sử dụng", D: "Trang bị cho cấp tiểu đội dùng chung" }, a: "B" },
-        { l: "Bài 6", q: "Súng AK có thể tiêu diệt sinh lực địch bằng cách nào?", opts: { A: "Chỉ bằng hỏa lực", B: "Bằng hỏa lực, lưỡi lê và báng súng", C: "Chỉ dùng để bắn tỉa", D: "Bằng cách phóng lựu đạn" }, a: "B" },
-        { l: "Bài 6", q: "Tầm bắn ghi trên thước ngắm của súng tiểu liên AK là bao nhiêu?", opts: { A: "500m", B: "800m (hoặc 1000m tùy phiên bản)", C: "1500m", D: "2000m" }, a: "B" },
-        { l: "Bài 6", q: "Tầm bắn hiệu quả của súng tiểu liên AK là bao nhiêu?", opts: { A: "300m", B: "400m", C: "500m", D: "800m" }, a: "B" },
-        { l: "Bài 6", q: "Sơ tốc đầu đạn của súng tiểu liên AK là bao nhiêu?", opts: { A: "715 m/s", B: "820 m/s", C: "900 m/s", D: "1000 m/s" }, a: "A" },
-        { l: "Bài 6", q: "Tốc độ bắn lý thuyết của súng AK là bao nhiêu phát/phút?", opts: { A: "100 phát/phút", B: "400 phát/phút", C: "600 phát/phút", D: "800 phát/phút" }, a: "C" },
-        { l: "Bài 6", q: "Tốc độ bắn thực tế ở chế độ liên thanh của súng AK là bao nhiêu phát/phút?", opts: { A: "40 phát/phút", B: "100 phát/phút", C: "200 phát/phút", D: "600 phát/phút" }, a: "B" },
-        { l: "Bài 6", q: "Tốc độ bắn thực tế ở chế độ phát một của súng AK là bao nhiêu phát/phút?", opts: { A: "40 phát/phút", B: "60 phát/phút", C: "100 phát/phút", D: "120 phát/phút" }, a: "A" },
-        { l: "Bài 6", q: "Trọng lượng của súng AK (không có đạn) là khoảng bao nhiêu?", opts: { A: "3,1 kg (AKM) / 3,8 kg (AK-47)", B: "4,5 kg", C: "2,5 kg", D: "5,0 kg" }, a: "A" },
-        { l: "Bài 6", q: "Hộp tiếp đạn của súng AK chứa được bao nhiêu viên đạn?", opts: { A: "20 viên", B: "30 viên", C: "40 viên", D: "45 viên" }, a: "B" },
-        { l: "Bài 6", q: "Súng tiểu liên AK có bao nhiêu bộ phận chính?", opts: { A: "9 bộ phận", B: "10 bộ phận", C: "11 bộ phận", D: "12 bộ phận" }, a: "C" },
-        { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để định hướng bay cho đầu đạn?", opts: { A: "Hộp khóa nòng", B: "Nòng súng", C: "Bộ phận ngắm", D: "Bệ khóa nòng" }, a: "B" },
-        { l: "Bài 6", q: "Bộ phận nào của súng AK dùng để ngắm bắn vào các mục tiêu ở cự ly khác nhau?", opts: { A: "Bộ phận ngắm", B: "Khóa nòng", C: "Bệ khóa nòng", D: "Thoi đẩy" }, a: "A" },
-        { l: "Bài 6", q: "Chế độ bắn chủ yếu của súng tiểu liên AK là gì?", opts: { A: "Bắn phát một", B: "Bắn liên thanh", C: "Bắn tỉa", D: "Bắn găm" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ là gì?", opts: { A: "Chất rắn không cháy", B: "Hóa chất phát sáng", C: "Chất hoặc hỗn hợp chất, khi bị kích thích sẽ sinh ra phản ứng nổ", D: "Một loại khí độc" }, a: "C" },
-        { l: "Bài 6", q: "Thuốc nổ TNT có màu gì?", opts: { A: "Màu trắng", B: "Màu đen", C: "Màu vàng nhạt", D: "Màu xanh dương" }, a: "C" },
-        { l: "Bài 6", q: "Tính chất nào sau đây là của thuốc nổ TNT?", opts: { A: "Rất nhạy nổ với va đập", B: "Kém nhạy nổ với va đập, cọ xát", C: "Dễ tan trong nước", D: "Tự bốc cháy ở nhiệt độ phòng" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ TNT nóng chảy ở nhiệt độ bao nhiêu?", opts: { A: "50 °C", B: "81 °C", C: "100 °C", D: "310 °C" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ C4 có hình dạng và màu sắc như thế nào?", opts: { A: "Dạng bột đen", B: "Dạng tinh thể vàng", C: "Dẻo, màu trắng đục", D: "Dạng lỏng màu đỏ" }, a: "C" },
-        { l: "Bài 6", q: "So với TNT, độ nhạy nổ với va đập của thuốc nổ C4 như thế nào?", opts: { A: "Nhạy hơn rất nhiều", B: "Tương đương", C: "Kém nhạy hơn, an toàn hơn", D: "Không nổ khi va đập" }, a: "C" },
-        { l: "Bài 6", q: "Thuốc nổ C4 có tan trong nước không?", opts: { A: "Tan rất nhanh", B: "Không tan trong nước", C: "Chỉ tan trong nước nóng", D: "Tạo thành axit khi gặp nước" }, a: "B" },
-        { l: "Bài 6", q: "Thuốc nổ đen (thuốc phóng) có thành phần cấu tạo chủ yếu gồm những gì?", opts: { A: "Nitroglycerin và Cồn", B: "Diêm tiêu, than củi, lưu huỳnh", C: "Axit Nitric và Amoniac", D: "Nhựa đường và Xăng" }, a: "B" },
-        { l: "Bài 6", q: "Đặc điểm của thuốc nổ Amonit là gì?", opts: { A: "Màu trắng ngà, dễ hút ẩm, dễ vón cục", B: "Màu đen, cứng như đá", C: "Dạng dẻo, không sợ nước", D: "Dạng khí" }, a: "A" },
-        { l: "Bài 6", q: "Vật cản là gì?", opts: { A: "Các loại xe tăng, thiết giáp", B: "Những vật thể tự nhiên hoặc nhân tạo dùng để cản trở sự cơ động của địch", C: "Các trạm radar", D: "Vũ khí hạt nhân" }, a: "B" },
-        { l: "Bài 6", q: "Vật cản được chia làm mấy loại chính?", opts: { A: "2 loại: tự nhiên và nhân tạo", B: "3 loại: trên không, trên bộ, dưới nước", C: "2 loại: của ta và của địch", D: "Chỉ có 1 loại" }, a: "A" },
-        { l: "Bài 6", q: "Các vật thể như sông, suối, đầm lầy, vách núi được gọi là gì?", opts: { A: "Vật cản nổ", B: "Vật cản không nổ", C: "Vật cản tự nhiên", D: "Vật cản nhân tạo" }, a: "C" },
-        { l: "Bài 6", q: "Vật cản nhân tạo được chia thành những loại nào?", opts: { A: "Vật cản sắt và gỗ", B: "Vật cản nổ và không nổ", C: "Vật cản bộ binh và máy bay", D: "Vật cản điện và từ" }, a: "B" },
-        { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản nổ?", opts: { A: "Hàng rào thép gai", B: "Hào chống tăng", C: "Bãi mìn, lựu đạn gài", D: "Hố chông" }, a: "C" },
-        { l: "Bài 6", q: "Ví dụ nào sau đây thuộc nhóm vật cản KHÔNG nổ?", opts: { A: "Mìn chống tăng", B: "Lượng nổ lõm", C: "Hàng rào thép gai, chông, rào bùng nhùng", D: "Bom nổ chậm" }, a: "C" },
-        { l: "Bài 6", q: "Vũ khí tự tạo là gì?", opts: { A: "Vũ khí mua từ nước ngoài", B: "Vũ khí do lực lượng vũ trang hoặc nhân dân tự chế tạo", C: "Vũ khí dùng AI", D: "Súng trường tiêu chuẩn" }, a: "B" },
-        { l: "Bài 6", q: "Các loại vũ khí như chông, mìn, cạm bẫy thường được xếp vào nhóm nào?", opts: { A: "Vũ khí hủy diệt hàng loạt", B: "Vũ khí tự tạo / vật cản", C: "Vũ khí hạt nhân", D: "Vũ khí sinh học" }, a: "B" },
-        { l: "Bài 6", q: "Tác dụng của việc sử dụng vũ khí tự tạo trong chiến tranh nhân dân là gì?", opts: { A: "Tiêu diệt máy bay chiến lược", B: "Thay thế hoàn toàn súng đạn", C: "Tiêu hao sinh lực địch, gây hoang mang, cản trở cơ động", D: "Đánh chặn tên lửa" }, a: "C" }
-    ];
-
-    const quizContainer = document.getElementById("quiz-container");
-    const scoreEl = document.getElementById("score");
-    const answeredCountEl = document.getElementById("answered-count");
-    const progressBar = document.getElementById("progress-bar");
-    const totalQuestionsEl = document.getElementById("total-questions");
-    const completionModal = document.getElementById("completion-modal");
-    const finalScore = document.getElementById("final-score");
-    const finalMessage = document.getElementById("final-message");
-
-    let currentScore = 0;
-    let answeredQuestions = 0;
-    const totalQuestions = questions.length;
-
-    totalQuestionsEl.innerText = totalQuestions;
-
-    // Sinh HTML các câu hỏi
-    function renderQuiz() {
-        let html = '';
-        questions.forEach((q, i) => {
-            html += `
-            <div class="question-card" id="qCard_${i}">
-                <div class="lesson-badge">${q.l}</div>
-                <div class="question-text">Câu ${i + 1}: ${q.q}</div>
-                <div class="options-grid">
-            `;
-            for (const [key, value] of Object.entries(q.opts)) {
-                html += `
-                    <label class="option-label" id="lbl_${i}_${key}">
-                        <input type="radio" name="q${i}" value="${key}" onclick="handleAnswer(${i}, '${key}')">
-                        <div class="radio-custom"></div>
-                        <span><strong>${key}.</strong> ${value}</span>
-                        <span class="icon-result"></span>
-                    </label>
-                `;
-            }
-            html += `</div></div>`;
-        });
-        quizContainer.innerHTML = html;
-    }
-
-    // Xử lý khi người dùng click chọn 1 đáp án
-    function handleAnswer(qIndex, selectedKey) {
-        const q = questions[qIndex];
-        const correctKey = q.a;
-        
-        // Vô hiệu hóa tất cả các lựa chọn của câu này
-        const labels = document.querySelectorAll(`label[id^="lbl_${qIndex}_"]`);
-        const radios = document.querySelectorAll(`input[name="q${qIndex}"]`);
-        
-        labels.forEach(lbl => lbl.classList.add('disabled'));
-        radios.forEach(radio => radio.disabled = true);
-
-        // Kiểm tra đúng / sai
-        const selectedLabel = document.getElementById(`lbl_${qIndex}_${selectedKey}`);
-        const correctLabel = document.getElementById(`lbl_${qIndex}_${correctKey}`);
-
-        if (selectedKey === correctKey) {
-            // Trả lời ĐÚNG
-            selectedLabel.classList.add('correct');
-            selectedLabel.querySelector('.icon-result').innerText = '✔️';
-            currentScore++;
-        } else {
-            // Trả lời SAI
-            selectedLabel.classList.add('wrong');
-            selectedLabel.querySelector('.icon-result').innerText = '❌';
+    <!-- TRANG 1: BÌA -->
+    <div class="page cover-page">
+        <!-- Thuộc tính referrerpolicy và crossorigin giúp tải ảnh cục bộ mượt mà -->
+        <img class="cover-bg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_2.jpg/800px-Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_2.jpg" alt="[Ảnh Bìa Việt Nam Quốc Tự]" referrerpolicy="no-referrer" crossorigin="anonymous">
+        <div class="cover-overlay"></div>
+        <div class="cover-content-box">
+            <div class="title-font cover-top-text">Ấn phẩm Đặc Biệt</div>
+            <h1 class="title-font cover-main-title">VIỆT NAM<br>QUỐC TỰ</h1>
+            <p class="cover-subtitle">Dấu ấn Kiến trúc & Tâm linh giữa lòng Sài Gòn</p>
             
-            // Hiển thị đáp án đúng
-            correctLabel.classList.add('show-correct');
-            correctLabel.querySelector('.icon-result').innerText = '✔️';
-        }
+            <div class="cover-badge">
+                <div class="title-font" style="color: var(--gold); text-transform: uppercase; font-weight: 800; letter-spacing: 3px; font-size: 18px; margin-bottom: 8px;">TỔ 3 THỰC HIỆN</div>
+                <div style="font-size: 15px; font-style: italic; letter-spacing: 2px;">Năm 2026</div>
+            </div>
+        </div>
+    </div>
 
-        // Cập nhật thống kê
-        answeredQuestions++;
-        scoreEl.innerText = currentScore;
-        answeredCountEl.innerText = answeredQuestions;
-        progressBar.style.width = (answeredQuestions / totalQuestions * 100) + '%';
-
-        // Tự động cuộn xuống câu tiếp theo (nếu mượt)
-        const nextCard = document.getElementById(`qCard_${qIndex + 1}`);
-        if (nextCard) {
-            setTimeout(() => {
-                nextCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 600);
-        }
-
-        // Kiểm tra xem đã hoàn thành chưa
-        if (answeredQuestions === totalQuestions) {
-            showCompletion();
-        }
-    }
-
-    function showCompletion() {
-        completionModal.style.display = 'block';
-        finalScore.innerText = `${currentScore}/${totalQuestions}`;
+    <!-- TRANG 2: MỤC LỤC -->
+    <div class="page">
+        <div class="page-header">
+            <span>Tập san 2026</span>
+            <span>Mục Lục</span>
+        </div>
         
-        const percent = currentScore / totalQuestions;
-        if (percent >= 0.8) {
-            finalMessage.innerText = "Tuyệt vời! Kiến thức của bạn rất vững chắc.";
-        } else if (percent >= 0.5) {
-            finalMessage.innerText = "Khá tốt! Bạn đã nắm được nội dung cơ bản.";
-        } else {
-            finalMessage.innerText = "Cố gắng ôn tập thêm các nội dung trong SGK nhé!";
-        }
+        <div class="toc-wrapper">
+            <div class="toc-header">
+                <h2 class="title-font">Mục Lục</h2>
+                <div class="divider"></div>
+            </div>
 
-        setTimeout(() => {
-            completionModal.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 1000);
-    }
+            <div class="toc-list">
+                <div class="toc-item">
+                    <span class="toc-title">1. Lịch sử hình thành</span>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page-num">03</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-title">2. Kiến trúc tổng thể</span>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page-num">04</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-title">3. Bảo tháp 13 tầng</span>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page-num">05</span>
+                </div>
+                <div class="toc-item">
+                    <span class="toc-title">4. Không gian tâm linh</span>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page-num">06</span>
+                </div>
+                <div class="toc-item" style="margin-top: 30px;">
+                    <span class="toc-title" style="color: #666; font-size: 15px;">Danh sách Thành viên</span>
+                    <span class="toc-dots"></span>
+                    <span class="toc-page-num">07</span>
+                </div>
+            </div>
+        </div>
 
-    // Khởi tạo
-    renderQuiz();
-</script>
+        <div class="page-footer">- 02 -</div>
+    </div>
+
+    <!-- TRANG 3: LỊCH SỬ -->
+    <div class="page">
+        <div class="page-header">
+            <span>Việt Nam Quốc Tự</span>
+            <span>Phần 01</span>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h3 class="title-font" style="color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">Phần 1</h3>
+            <h2 class="title-font" style="color: var(--teal-dark); font-size: 32px; text-transform: uppercase;">Lịch sử hình thành</h2>
+        </div>
+        
+        <div class="img-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_2.jpg/800px-Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_2.jpg" alt="[Ảnh Toàn Cảnh: Việt Nam Quốc Tự]" referrerpolicy="no-referrer" crossorigin="anonymous">
+            <div class="img-caption">Toàn cảnh Việt Nam Quốc Tự - Nguồn: Wikimedia Commons</div>
+        </div>
+
+        <div class="content-body">
+            <p class="drop-cap">
+                Việt Nam Quốc Tự là một trong những công trình tôn giáo mang ý nghĩa biểu tượng lớn lao của Phật giáo tại Thành phố Hồ Chí Minh. Lịch sử của ngôi tự viện này gắn liền với những thăng trầm của Phật giáo nước nhà trong giai đoạn cận đại. Công trình được Giáo hội Phật giáo Việt Nam Thống nhất khởi công xây dựng vào năm 1964.
+            </p>
+            <p>
+                Ban đầu, dự án được kỳ vọng sẽ trở thành một trung tâm tôn giáo, văn hóa và giáo dục quy mô bậc nhất khu vực, đáp ứng nhu cầu tâm linh của đông đảo phật tử. Tuy nhiên, trải qua những biến thiên của thời cuộc và bối cảnh lịch sử, diện tích của chùa đã bị thu hẹp đáng kể, khiến nhiều hạng mục đành phải dở dang.
+            </p>
+            <p>
+                Bước ngoặt quan trọng mở ra vào năm 1993, khi nhà nước cấp lại một phần diện tích đất cho nhà chùa. Đặc biệt, vào ngày 12 tháng 10 năm 2014, công trình kiến trúc đồ sộ hiện tại đã chính thức được khởi công xây dựng lại hoàn toàn. Tháng 11 năm 2017, ngôi tự viện chính thức khánh thành bề thế, khang trang như hiện nay.
+            </p>
+        </div>
+
+        <div class="page-footer">- 03 -</div>
+    </div>
+
+    <!-- TRANG 4: KIẾN TRÚC -->
+    <div class="page">
+        <div class="page-header">
+            <span>Việt Nam Quốc Tự</span>
+            <span>Phần 02</span>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h3 class="title-font" style="color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">Phần 2</h3>
+            <h2 class="title-font" style="color: var(--teal-dark); font-size: 32px; text-transform: uppercase;">Kiến trúc tổng thể</h2>
+        </div>
+        
+        <div class="content-body">
+            <p class="drop-cap">
+                Vẻ đẹp kiến trúc của Việt Nam Quốc Tự là sự kết tinh hoàn hảo giữa nét kiến trúc Phật giáo truyền thống mang đậm bản sắc văn hóa dân tộc và không gian công năng tiện nghi của thời đại mới. Ngôi chùa gây ấn tượng mạnh mẽ với gam màu vàng chủ đạo - màu sắc biểu trưng cho tuệ giác, sự giải thoát và hòa bình trong đạo Phật.
+            </p>
+            <p>
+                Tòa Chánh điện là hạng mục trung tâm và quy mô nhất của quần thể kiến trúc. Công trình được thiết kế với hệ thống mái ngói vảy cá uốn cong mềm mại. Các cột trụ bằng bê tông cốt thép được thiết kế vững chãi và sơn giả gỗ tinh xảo, tạo cảm giác vừa hiện đại vừa giữ được sự cổ kính, uy nghiêm cần thiết.
+            </p>
+            <p>
+                Các chi tiết trang trí, chạm trổ trên hệ thống cửa gỗ, lan can, và trần nhà đều mang hình tượng hoa sen, rồng và bánh xe luân hồi (Pháp luân). Những họa tiết này được đúc kết từ sự tỉ mỉ của các nghệ nhân điêu khắc lành nghề, thể hiện tinh thần nhập thế và độ sinh của Phật giáo Việt Nam, giúp công trình bền vững theo thời gian mà vẫn giữ nguyên được hồn cốt của chốn thiền môn.
+            </p>
+        </div>
+
+        <div class="page-footer">- 04 -</div>
+    </div>
+
+    <!-- TRANG 5: BẢO THÁP -->
+    <div class="page">
+        <div class="page-header">
+            <span>Việt Nam Quốc Tự</span>
+            <span>Phần 03</span>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h3 class="title-font" style="color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">Phần 3</h3>
+            <h2 class="title-font" style="color: var(--teal-dark); font-size: 32px; text-transform: uppercase;">Bảo tháp 13 tầng</h2>
+        </div>
+        
+        <div class="img-box">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/B%E1%BA%A3o_th%C3%A1p_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg/800px-B%E1%BA%A3o_th%C3%A1p_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg" alt="[Ảnh Bảo Tháp 13 Tầng]" referrerpolicy="no-referrer" crossorigin="anonymous">
+            <div class="img-caption">Bảo tháp 13 tầng vươn cao 63m - Nguồn: Wikimedia Commons</div>
+        </div>
+
+        <div class="content-body">
+            <p class="drop-cap">
+                Điểm nhấn kiến trúc nổi bật và thiêng liêng nhất trong quần thể này chính là Ngôi Bảo tháp 13 tầng. Được khởi công xây dựng đúng vào dịp kỷ niệm ngày Đức Phật Thành Đạo, bảo tháp vươn lên giữa bầu trời thành phố với chiều cao 63 mét.
+            </p>
+            <p>
+                Những con số về thiết kế của bảo tháp không chỉ mang tính toán học mà còn hàm chứa những ý nghĩa lịch sử sâu sắc: Chiều cao 63 mét là để tưởng nhớ năm 1963 - mốc son lịch sử của phong trào đấu tranh bảo vệ Đạo pháp; trong khi con số 13 tầng lại đại diện cho 13 tổ chức, hội đoàn Phật giáo đã đoàn kết tham gia vào cuộc vận động vĩ đại ấy. 
+            </p>
+            <p>
+                Đặc biệt thiêng liêng, tầng cao nhất của bảo tháp được thiết kế để trở thành nơi tôn trí và bảo vệ cẩn mật xá lợi trái tim bất diệt của Bồ tát Thích Quảng Đức - minh chứng sáng ngời cho tinh thần từ bi và dũng lực của Phật giáo.
+            </p>
+        </div>
+
+        <div class="page-footer">- 05 -</div>
+    </div>
+
+    <!-- TRANG 6: KHÔNG GIAN TÂM LINH -->
+    <div class="page">
+        <div class="page-header">
+            <span>Việt Nam Quốc Tự</span>
+            <span>Phần 04</span>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <h3 class="title-font" style="color: var(--gold); font-size: 14px; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 8px;">Phần 4</h3>
+            <h2 class="title-font" style="color: var(--teal-dark); font-size: 32px; text-transform: uppercase;">Không gian tâm linh</h2>
+        </div>
+        
+        <div class="content-body">
+            <p class="drop-cap">
+                Bước vào bên trong Chánh điện, phật tử và du khách sẽ được chiêm bái bức tôn tượng Đức Phật Thích Ca Mâu Ni được đúc bằng đồng nguyên khối. Tôn tượng uy nghi cao 7,5 mét và nặng tới 35 tấn, hoàn thành bởi đôi bàn tay tài hoa của các nghệ nhân đúc đồng truyền thống đến từ miền Bắc.
+            </p>
+            <p>
+                Không chỉ là một công trình kiến trúc tôn giáo đồ sộ, Việt Nam Quốc Tự còn đóng vai trò là trụ sở làm việc của Ban Trị sự Giáo hội Phật giáo Việt Nam Thành phố Hồ Chí Minh. Nơi đây sở hữu hội trường rộng lớn với sức chứa hàng nghìn người, cùng các không gian chức năng như phòng họp, thư viện, khu vực sinh hoạt đạo tràng.
+            </p>
+            <p>
+                Giữa lòng Sài Gòn nhộn nhịp, không gian rợp bóng cây xanh và tiếng chuông chùa ngân vang của Việt Nam Quốc Tự tựa như một chốn bồng lai thanh tịnh. Đây là nơi nuôi dưỡng đời sống tâm linh tinh thần, tổ chức các khóa tu học, giảng pháp và các hoạt động từ thiện xã hội, mang lại sự bình an cho hàng vạn phật tử xa gần.
+            </p>
+        </div>
+
+        <div class="page-footer">- 06 -</div>
+    </div>
+
+    <!-- TRANG 7: THÀNH VIÊN -->
+    <div class="page">
+        <div class="page-header">
+            <span>Tập san 2026</span>
+            <span>Ban biên tập</span>
+        </div>
+
+        <div style="flex-grow: 1; padding-top: 30px;">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <span class="title-font" style="color: var(--gold); text-transform: uppercase; font-size: 15px; letter-spacing: 5px; font-weight: 700; display: block; margin-bottom: 12px;">Danh sách</span>
+                <h2 class="title-font" style="color: var(--teal-dark); font-size: 38px; text-transform: uppercase;">Thành Viên Tổ 3</h2>
+                <div style="width: 70px; height: 3px; background-color: var(--gold); margin: 20px auto 0 auto;"></div>
+            </div>
+
+            <!-- Khung 12 dòng kẻ -->
+            <div class="member-list">
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">01.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">02.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">03.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">04.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">05.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">06.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">07.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">08.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">09.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">10.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">11.</span><span class="toc-dots"></span></div>
+                <div class="toc-item"><span class="toc-page-num" style="width: 45px; font-size: 20px;">12.</span><span class="toc-dots"></span></div>
+            </div>
+        </div>
+
+        <div class="page-footer">- 07 -</div>
+    </div>
 
 </body>
 </html>
+```
