@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="referrer" content="no-referrer">
-    <title>Tập San: Việt Nam Quốc Tự</title>
+    <title>Tập San: Việt Nam Quốc Tự - Tổ 3</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
 
         :root {
             --teal: #0c2a1a;
-            --gold: #d4af37;
+            --red-brown: #5c1818;
+            --gold: #c59b27;
+            --gold-light: #e6c875;
             --bg-color: #fcf9f2;
-            --text-color: #333333;
+            --text-color: #222222;
         }
 
         * {
@@ -23,285 +24,370 @@
 
         body {
             font-family: 'Lora', serif;
-            background-color: #e0e5e5;
+            background-color: #2c302e;
             color: var(--text-color);
-            line-height: 1.6;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
+            line-height: 1.65;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        /* Thanh công cụ nổi trên màn hình điện thoại */
+        .toolbar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .btn-tool {
+            background: var(--teal);
+            color: var(--gold-light);
+            border: 2px solid var(--gold);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .book {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 0;
-            gap: 20px;
+            padding: 15px 10px 80px 10px;
+            gap: 25px;
         }
 
         .page {
             width: 100%;
-            max-width: 800px;
+            max-width: 794px; /* Chuẩn rộng A4 ở 96dpi */
             background: var(--bg-color);
-            min-height: auto;
             position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            border-top: 5px solid var(--teal);
-            border-bottom: 5px solid var(--gold);
+            border: 1px solid #d4c5a9;
         }
 
-        /* ----- Trang Bìa ----- */
-        .cover {
-            padding: 0;
-            background-color: var(--teal);
-            position: relative;
+        /* Khung viền cổ điển bên trong mỗi trang */
+        .page-inner {
+            margin: 14px;
+            padding: 28px 22px;
+            border: 2px solid var(--gold);
+            outline: 1px solid rgba(197, 155, 39, 0.4);
+            outline-offset: -6px;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 100vh;
+            position: relative;
         }
 
-        .cover-img-container {
+        /* ----- TRANG BÌA ----- */
+        .cover {
+            background-color: var(--teal);
+            color: #fff;
+        }
+
+        .cover .page-inner {
+            border: 2px solid var(--gold);
+            background: linear-gradient(180deg, rgba(12,42,26,0.88) 0%, rgba(12,42,26,0.65) 45%, rgba(12,42,26,0.92) 100%);
+            z-index: 2;
+            text-align: center;
+            padding: 35px 20px;
+        }
+
+        .cover-bg-img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-        }
-
-        .cover-img-container img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
-            opacity: 0.5; /* Làm tối ảnh để nổi chữ */
+            z-index: 1;
+            opacity: 0.45;
         }
 
-        .cover-content {
-            position: relative;
-            z-index: 2;
-            padding: 40px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            text-align: center;
-        }
-
-        .cover-top {
-            margin-top: 10%;
-        }
-
-        .cover-top p {
-            color: var(--gold);
+        .cover-subtitle-top {
+            color: var(--gold-light);
             font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            letter-spacing: 4px;
+            font-size: 13px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin-bottom: 20px;
-            font-weight: 600;
+            margin-bottom: 12px;
         }
 
         .cover-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(40px, 10vw, 60px);
+            font-size: clamp(34px, 9vw, 54px);
             color: #ffffff;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .cover-subtitle {
-            font-size: 18px;
-            font-style: italic;
-            color: #f0f0f0;
-            max-width: 80%;
-            margin: 0 auto;
-        }
-
-        .cover-bottom {
-            margin-bottom: 10%;
-            border: 1px solid var(--gold);
-            padding: 20px 40px;
-            background: rgba(12, 42, 26, 0.7);
-            backdrop-filter: blur(3px);
-        }
-
-        .cover-bottom h3 {
-            color: var(--gold);
-            font-size: 16px;
+            line-height: 1.15;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.6);
         }
 
-        .cover-bottom p {
-            color: #ffffff;
+        .cover-desc {
+            font-size: 15px;
             font-style: italic;
+            color: var(--gold-light);
+            max-width: 90%;
+            margin: 0 auto 20px auto;
         }
 
-        /* ----- Các Trang Nội Dung ----- */
-        .content-page {
-            padding: 40px 30px;
+        .cover-frame-photo {
+            width: 92%;
+            max-width: 480px;
+            margin: 10px auto 20px auto;
+            border: 3px solid var(--gold);
+            padding: 5px;
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.5);
         }
 
+        .cover-frame-photo img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cover-footer-box {
+            margin-top: 15px;
+            border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold);
+            padding: 12px 25px;
+            display: inline-block;
+            background: rgba(0,0,0,0.35);
+        }
+
+        .cover-footer-box h3 {
+            color: var(--gold-light);
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
+        }
+
+        .cover-footer-box p {
+            color: #ffffff;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* ----- HEADER & FOOTER TRANG NỘI DUNG ----- */
         .header {
             display: flex;
             justify-content: space-between;
-            border-bottom: 1px solid var(--gold);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+            align-items: center;
+            border-bottom: 1.5px solid var(--gold);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
             font-family: 'Playfair Display', serif;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--teal);
             letter-spacing: 2px;
             text-transform: uppercase;
+            font-weight: 700;
         }
 
-        .section-title {
+        .page-footer {
+            border-top: 1px solid #dcd3bd;
+            padding-top: 8px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .section-tag {
             font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            font-size: 14px;
+            color: var(--red-brown);
+            font-size: 12px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 10px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            text-align: center;
         }
 
         .main-heading {
             font-family: 'Playfair Display', serif;
             color: var(--teal);
-            font-size: 32px;
-            line-height: 1.2;
-            margin-bottom: 25px;
+            font-size: 26px;
+            line-height: 1.25;
+            margin-bottom: 18px;
+            text-align: center;
+            text-transform: uppercase;
         }
 
-        .text-content {
-            font-size: 15px;
-            text-align: justify;
-            margin-bottom: 20px;
+        .heading-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: -10px auto 20px auto;
         }
 
-        .drop-cap:first-letter {
-            float: left;
-            font-family: 'Playfair Display', serif;
-            font-size: 65px;
-            line-height: 50px;
-            padding-top: 4px;
-            padding-right: 8px;
-            padding-left: 3px;
-            color: var(--teal);
-        }
-
+        /* ----- HÌNH ẢNH ----- */
         .image-box {
-            margin: 25px 0;
+            margin: 10px 0 18px 0;
             width: 100%;
-            background-color: var(--teal); /* Màu nền dự phòng nếu lỗi ảnh */
-            border: 1px solid #ddd;
+            border: 2px solid var(--gold);
+            padding: 5px;
+            background-color: #fff;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            position: relative;
         }
 
         .image-box img {
             width: 100%;
-            height: auto;
+            height: 230px;
+            object-fit: cover;
             display: block;
+            background-color: #eee;
         }
 
         .caption {
-            text-align: right;
-            font-size: 12px;
+            text-align: center;
+            font-size: 11.5px;
             font-style: italic;
-            color: #666;
-            margin-top: 8px;
-            padding-right: 10px;
-            border-right: 2px solid var(--gold);
+            color: #555;
+            margin-top: 6px;
+            padding-top: 4px;
+            border-top: 1px dashed #ddd;
         }
 
-        /* ----- Mục Lục ----- */
-        .toc-page {
-            justify-content: center;
+        /* ----- VĂN BẢN ----- */
+        .text-content {
+            font-size: 14.2px;
+            text-align: justify;
+            margin-bottom: 12px;
+            color: #222;
         }
-        .toc-title {
-            text-align: center;
-            font-size: 36px;
+
+        .drop-cap::first-letter {
+            float: left;
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            line-height: 42px;
+            padding-top: 3px;
+            padding-right: 8px;
+            color: var(--red-brown);
+            font-weight: 700;
+        }
+
+        .info-card {
+            background: #f4eee1;
+            border-left: 4px solid var(--gold);
+            padding: 12px 15px;
+            margin: 12px 0;
+            font-size: 13.5px;
+        }
+
+        .info-card strong {
             color: var(--teal);
-            margin-bottom: 40px;
             font-family: 'Playfair Display', serif;
         }
-        .toc-title::after {
-            content: '';
-            display: block;
-            width: 50px;
-            height: 3px;
-            background: var(--gold);
-            margin: 15px auto 0;
+
+        /* ----- MỤC LỤC ----- */
+        .toc-list {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
+
         .toc-item {
             display: flex;
             align-items: baseline;
-            margin-bottom: 25px;
-            font-size: 16px;
             font-family: 'Playfair Display', serif;
             color: var(--teal);
-        }
-        .toc-name {
-            font-weight: 600;
-        }
-        .toc-dots {
-            flex-grow: 1;
-            border-bottom: 1px dotted var(--gold);
-            margin: 0 15px;
-            opacity: 0.5;
-        }
-        .toc-page-num {
-            color: var(--gold);
-            font-weight: bold;
-            font-size: 18px;
+            font-size: 15px;
         }
 
-        /* ----- Danh sách thành viên ----- */
-        .member-list {
-            list-style: none;
-            margin-top: 30px;
+        .toc-name {
+            font-weight: 700;
         }
+
+        .toc-dots {
+            flex-grow: 1;
+            border-bottom: 1.5px dotted var(--gold);
+            margin: 0 10px;
+            min-width: 20px;
+        }
+
+        .toc-page-num {
+            color: var(--red-brown);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* ----- DANH SÁCH THÀNH VIÊN ----- */
+        .member-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
         .member-item {
             display: flex;
             align-items: flex-end;
-            margin-bottom: 22px;
+            gap: 10px;
         }
+
         .member-num {
             font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: var(--gold);
-            font-weight: bold;
-            width: 40px;
+            font-size: 15px;
+            color: var(--red-brown);
+            font-weight: 700;
+            width: 32px;
         }
+
         .member-line {
             flex-grow: 1;
-            border-bottom: 1px dashed #999;
+            border-bottom: 1px dashed #777;
             height: 20px;
         }
 
-        /* Nút In */
-        .print-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--teal);
-            color: var(--gold);
-            border: 2px solid var(--gold);
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
+        /* Nhấn vào ảnh để tự đổi ảnh từ máy nếu cần */
+        .change-img-hint {
+            display: none;
+            font-size: 11px;
+            color: var(--red-brown);
+            text-align: center;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        body.edit-mode .change-img-hint {
+            display: block;
+        }
+        body.edit-mode img {
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1000;
+            outline: 2px dashed var(--red-brown);
         }
 
+        /* ----- CHUẨN IN ẤN A4 ----- */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
             body {
                 background: none;
+            }
+            .toolbar, .change-img-hint {
+                display: none !important;
             }
             .book {
                 padding: 0;
@@ -310,15 +396,21 @@
             }
             .page {
                 width: 210mm;
-                height: 297mm; /* Ép cứng A4 khi in */
+                height: 297mm;
                 max-width: none;
                 box-shadow: none;
                 margin: 0;
-                page-break-after: always;
                 border: none;
+                page-break-after: always;
+                page-break-inside: avoid;
             }
-            .print-btn {
-                display: none;
+            .page:last-child {
+                page-break-after: auto;
+            }
+            .page-inner {
+                margin: 10mm;
+                padding: 12mm;
+                height: calc(297mm - 20mm);
             }
         }
     </style>
@@ -327,191 +419,351 @@
 
     <div class="book">
         
-        <!-- TRANG BÌA -->
+        <!-- TRANG 1: BÌA TẬP SAN -->
         <div class="page cover">
-            <div class="cover-img-container">
-                <!-- Sử dụng link dự phòng nhiều tầng qua CDN tĩnh i0.wp.com và corsproxy -->
-                <img src="https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/e/ec/Vietnam_Quoc_Tu_02.jpg" 
-                     onerror="this.onerror=null; this.src='https://corsproxy.io/?https://upload.wikimedia.org/wikipedia/commons/e/ec/Vietnam_Quoc_Tu_02.jpg';" 
-                     alt="Bìa Việt Nam Quốc Tự" crossorigin="anonymous">
-            </div>
-            <div class="cover-content">
-                <div class="cover-top">
-                    <p>Ấn phẩm đặc biệt</p>
+            <!-- Dùng chính xác định dạng link /thumb/ đã hiện thành công ở bản 1 (20:19) -->
+            <img class="cover-bg-img wiki-img" 
+                 data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
+                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
+                 alt="Bìa Việt Nam Quốc Tự">
+            
+            <div class="page-inner">
+                <div>
+                    <div class="cover-subtitle-top">Ấn Phẩm Văn Hóa & Lịch Sử</div>
                     <h1 class="cover-title">VIỆT NAM<br>QUỐC TỰ</h1>
-                    <div class="cover-subtitle">Dấu ấn Kiến trúc & Tâm linh giữa lòng Sài Gòn</div>
+                    <div class="cover-desc">Dấu ấn Kiến trúc & Tâm linh giữa lòng Sài Gòn</div>
                 </div>
-                <div class="cover-bottom">
-                    <h3>TỔ 3 THỰC HIỆN</h3>
-                    <p>Năm 2026</p>
+
+                <div>
+                    <div class="change-img-hint">👆 Chạm vào ảnh bất kỳ để đổi ảnh từ điện thoại của bạn</div>
+                    <div class="cover-frame-photo">
+                        <img class="wiki-img" 
+                             data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
+                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
+                             alt="Bảo tháp 13 tầng Việt Nam Quốc Tự">
+                    </div>
+                    <div style="font-size: 11px; color: var(--gold-light); font-style: italic;">
+                        Bảo tháp 13 tầng uy nghiêm (Nguồn: Wikimedia Commons)
+                    </div>
+                </div>
+
+                <div>
+                    <div class="cover-footer-box">
+                        <h3>TỔ 3 THỰC HIỆN</h3>
+                        <p>Thành phố Hồ Chí Minh • Năm 2026</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- MỤC LỤC -->
-        <div class="page content-page toc-page">
-            <h2 class="toc-title">MỤC LỤC</h2>
-            
-            <div class="toc-item">
-                <span class="toc-name">1. LỊCH SỬ HÌNH THÀNH</span>
-                <span class="toc-dots"></span>
-                <span class="toc-page-num">01</span>
-            </div>
-            <div class="toc-item">
-                <span class="toc-name">2. KIẾN TRÚC TỔNG THỂ</span>
-                <span class="toc-dots"></span>
-                <span class="toc-page-num">02</span>
-            </div>
-            <div class="toc-item">
-                <span class="toc-name">3. BẢO THÁP 13 TẦNG</span>
-                <span class="toc-dots"></span>
-                <span class="toc-page-num">03</span>
-            </div>
-            <div class="toc-item">
-                <span class="toc-name">4. KHÔNG GIAN TÂM LINH</span>
-                <span class="toc-dots"></span>
-                <span class="toc-page-num">04</span>
-            </div>
-            <div class="toc-item">
-                <span class="toc-name">DANH SÁCH THÀNH VIÊN TỔ 3</span>
-                <span class="toc-dots"></span>
-                <span class="toc-page-num">05</span>
+        <!-- TRANG 2: MỤC LỤC -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Mục Lục</span>
+                    </div>
+                    <div class="section-tag">Tổng Quan Nội Dung</div>
+                    <h2 class="main-heading">MỤC LỤC TẬP SAN</h2>
+                    <div class="heading-divider"></div>
+
+                    <div class="toc-list">
+                        <div class="toc-item">
+                            <span class="toc-name">Phần 1: Lịch sử hình thành & Phát triển</span>
+                            <span class="toc-dots"></span>
+                            <span class="toc-page-num">Trang 03</span>
+                        </div>
+                        <div class="toc-item">
+                            <span class="toc-name">Phần 2: Kiến trúc tổng thể & Nghệ thuật</span>
+                            <span class="toc-dots"></span>
+                            <span class="toc-page-num">Trang 04</span>
+                        </div>
+                        <div class="toc-item">
+                            <span class="toc-name">Phần 3: Bảo tháp 13 tầng & Trái tim bất diệt</span>
+                            <span class="toc-dots"></span>
+                            <span class="toc-page-num">Trang 05</span>
+                        </div>
+                        <div class="toc-item">
+                            <span class="toc-name">Phần 4: Không gian tâm linh & Đời sống</span>
+                            <span class="toc-dots"></span>
+                            <span class="toc-page-num">Trang 06</span>
+                        </div>
+                        <div class="toc-item">
+                            <span class="toc-name">Danh sách 12 thành viên Tổ 3 thực hiện</span>
+                            <span class="toc-dots"></span>
+                            <span class="toc-page-num">Trang 07</span>
+                        </div>
+                    </div>
+
+                    <div class="info-card" style="margin-top: 25px;">
+                        <strong>Lời nói đầu:</strong><br>
+                        Tập san này được biên soạn nhằm giới thiệu một cách hệ thống, trực quan và trang trọng nhất về lịch sử cũng như giá trị kiến trúc độc đáo của Việt Nam Quốc Tự – ngôi chùa mang tính biểu tượng của Phật giáo Thành phố Hồ Chí Minh. Toàn bộ tư liệu và hình ảnh đều được trích dẫn nguồn đầy đủ, chính xác.
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    <span>Tập san Tổ 3 • Năm 2026</span>
+                    <span>Trang 02</span>
+                </div>
             </div>
         </div>
 
-        <!-- TRANG 1 -->
-        <div class="page content-page">
-            <div class="header">
-                <span>Việt Nam Quốc Tự</span>
-                <span>Phần 01</span>
-            </div>
-            <div class="section-title">Phần 1</div>
-            <h2 class="main-heading">LỊCH SỬ HÌNH THÀNH</h2>
-            
-            <div class="image-box">
-                <img src="https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/9/91/Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg" 
-                     onerror="this.onerror=null; this.src='https://corsproxy.io/?https://upload.wikimedia.org/wikipedia/commons/9/91/Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg';" 
-                     alt="Chánh điện Việt Nam Quốc Tự" crossorigin="anonymous">
-                <div class="caption">Toàn cảnh Việt Nam Quốc Tự - Nguồn: Wikimedia Commons</div>
-            </div>
+        <!-- TRANG 3: PHẦN 1 - LỊCH SỬ HÌNH THÀNH -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Phần 01</span>
+                    </div>
+                    <div class="section-tag">Phần 1</div>
+                    <h2 class="main-heading">LỊCH SỬ HÌNH THÀNH</h2>
+                    <div class="heading-divider"></div>
 
-            <div class="text-content">
-                <p class="drop-cap">V</p>iệt Nam Quốc Tự là một trong những công trình tôn giáo mang ý nghĩa biểu tượng lớn lao của Phật giáo tại Thành phố Hồ Chí Minh. Tọa lạc tại số 244 đường Ba Tháng Hai, quận 10, ngôi tự viện này gắn liền với những thăng trầm của Phật giáo nước nhà trong giai đoạn cận đại. Công trình được Giáo hội Phật giáo Việt Nam Thống nhất khởi công xây dựng vào năm 1964.
-            </div>
-            <div class="text-content">
-                Sau năm 1975, trải qua nhiều biến thiên của lịch sử, quy mô khuôn viên của chùa từng bị thu hẹp đáng kể. Mãi đến năm 1993, chùa mới được cấp lại một phần diện tích để tiếp tục hoạt động và bảo tồn tôn giáo.
-            </div>
-            <div class="text-content">
-                Đánh dấu một bước ngoặt quan trọng, vào năm 2014, công trình kiến trúc hiện tại đã được khởi công xây dựng lại hoàn toàn trên phần diện tích rộng lớn hơn 7.200 mét vuông. Sau hơn 3 năm thi công, vào tháng 11 năm 2017, Việt Nam Quốc Tự đã chính thức được khánh thành.
+                    <div class="image-box">
+                        <img class="wiki-img" 
+                             data-wiki-title="File:Vietnam_Quoc_Tu_02.jpg"
+                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Vietnam_Quoc_Tu_02.jpg/800px-Vietnam_Quoc_Tu_02.jpg" 
+                             alt="Bảo tháp cổ Việt Nam Quốc Tự">
+                        <div class="caption">Ngôi tháp 7 tầng của Việt Nam Quốc Tự giai đoạn trước đợt đại trùng tu năm 2014 — Nguồn ảnh: Wikimedia Commons (Tác giả: Bùi Thụy Đào Nguyên)</div>
+                    </div>
+
+                    <p class="text-content drop-cap">
+                        Việt Nam Quốc Tự là một trong những ngôi chùa quan trọng và mang ý nghĩa lịch sử to lớn đối với Phật giáo tại Thành phố Hồ Chí Minh. Tọa lạc tại số 244 đường Ba Tháng Hai, Phường 12, Quận 10, ngôi tự viện được Giáo hội Phật giáo Việt Nam Thống nhất khởi công xây dựng vào ngày 26 tháng 4 năm 1964 trên một khu đất rộng lớn hơn 45.000 mét vuông.
+                    </p>
+                    <p class="text-content">
+                        Trải qua những biến thiên của lịch sử sau năm 1975, quy mô khuôn viên của chùa từng bị thu hẹp đáng kể. Đến năm 1993, chùa được chính quyền cấp lại quyền sử dụng đất và Hòa thượng Thích Từ Nhơn đã đứng ra xin phép trùng tu lại ngôi tháp 7 tầng cùng các hạng mục thờ tự.
+                    </p>
+                    <p class="text-content">
+                        Đánh dấu một bước ngoặt lịch sử, vào tháng 10 năm 2014, Thành phố Hồ Chí Minh đã giao thêm đất nâng tổng diện tích lên hơn 11.000 mét vuông. Công trình đại trùng tu hoàn toàn mới được khởi công và chính thức khánh thành vào tháng 11 năm 2017, trở thành Trụ sở của Ban Trị sự Giáo hội Phật giáo Việt Nam TP.HCM.
+                    </p>
+                </div>
+
+                <div class="page-footer">
+                    <span>Nguồn tư liệu: Wikipedia Tiếng Việt & Giáo hội Phật giáo VN</span>
+                    <span>Trang 03</span>
+                </div>
             </div>
         </div>
 
-        <!-- TRANG 2 -->
-        <div class="page content-page">
-            <div class="header">
-                <span>Việt Nam Quốc Tự</span>
-                <span>Phần 02</span>
-            </div>
-            <div class="section-title">Phần 2</div>
-            <h2 class="main-heading">KIẾN TRÚC TỔNG THỂ</h2>
-            
-            <div class="text-content">
-                <p class="drop-cap">V</p>ẻ đẹp của Việt Nam Quốc Tự là sự kết tinh hoàn hảo giữa nét kiến trúc Phật giáo truyền thống mang đậm bản sắc văn hóa dân tộc và hơi thở của thời đại. Ngôi chùa nổi bật với gam màu vàng và mái ngói đỏ thẫm, tạo nên một không gian vừa uy nghiêm vừa thanh thoát.
-            </div>
+        <!-- TRANG 4: PHẦN 2 - KIẾN TRÚC TỔNG THỂ -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Phần 02</span>
+                    </div>
+                    <div class="section-tag">Phần 2</div>
+                    <h2 class="main-heading">KIẾN TRÚC TỔNG THỂ</h2>
+                    <div class="heading-divider"></div>
 
-            <div class="image-box">
-                <img src="https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/f/fc/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg" 
-                     onerror="this.onerror=null; this.src='https://corsproxy.io/?https://upload.wikimedia.org/wikipedia/commons/f/fc/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg';" 
-                     alt="Chi tiết kiến trúc" crossorigin="anonymous">
-                <div class="caption">Họa tiết trống đồng và hoa văn - Nguồn: Wikimedia Commons</div>
-            </div>
+                    <div class="image-box">
+                        <img class="wiki-img" 
+                             data-wiki-title="File:Việt_Nam_Quốc_Tự_5.jpg"
+                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg/800px-Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1_5.jpg" 
+                             alt="Kiến trúc Việt Nam Quốc Tự">
+                        <div class="caption">Phù điêu bánh xe Pháp luân kết hợp trống đồng và hoa văn truyền thống trên mặt tiền chùa — Nguồn ảnh: Wikimedia Commons</div>
+                    </div>
 
-            <div class="text-content">
-                Các hạng mục chính bao gồm cổng tam quan, chánh điện, tháp chuông, và khu hành chính. Đặc biệt, tòa chánh điện được thiết kế cực kỳ rộng lớn và thoáng đãng. Hệ thống cột kèo bên trong được chạm trổ hoa văn vô cùng tinh xảo, thể hiện tay nghề điêu luyện của các nghệ nhân.
-            </div>
-            <div class="text-content">
-                Xung quanh chánh điện và bảo tháp, các khuôn viên cây xanh, hồ nước được bố trí hài hòa theo triết lý phong thủy Phật giáo. Điều này không chỉ mang lại bóng mát mà còn giúp người hành hương tìm thấy sự an lạc, tĩnh tại ngay khi vừa bước chân vào chùa.
+                    <p class="text-content drop-cap">
+                        Vẻ đẹp của Việt Nam Quốc Tự là sự kết tinh hoàn hảo giữa nét kiến trúc Phật giáo truyền thống miền Bắc (mái đao cong vút) mang đậm bản sắc văn hóa dân tộc và kỹ thuật xây dựng kiên cố của thời đại mới. Ngôi chùa nổi bật với gam màu vàng hoàng gia chủ đạo và hệ thống mái ngói đỏ nâu uy nghiêm.
+                    </p>
+                    <p class="text-content">
+                        Các hạng mục chính bao gồm Cổng Tam quan rộng lớn, Tòa Chánh điện 5 gian, Bảo tháp 13 tầng, Tháp chuông, Tháp trống và khu hội trường hành chính. Toàn bộ hệ thống đầu đao, cột gỗ và phù điêu đều được chạm trổ họa tiết hoa sen, rồng chầu và trống đồng Đông Sơn vô cùng tinh xảo.
+                    </p>
+
+                    <div class="info-card">
+                        <strong>Điểm nhấn kiến trúc:</strong><br>
+                        • <strong>Diện tích khuôn viên:</strong> Hơn 11.000 m² với mật độ cây xanh hài hòa.<br>
+                        • <strong>Phong cách:</strong> Kiến trúc cổ truyền Việt Nam kết hợp không gian mở.<br>
+                        • <strong>Mặt bằng:</strong> Bố trí đăng đối theo trục thần đạo truyền thống.
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    <span>Nguồn tư liệu: Wikipedia Tiếng Việt & Báo Giác Ngộ</span>
+                    <span>Trang 04</span>
+                </div>
             </div>
         </div>
 
-        <!-- TRANG 3 -->
-        <div class="page content-page">
-            <div class="header">
-                <span>Việt Nam Quốc Tự</span>
-                <span>Phần 03</span>
-            </div>
-            <div class="section-title">Phần 3</div>
-            <h2 class="main-heading">BẢO THÁP 13 TẦNG</h2>
-            
-            <div class="image-box">
-                <img src="https://i0.wp.com/upload.wikimedia.org/wikipedia/commons/e/ec/Vietnam_Quoc_Tu_02.jpg" 
-                     onerror="this.onerror=null; this.src='https://corsproxy.io/?https://upload.wikimedia.org/wikipedia/commons/e/ec/Vietnam_Quoc_Tu_02.jpg';" 
-                     alt="Bảo tháp 13 tầng" crossorigin="anonymous">
-                <div class="caption">Ngôi Bảo tháp cao 63 mét - Nguồn: Wikimedia Commons</div>
-            </div>
+        <!-- TRANG 5: PHẦN 3 - BẢO THÁP 13 TẦNG -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Phần 03</span>
+                    </div>
+                    <div class="section-tag">Phần 3</div>
+                    <h2 class="main-heading">BẢO THÁP 13 TẦNG</h2>
+                    <div class="heading-divider"></div>
 
-            <div class="text-content">
-                <p class="drop-cap">Đ</p>iểm nhấn nổi bật nhất trong quần thể kiến trúc này là Ngôi Bảo tháp 13 tầng. Được khởi công nhân dịp kỷ niệm ngày Đức Phật Thành Đạo, bảo tháp vươn cao 63 mét. Những con số này hàm chứa ý nghĩa lịch sử thiêng liêng và sâu sắc của Phật giáo.
-            </div>
-            <div class="text-content">
-                Chiều cao 63 mét tưởng nhớ năm 1963 - năm bùng nổ phong trào bảo vệ Đạo pháp; con số 13 tầng đại diện cho 13 tổ chức, hội đoàn Phật giáo đã tham gia vào công cuộc đấu tranh lịch sử ấy. 
-            </div>
-            <div class="text-content">
-                Đặc biệt, tầng cao nhất của bảo tháp là nơi tôn trí xá lợi "Trái tim bất diệt" của Bồ tát Thích Quảng Đức. Đây là một biểu tượng thiêng liêng về lòng từ bi và tinh thần vô úy, là niềm tự hào to lớn của Phật giáo Việt Nam trước toàn thế giới.
+                    <div class="image-box">
+                        <img class="wiki-img" 
+                             data-wiki-title="File:Chánh_điện_Việt_Nam_Quốc_Tự.jpg"
+                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg/800px-Ch%C3%A1nh_%C4%91i%E1%BB%87n_Vi%E1%BB%87t_Nam_Qu%E1%BB%91c_T%E1%BB%B1.jpg" 
+                             alt="Chánh điện và không gian Việt Nam Quốc Tự">
+                        <div class="caption">Không gian thờ tự uy nghiêm với nghệ thuật chạm khắc gỗ và đúc đồng — Nguồn ảnh: Wikimedia Commons</div>
+                    </div>
+
+                    <p class="text-content drop-cap">
+                        Điểm nhấn nổi bật nhất trong quần thể kiến trúc Việt Nam Quốc Tự là Ngôi Bảo tháp 13 tầng (Tháp Đa Bảo) vươn cao 63 mét lên bầu trời Sài Gòn. Được khởi công xây dựng vào tháng 1 năm 2015, mỗi con số của tòa bảo tháp đều hàm chứa ý nghĩa lịch sử thiêng liêng và sâu sắc của Phật giáo Việt Nam.
+                    </p>
+                    <p class="text-content">
+                        Chiều cao <strong>63 mét</strong> là để tưởng nhớ năm <strong>1963</strong> – năm bùng nổ phong trào Phật giáo đấu tranh bất bạo động đòi bình đẳng tôn giáo tại miền Nam. Con số <strong>13 tầng</strong> đại diện cho tinh thần đoàn kết của <strong>13 tổ chức, tông phái và hội đoàn Phật giáo</strong> đã cùng nhau thống nhất ý chí trong cuộc vận động lịch sử ấy.
+                    </p>
+                    <p class="text-content">
+                        Đặc biệt nhất, bảo tháp là nơi tôn trí vĩnh viễn <strong>Xá lợi Trái tim bất diệt của Bồ tát Thích Quảng Đức</strong> – vị Hòa thượng đã vị pháp thiêu thân năm 1963, biến nơi đây thành trung tâm chiêm bái linh thiêng bậc nhất.
+                    </p>
+                </div>
+
+                <div class="page-footer">
+                    <span>Nguồn tư liệu: Wikipedia Tiếng Việt & Báo Giác Ngộ</span>
+                    <span>Trang 05</span>
+                </div>
             </div>
         </div>
 
-        <!-- TRANG 4 -->
-        <div class="page content-page">
-            <div class="header">
-                <span>Việt Nam Quốc Tự</span>
-                <span>Phần 04</span>
-            </div>
-            <div class="section-title">Phần 4</div>
-            <h2 class="main-heading">KHÔNG GIAN TÂM LINH</h2>
+        <!-- TRANG 6: PHẦN 4 - KHÔNG GIAN TÂM LINH & ĐỜI SỐNG -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Phần 04</span>
+                    </div>
+                    <div class="section-tag">Phần 4</div>
+                    <h2 class="main-heading">KHÔNG GIAN TÂM LINH</h2>
+                    <div class="heading-divider"></div>
 
-            <div class="text-content">
-                <p class="drop-cap">T</p>rong chánh điện, pho tượng Đức Phật Thích Ca Mâu Ni bằng đồng nguyên khối được bài trí trang nghiêm ở vị trí trung tâm. Tượng nặng 35 tấn và cao 7,5 mét, là một trong những tôn tượng Phật bằng đồng lớn nhất tại Việt Nam hiện nay. Pho tượng được đúc thủ công bởi các nghệ nhân tài hoa, tỏa ra vẻ đẹp từ bi và trí tuệ.
-            </div>
-            <div class="text-content">
-                Ngôi chùa còn sở hữu một quả đại hồng chung nặng 3 tấn, được đúc với hoa văn trang trí thuần Việt. Tiếng chuông ngân vang mỗi sớm chiều giữa lòng thành phố nhộn nhịp không chỉ là tín hiệu nhắc nhở đồng bào phật tử hướng thiện, mà còn mang lại cảm giác bình yên, xua tan đi những muộn phiền của cuộc sống đời thường.
-            </div>
-            <div class="text-content">
-                Ngày nay, Việt Nam Quốc Tự không chỉ là trụ sở hành chính của Ban Trị sự Giáo hội Phật giáo Việt Nam Thành phố Hồ Chí Minh, mà còn là địa điểm diễn ra nhiều hoạt động văn hóa, giáo dục và từ thiện xã hội. Hàng năm, vào các dịp lễ lớn như Phật Đản, Vu Lan, hàng ngàn tăng ni và phật tử từ khắp nơi đổ về đây để chiêm bái và cầu nguyện quốc thái dân an.
+                    <p class="text-content drop-cap">
+                        Bước vào bên trong Tòa Chánh điện của Việt Nam Quốc Tự, du khách và Phật tử sẽ choáng ngợp trước pho tượng Đức Phật Bổn Sư Thích Ca Mâu Ni bằng đồng nguyên khối được tôn trí ở vị trí trung tâm. Pho tượng nặng tới 35 tấn và cao 7,5 mét, là một trong những tôn tượng Phật bằng đồng trong nhà lớn nhất tại Việt Nam hiện nay.
+                    </p>
+                    <p class="text-content">
+                        Bên cạnh đó, chùa còn sở hữu quả Đại hồng chung (chuông đồng lớn) nặng 3 tấn, cao 2,9 mét và chiếc trống sấm đường kính hơn 2 mét. Tiếng chuông ngân vang mỗi sớm chiều giữa lòng Quận 10 sầm uất như xua tan đi mọi ồn ào, mang lại sự tĩnh tại và bình an trong tâm hồn.
+                    </p>
+
+                    <div class="info-card">
+                        <strong>Vai trò văn hóa – xã hội hiện nay:</strong><br>
+                        • Là trụ sở hành chính của Ban Trị sự Giáo hội Phật giáo Việt Nam TP.HCM.<br>
+                        • Nơi tổ chức các Đại lễ Phật Đản, Vu Lan, triển lãm văn hóa nghệ thuật Phật giáo và các khóa tu học cho hàng ngàn người dân thành phố.<br>
+                        • Điểm đến văn hóa – du lịch tâm linh tiêu biểu của Thành phố Hồ Chí Minh.
+                    </div>
+
+                    <p class="text-content">
+                        Với sự kết hợp hài hòa giữa giá trị lịch sử hào hùng, kiến trúc tráng lệ và không gian tu học thanh tịnh, Việt Nam Quốc Tự xứng đáng là niềm tự hào của Phật giáo và nhân dân Thành phố Hồ Chí Minh.
+                    </p>
+                </div>
+
+                <div class="page-footer">
+                    <span>Nguồn tư liệu: Cổng thông tin Phật giáo Việt Nam</span>
+                    <span>Trang 06</span>
+                </div>
             </div>
         </div>
 
-        <!-- TRANG THÀNH VIÊN -->
-        <div class="page content-page">
-            <div class="header">
-                <span>Việt Nam Quốc Tự</span>
-                <span>Danh sách</span>
-            </div>
-            
-            <h2 class="main-heading" style="text-align: center; margin-top: 20px;">THÀNH VIÊN TỔ 3</h2>
-            <div style="text-align: center; font-style: italic; color: #666; margin-bottom: 30px;">
-                Tập san được thực hiện bởi tập thể 12 thành viên
-            </div>
+        <!-- TRANG 7: DANH SÁCH 12 THÀNH VIÊN TỔ 3 -->
+        <div class="page">
+            <div class="page-inner">
+                <div>
+                    <div class="header">
+                        <span>Việt Nam Quốc Tự</span>
+                        <span>Ban Biên Tập</span>
+                    </div>
+                    <div class="section-tag">Thực Hiện Năm 2026</div>
+                    <h2 class="main-heading">DANH SÁCH THÀNH VIÊN TỔ 3</h2>
+                    <div class="heading-divider"></div>
 
-            <ul class="member-list">
-                <li class="member-item"><span class="member-num">01.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">02.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">03.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">04.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">05.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">06.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">07.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">08.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">09.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">10.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">11.</span><div class="member-line"></div></li>
-                <li class="member-item"><span class="member-num">12.</span><div class="member-line"></div></li>
-            </ul>
+                    <p style="text-align: center; font-style: italic; font-size: 13.5px; color: #555; margin-bottom: 15px;">
+                        Tập thể 12 thành viên Tổ 3 tham gia biên soạn, thiết kế và hoàn thiện tập san:
+                    </p>
+
+                    <div class="member-grid">
+                        <div class="member-item"><span class="member-num">01.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">02.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">03.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">04.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">05.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">06.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">07.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">08.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">09.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">10.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">11.</span><div class="member-line"></div></div>
+                        <div class="member-item"><span class="member-num">12.</span><div class="member-line"></div></div>
+                    </div>
+                </div>
+
+                <div class="page-footer">
+                    <span>Tập san Tổ 3 • Hoàn thành năm 2026</span>
+                    <span>Trang 07</span>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <button class="print-btn" onclick="window.print()">🖨 In Tập San</button>
+    <!-- Thanh công cụ nổi -->
+    <div class="toolbar">
+        <button class="btn-tool" onclick="toggleEditImages()">🖼 Đổi Ảnh</button>
+        <button class="btn-tool" onclick="window.print()">🖨 In Tập San</button>
+    </div>
 
+    <!-- Input ẩn để chọn ảnh từ điện thoại nếu người dùng muốn tự thay -->
+    <input type="file" id="imgUploader" accept="image/*" style="display: none;">
+
+    <script>
+        // 1. Tự động gọi API chính thức của Wikipedia để lấy link ảnh chuẩn xác nhất nếu link tĩnh gặp sự cố
+        document.querySelectorAll('.wiki-img').forEach(img => {
+            img.addEventListener('error', async function() {
+                if (this.dataset.retried) return;
+                this.dataset.retried = 'true';
+                const fileTitle = this.getAttribute('data-wiki-title');
+                try {
+                    const res = await fetch(`https://vi.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(fileTitle)}&prop=imageinfo&iiprop=url&iiurlwidth=800&format=json&origin=*`);
+                    const data = await res.json();
+                    const pages = data.query.pages;
+                    const pageId = Object.keys(pages)[0];
+                    if (pages[pageId].imageinfo && pages[pageId].imageinfo[0]) {
+                        this.src = pages[pageId].imageinfo[0].thumburl || pages[pageId].imageinfo[0].url;
+                    }
+                } catch (e) {
+                    console.error('Lỗi tải API Wiki:', e);
+                }
+            });
+        });
+
+        // 2. Tính năng dự phòng tuyệt đối: Cho phép bấm vào ảnh để chọn ảnh trực tiếp từ thư viện điện thoại
+        let currentImgTarget = null;
+        const uploader = document.getElementById('imgUploader');
+
+        function toggleEditImages() {
+            document.body.classList.toggle('edit-mode');
+            if (document.body.classList.contains('edit-mode')) {
+                alert('Chế độ Đổi Ảnh đã bật! Bạn có thể chạm vào bất kỳ bức ảnh nào trong tập san để chọn ảnh từ điện thoại của mình.');
+            }
+        }
+
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('click', function() {
+                if (!document.body.classList.contains('edit-mode')) return;
+                currentImgTarget = this;
+                uploader.click();
+            });
+        });
+
+        uploader.addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0] && currentImgTarget) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    currentImgTarget.src = evt.target.result;
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+    </script>
 </body>
 </html>
